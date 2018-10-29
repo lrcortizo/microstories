@@ -1,0 +1,75 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>es.uvigo.esei.dgss.teamB.microstories</groupId>
+    <artifactId>dgss1819-teamB-microstories-pom</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>dgss1819-teamB-microstories-ear</artifactId>
+  <packaging>ear</packaging>
+
+  <name>EAR</name>
+  <description>μStories 18/19 Team B - EAR</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>dgss1819-teamB-microstories-domain</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>dgss1819-teamB-microstories-service</artifactId>
+      <version>${project.version}</version>
+      <type>ejb</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>dgss1819-teamB-microstories-rest</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>dgss1819-teamB-microstories-jsf</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ear-plugin</artifactId>
+        <configuration>
+          <applicationId>dgss1819-teamB-microstories</applicationId>
+          <applicationName>LIGAaaaS 18/19 Team B</applicationName>
+          <displayName>LIGAaaaS 18/19 Team B</displayName>
+          <earName>${project.parent.artifactId}-${project.version}</earName>
+          <defaultLibBundleDir>lib/</defaultLibBundleDir>
+          <skinnyWars>true</skinnyWars>
+          <modules>
+            <webModule>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>dgss1819-teamB-microstories-jsf</artifactId>
+              <contextRoot>/microstories-1819-teamB/jsf</contextRoot>
+            </webModule>
+            <webModule>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>dgss1819-teamB-microstories-rest</artifactId>
+              <contextRoot>/microstories-1819-teamB/rest</contextRoot>
+            </webModule>
+          </modules>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.wildfly.plugins</groupId>
+        <artifactId>wildfly-maven-plugin</artifactId>
+        <configuration>
+          <skip>false</skip>
+          <filename>${project.parent.artifactId}-${project.version}.${project.packaging}</filename>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
