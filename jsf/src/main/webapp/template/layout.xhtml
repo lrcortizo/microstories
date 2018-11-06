@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>MicroStories</title>
+	<meta name="description"
+		content="MicroStories" />
+	<link
+		href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700"
+		rel="stylesheet" />
+	<link
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="styles/style.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="container">
+		<nav id="navbar" class="d-none d-sm-block">
+			<ul>
+				<li>
+					<a href="#">Home</a>
+				</li>
+				<li class="navbarRight">
+					<a href="#">Login</a>
+				</li>
+				<li class="navbarRight">
+					<form class="form-inline">
+	  					<input type="text" id="searchNav" class="form-control mb-2 mr-sm-2" />
+					  <a href="#">
+					  	<img id="iconSearch" src="img/search.svg" width="30"/>
+					  </a>
+					</form>
+				</li>
+			</ul>
+		</nav>
+		<nav id="navbarMobile" class="d-block d-sm-none">
+			<ul>
+				<li>
+					<a href="#">Home</a>
+				</li>
+				<li>
+					<img id="iconSearchMobile" src="img/user.svg" width="40"/>
+				</li>
+				<li class="formMobile">
+					<form>
+	  					<input type="text" id="searchNav" />
+					  <a href="#">
+					  	<img id="iconSearchMobile" src="img/search.svg" width="10"/>
+					  </a>
+					</form>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div id="content">
+		<ui:insert name="content"></ui:insert>
+	</div>
+	<footer>
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<div id="signatureFooter">
+					<p>MicroStories</p>
+					<p>TeamB</p>
+				</div>
+			</div>
+
+		</div>
+	</footer>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+</body>
+</html>

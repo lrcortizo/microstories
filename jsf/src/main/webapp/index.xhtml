@@ -1,46 +1,80 @@
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-	<meta charset="UTF-8"/>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<title>MicroStories</title>
-	<meta name="description"
-		content="MicroStories Under Construction" />
-	<link
-		href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700"
-		rel="stylesheet" />
-	<link
-		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-		rel="stylesheet" />
-	<link href="styles/main.css" rel="stylesheet" />
-</head>
-<body id="top">
-	<div class="site-wrapper">
-		<div class="site-wrapper-inner">
-			<div class="cover-container">
-				<div class="masthead clearfix">
-					<div class="inner">
-						<h3 class="masthead-brand">Coming Soon</h3>
-					</div>
-				</div>
-				<br/>
-				<div class="inner cover">
-					<h1 class="cover-heading">
-						LIGA<span class="min-cover-heading">aa</span>S
-					</h1>
-					<p class="lead cover-copy">Hold tight as we get our working
-						robots together and produce the most astonishing product ever.</p>
-				</div>
-				<div class="mastfoot">
-					<div class="inner">
-						<p>&#169; MEI - ESEI - UVigo. Design:
-						  <a href="https://templateflip.com/" target="_blank">TemplateFlip</a>.
-						</p>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<ui:define name="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="carroussel" class="carousel slide" data-ride="carousel">
+						<ol class="carousel-indicators">
+							<li data-target="#carroussel" data-slide-to="0" class="active"></li>
+							<li data-target="#carroussel" data-slide-to="1" class=""></li>
+							<li data-target="#carroussel" data-slide-to="2" class=""></li>
+						</ol>
+						<div class="carousel-inner">
+							<div class="carousel-item active">
+								<div class="slideContent"></div>
+								<div class="carousel-caption">
+									<h2>The microstory most viewed</h2>
+									<p>Nulla vitae elit libero, a pharetra augue mollis
+										interdum.</p>
+								</div>
+							</div>
+							<div class="carousel-item">
+								<div class="slideContent"></div>
+								<div class="carousel-caption">
+									<h2>Second microstory</h2>
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+								</div>
+							</div>
+							<div class="carousel-item">
+								<div class="slideContent"></div>
+								<div class="carousel-caption">
+									<h2>Third microstory</h2>
+									<p>Praesent commodo cursus magna, vel scelerisque nisl
+										consectetur.</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
+			<hr />
+			<div>
+				<button type="button" class="btn btn-explorer">EXPLORER</button>
+			</div>
+			<div class="row">
+				<c:forEach begin="1" end="6">
+					<div class="col-md-4">
+						<a href="#">
+							<div class="card mb-4 box-shadow">
+								<div class="card-header">
+									<div class="gender">#Gender</div>
+								</div>
+								<div class="card-body">
+									<div class="title">Title</div>
+									<div class="thematics">thematics</div>
+									<c:set var="string"
+										value="This is the first string This is the first string This is the." />
+									<p class="card-text">${fn:substring(string, 0, 60)}...</p>
+									<div class="date">date: 12/12/2009</div>
+								</div>
+								<div class="card-footer">
+									<div class="autor">by: Bob</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</c:forEach>
+			</div>
 		</div>
-	</div>
-</body>
-</html>
+	</ui:define>
+</ui:composition>
