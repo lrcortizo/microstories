@@ -5,6 +5,8 @@
 
 #IntelliJ
 .idea
+*.iml
+*.iws
 
 #VisualStudio Code
 .vscode
