@@ -68,7 +68,7 @@ public class StoryTest {
 			assertThat(newStory.getText(), is(equalTo(text)));
 			assertThat(newStory.getAuthor(), is(equalTo(author)));
 			assertThat(newStory.getPublicationDate(), is(equalTo(publicationDate)));
-			assertThat(newStory.getStoryGenre(), is(equalTo(story)));
+			assertThat(newStory.getGenre(), is(equalTo(story)));
 			assertThat(newStory.getPrimaryTheme(), is(equalTo(primaryTheme)));
 			assertThat(newStory.getSecondaryTheme(), is(equalTo(secondaryTheme)));
 
@@ -326,16 +326,16 @@ public class StoryTest {
 	public void testSetGenre() {
 		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
 
-		newStory.setStoryGenre(newStoryGenre);
+		newStory.setGenre(newStoryGenre);
 
-		assertThat(newStory.getStoryGenre(), is(equalTo(newStoryGenre)));
+		assertThat(newStory.getGenre(), is(equalTo(newStoryGenre)));
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testSetGenreNull() {
 		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
 
-		newStory.setStoryGenre(null);
+		newStory.setGenre(null);
 	}
 
 	@Test

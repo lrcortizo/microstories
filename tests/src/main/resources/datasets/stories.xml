@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <dataset>
-	<Story title="Microrrelato 1" text="Texto del microrrelato 1" author="Autor 1" publicationDate="2012-06-18" storyGenre="STORY" primaryTheme="HISTORY" secondaryTheme="CHILDREN"/>
-	<Story title="Microrrelato 2" text="Texto del microrrelato 2" author="Autor 2" publicationDate="1999-01-24" storyGenre="NANOSTORY" primaryTheme="ADVENTURE" secondaryTheme="ROMANTIC"/>
-	<Story title="Microrrelato 3" text="Texto del microrrelato 3" author="Autor 3" publicationDate="2005-03-09" storyGenre="POETRY" primaryTheme="THRILLER" secondaryTheme="null"/>
-	<Story title="Microrrelato 4" text="Texto del microrrelato 4" author="Autor 4" publicationDate="2016-11-13" storyGenre="STORY" primaryTheme="CHILDREN" secondaryTheme="ROMANTIC"/>
-	<Story title="Microrrelato 5" text="Texto del microrrelato 5" author="Autor 5" publicationDate="2009-08-30" storyGenre="NANOSTORY" primaryTheme="HORROR" secondaryTheme="THRILLER"/>
-	<Story title="Microrrelato 6" text="Texto del microrrelato 6" author="Autor 6" publicationDate="2015-10-02" storyGenre="POETRY" primaryTheme="HORROR" secondaryTheme="HISTORY"/>
+	<Story title="Microrrelato 1" text="Texto del microrrelato 1" author="Autor 1" publicationDate="2012-06-18" Genre="STORY" primaryTheme="HISTORY" secondaryTheme="CHILDREN"/>
+	<Story title="Microrrelato 2" text="Texto del microrrelato 2" author="Autor 2" publicationDate="1999-01-24" Genre="NANOSTORY" primaryTheme="ADVENTURE" secondaryTheme="ROMANTIC"/>
+	<Story title="Microrrelato 3" text="Texto del microrrelato 3" author="Autor 3" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="THRILLER" secondaryTheme="CHILDREN"/>
+	<Story title="Microrrelato 4" text="Texto del microrrelato 4" author="Autor 4" publicationDate="2016-11-13" Genre="STORY" primaryTheme="CHILDREN" secondaryTheme="ROMANTIC"/>
+	<Story title="Microrrelato 5" text="Texto del microrrelato 5" author="Autor 5" publicationDate="2009-08-30" Genre="NANOSTORY" primaryTheme="HORROR" secondaryTheme="THRILLER"/>
+	<Story title="Microrrelato 6" text="Texto del microrrelato 6" author="Autor 6" publicationDate="2015-10-02" Genre="POETRY" primaryTheme="HORROR" secondaryTheme="HISTORY"/>
+	<Story title="Microrrelato 7" text="Texto del microrrelato 7" author="Autor 7" publicationDate="2015-10-02" Genre="POETRY" primaryTheme="HORROR" secondaryTheme="HISTORY"/>
 </dataset>

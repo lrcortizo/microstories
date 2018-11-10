@@ -33,7 +33,7 @@ public class StoriesDataset {
         final Set<Genre> genresSet = stream(genres).collect(toSet());
 
         return stream(stories())
-                .filter(story -> genresSet.contains(story.getStoryGenre()))
+        		.filter(story -> genresSet.contains(story.getGenre()))
                 .toArray(Story[]::new);
     }
 

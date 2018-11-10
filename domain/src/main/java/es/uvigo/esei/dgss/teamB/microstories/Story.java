@@ -16,7 +16,7 @@ import static org.apache.commons.lang3.Validate.inclusiveBetween;
 public class Story {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, length = 100)
@@ -28,20 +28,20 @@ public class Story {
     @Column(nullable = false, length = 50)
     private String author;
 
-    @Column(nullable = false)
+    @Column
     @Temporal(TemporalType.TIMESTAMP)
-    private Date publicationDate;
+    private Date publicationDate = null;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 9)
-    private Genre storyGenre;
+    private Genre genre;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 14)
     private Theme primaryTheme;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true, length = 14)
+    @Column(length = 14)
     private Theme secondaryTheme;
 
     public Story() {
@@ -60,7 +60,7 @@ public class Story {
 
     public Story(String title, String text, String author, Date publicationDate, Genre genre, Theme primaryTheme,
                  Theme secondaryTheme) {
-        this.setStoryGenre(genre);
+    	this.setGenre(genre);
         this.setTitle(title);
         this.setText(text);
         this.setAuthor(author);
@@ -91,7 +91,7 @@ public class Story {
     public void setText(String text) {
         requireNonNull(text, "text can't be null");
 
-        switch (this.storyGenre) {
+        switch (this.genre) {
             case NANOSTORY:
                 inclusiveBetween(1, 150, text.length(), "text must have a length between 1 and 150");
                 break;
@@ -129,13 +129,13 @@ public class Story {
         this.publicationDate = publicationDate;
     }
 
-    public Genre getStoryGenre() {
-        return storyGenre;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setStoryGenre(Genre storyGenre) {
-        requireNonNull(storyGenre, "storyGenre can't be null");
-        this.storyGenre = storyGenre;
+    public void setGenre(Genre genre) {
+        requireNonNull(genre, "genre can't be null");
+        this.genre = genre;
     }
 
     public Theme getPrimaryTheme() {
