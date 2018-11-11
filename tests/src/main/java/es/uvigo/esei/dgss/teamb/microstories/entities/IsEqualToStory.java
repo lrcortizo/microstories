@@ -4,6 +4,10 @@ import es.uvigo.esei.dgss.teamB.microstories.Story;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
+/**
+ * A matcher that can be used to
+ * compare entities Story by their attributes.
+ */
 public class IsEqualToStory extends IsEqualToEntity<Story> {
 
     public IsEqualToStory(Story story) {
