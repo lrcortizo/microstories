@@ -107,6 +107,21 @@ footer #signatureFooter{
 			background-color:rgba(152, 220, 242, 0.8);
 			border-radius:4px;
 }
+/* SINGLE STORY */
+
+#cardView{margin-top:4%;
+		margin-bottom:4%;}
+		
+#genderView{font-size:1.8em;
+			color:rgba(152, 220, 242, 1);
+			}
+
+#thematic{font-sizE:1.3em;
+		}
+		
+#thematicUnderline{border-bottom:1px solid #98DCF2}
+
+
 
 
 /* MOBILE VERSION */
@@ -142,3 +157,6 @@ footer #signatureFooter{
     border: 1px solid #ced4da;
     border-radius: .25rem;
     }
+
+    
+    
