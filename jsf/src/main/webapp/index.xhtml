@@ -48,34 +48,52 @@
 				</div>
 			</div>
 			<hr />
+
 			<div>
 				<button type="button" class="btn btn-explorer">EXPLORER</button>
 			</div>
 			<div class="row">
-				<c:forEach begin="1" end="6">
-					<div class="col-md-4">
-						<a href="#">
-							<div class="card mb-4 box-shadow">
-								<div class="card-header">
-									<div class="gender">#Gender</div>
+				<c:if test="#{empty index.listRecentStories()}">
+					No hay relatos para mostrar
+	            </c:if>
+	            <c:otherwise>
+	            	<c:forEach var="story" items="#{index.listRecentStories()}">
+						<div class="col-md-4">
+							<a href="#">
+								<div class="card mb-4 box-shadow">
+									<div class="card-header">
+										<div class="gender">
+											<h:outputLabel value="#{story.genre}" />
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="title">
+											<h:outputLabel value="#{story.title}" />
+										</div>
+										<div class="thematics">
+											<h:outputLabel value="#{story.primaryTheme}" />
+											,
+											<h:outputLabel value="#{story.secondaryTheme}" />
+										</div>
+										<c:set var="string" value="#{story.text}" />
+										<p class="card-text">${fn:substring(string, 0, 60)}...</p>
+										<div class="date">
+											date:
+											<h:outputLabel value="#{story.publicationDate}" />
+										</div>
+									</div>
+									<div class="card-footer">
+										<div class="autor">
+											by:
+											<h:outputLabel value="#{story.author}" />
+										</div>
+									</div>
 								</div>
-								<div class="card-body">
-									<div class="title">Title</div>
-									<div class="thematics">thematics</div>
-									<c:set var="string"
-										value="This is the first string This is the first string This is the." />
-									<p class="card-text">${fn:substring(string, 0, 60)}...</p>
-									<div class="date">date: 12/12/2009</div>
-								</div>
-								<div class="card-footer">
-									<div class="autor">by: Bob</div>
-								</div>
-							</div>
-						</a>
-					</div>
-				</c:forEach>
+							</a>
+						</div>
+					</c:forEach>
+	            </c:otherwise>
 			</div>
 		</div>
 	</ui:define>
 </ui:composition>
-
