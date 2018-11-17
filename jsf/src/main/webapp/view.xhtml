@@ -10,42 +10,31 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 	<ui:define name="content">
+		<c:set var="id" value="#{param['id']}" />
+		<c:set var="story" value="#{single.findStory(id)}" />
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 				<div class="card" id="cardView">
 				  <h1 class="card-header">
-				  	Lorem ipsum dolor sit amet, consectetur adipiscing elit
+				  	<h:outputLabel value="#{story.title}" />
+				  	
+				  	
 				  </h1>
 				  <div class="card-body">
-				    <p id="genderView">#Terror </p>
-				    <p id="thematic"><span id="thematicUnderline">Thematic</span></p>
+				    <p id="genderView">#<h:outputLabel value="#{story.genre}" /></p>
+				    <p id="thematic"><span id="thematicUnderline">
+				    	<h:outputLabel value="#{story.primaryTheme}" />,
+						<h:outputLabel value="#{story.secondaryTheme}" /></span></p>
 				  	<p class="card-text">
-					    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc interdum, diam eget sollicitudin aliquam, 
-						ante leo tincidunt lorem, sed suscipit metus quam at velit. Nullam quis finibus lectus. Integer mauris felis,
-						tempus ut ultrices et, congue vitae sapien. Proin leo lectus, semper vel libero cursus, luctus vulputate odio.
-						Nam molestie hendrerit nulla quis laoreet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-						posuere cubilia Curae; Donec elementum felis nec diam egestas tempus. Morbi ultrices nisl ex, ut ornare
-						ante convallis sit amet. In tellus neque, tincidunt et dapibus vel, consequat a nibh. Proin euismod 
-						interdum leo vel iaculis. Sed elementum eget lorem non mollis. Sed condimentum fermentum quam. 
-						Proin aliquet lacinia sem.
-	
-						Pellentesque pretium, erat non consectetur lobortis, lectus neque hendrerit felis, 
-						vel commodo odio ipsum quis mi. Ut dictum, tellus nec mattis finibus, leo libero 
-						vulputate ex, a egestas justo orci sit amet sapien. Donec consequat quam malesuada 
-						urna dictum iaculis. Nulla dictum fermentum nunc id dapibus. Aenean gravida, 
-						diam at bibendum gravida, dui ipsum ornare massa, eget tincidunt leo ligula aliquet tortor. 
-						Donec mi velit, laoreet congue semper ut, pellentesque eu sapien. Vestibulum ac tortor egestas, 
-						elementum nulla eu, pellentesque sem. Nullam non massa pulvinar, feugiat massa eget, gravida tortor. 
-						Pellentesque lobortis augue quis diam bibendum, non mollis ex aliquet. Nullam non eros quis neque 
-						fermentum euismod eget sed neque. Duis turpis leo, iaculis eu augue laoreet, pharetra condimentum urna.
-				    	
+					    <h:outputLabel value="#{story.text}" />
 				    </p>
 				    
 				  </div>
 				   <div class="card-footer text-muted">
-				    	<p> by Fulanito</p>
-				    	<p> 21th September at 1915</p>
+				    	<p> by <h:outputLabel value="#{story.author}" /></p>
+				    	<c:set var="date" value="#{story.publicationDate}" />
+				    	<p class="card-text">${fn:substring(date, 0, 10)}</p>
 				  </div>
 				</div>
 					

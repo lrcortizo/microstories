@@ -56,10 +56,11 @@
 				<c:if test="#{empty index.listRecentStories()}">
 					No hay relatos para mostrar
 	            </c:if>
-	            <c:otherwise>
-	            	<c:forEach var="story" items="#{index.listRecentStories()}">
+				<c:otherwise>
+					<c:forEach var="story" items="#{index.listRecentStories()}">
 						<div class="col-md-4">
-							<a href="#">
+							<c:set var='link' value='view.xhtml?id=${story.id}' />
+							<a href="#{link}">
 								<div class="card mb-4 box-shadow">
 									<div class="card-header">
 										<div class="gender">
@@ -92,7 +93,7 @@
 							</a>
 						</div>
 					</c:forEach>
-	            </c:otherwise>
+				</c:otherwise>
 			</div>
 		</div>
 	</ui:define>
