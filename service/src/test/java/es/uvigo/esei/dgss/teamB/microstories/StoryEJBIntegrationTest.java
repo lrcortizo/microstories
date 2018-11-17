@@ -15,7 +15,6 @@ import java.util.List;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
-import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.UsingDataSet;
 
 import static org.hamcrest.Matchers.lessThan;
