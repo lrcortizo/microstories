@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.teamB.microstories.GenericTypes.ListStoryType;
+import static es.uvigo.esei.dgss.teamb.microstories.entities.IsEqualToStory.equalToStory;
+import static es.uvigo.esei.dgss.teamb.microstories.entities.StoriesDataset.existentStory;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
@@ -26,11 +28,8 @@ import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
 import es.uvigo.esei.dgss.teamB.microstories.StoryResource;
 
 import static es.uvigo.esei.dgss.teamb.microstories.entities.IsEqualToStory.containsStoriesInAnyOrder;
-import static es.uvigo.esei.dgss.teamb.microstories.entities.StoriesDataset.stories;
 import static es.uvigo.esei.dgss.teamb.microstories.http.util.HasHttpStatus.hasOkStatus;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @PermitAll
@@ -81,6 +80,36 @@ public class StoryResourceRestTest {
 	@ShouldMatchDataSet("stories.xml")
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterList() {}
+	
+	@Test @InSequence(4)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeGetStory() {}
+	
+	@Test(expected=java.lang.NullPointerException.class) @InSequence(5)
+	@PermitAll
+	@UsingDataSet("stories.xml")
+	public void testGetStory(
+		@ArquillianResteasyResource(BASE_PATH +"{id}/") ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		
+	    final Response response = webTarget.request().get();
+
+	    assertThat(response, hasOkStatus());
+	    
+	    final Story story = response.readEntity(Story.class);
+	    final Story expected = existentStory();
+	    
+	    assertThat(story, is(equalToStory(expected)));
+		    
+	   
+	}
+	
+	@Test @InSequence(6)
+	@ShouldMatchDataSet("stories.xml")
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterGetStory() {}
 }
 
 
