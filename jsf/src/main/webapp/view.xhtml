@@ -2,42 +2,50 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <ui:composition template="/template/layout.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
 	<ui:define name="content">
-		<c:set var="id" value="#{param['id']}" />
-		<c:set var="story" value="#{single.findStory(id)}" />
+		<f:metadata>
+			<f:viewParam name="id" value="#{single.id}" />
+		</f:metadata>
+
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-				<div class="card" id="cardView">
-				  <h1 class="card-header">
-				  	<h:outputLabel value="#{story.title}" />
-				  	
-				  	
-				  </h1>
-				  <div class="card-body">
-				    <p id="genderView">#<h:outputLabel value="#{story.genre}" /></p>
-				    <p id="thematic"><span id="thematicUnderline">
-				    	<h:outputLabel value="#{story.primaryTheme}" />,
-						<h:outputLabel value="#{story.secondaryTheme}" /></span></p>
-				  	<p class="card-text">
-					    <h:outputLabel value="#{story.text}" />
-				    </p>
-				    
-				  </div>
-				   <div class="card-footer text-muted">
-				    	<p> by <h:outputLabel value="#{story.author}" /></p>
-				    	<c:set var="date" value="#{story.publicationDate}" />
-				    	<p class="card-text">${fn:substring(date, 0, 10)}</p>
-				  </div>
-				</div>
-					
+					<div class="card" id="cardView">
+						<h1 class="card-header">
+							<h:outputLabel value="#{single.story.title}" />
+
+
+						</h1>
+						<div class="card-body">
+							<p id="genderView">
+								#
+								<h:outputLabel value="#{single.story.genre}" />
+							</p>
+							<p id="thematic">
+								<span id="thematicUnderline"> <h:outputLabel
+										value="#{single.story.primaryTheme}" />, <h:outputLabel
+										value="#{single.story.secondaryTheme}" /></span>
+							</p>
+							<p class="card-text">
+								<h:outputLabel value="#{single.story.text}" />
+							</p>
+
+						</div>
+						<div class="card-footer text-muted">
+							<p>
+								by
+								<h:outputLabel value="#{single.story.author}" />
+							</p>
+							<p class="card-text">${fn:substring(single.story.publicationDate, 0, 10)}</p>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>

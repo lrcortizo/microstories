@@ -15,11 +15,6 @@ public class StoryEJB {
 	@PersistenceContext
 	private EntityManager em;
 	
-	@PersistenceContext
-	public void setEntityManager(EntityManager em) {
-	    this.em = em;
-	}
-	
 	/**
 	 * Returns the recent list of stories.
 	 *  

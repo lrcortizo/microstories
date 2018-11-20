@@ -11,8 +11,8 @@ public class StoryManagedBean {
 	@EJB
 	private StoryEJB storyEJB;
 
+	
 	public List<Story> listRecentStories() {
 		return storyEJB.listRecentStories();
 	}
-
 }

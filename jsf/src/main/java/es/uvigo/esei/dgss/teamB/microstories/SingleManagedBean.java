@@ -1,7 +1,5 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
-import java.util.List;
-
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -13,7 +11,16 @@ public class SingleManagedBean {
 	@EJB
 	private StoryEJB storyEJB;
 
-	public Story findStory(int id) {
+	private int id;
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public Story getStory() {
 		return storyEJB.findStory(id);
 	}
 
