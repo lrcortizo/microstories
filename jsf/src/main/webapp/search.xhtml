@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<f:metadata>
+		<f:viewParam name="text" value="#{search.searchInput}" />
+		<f:viewParam name="pageNumber" value="#{search.pageNumber}" />
+		<f:viewParam name="pageSize" value="#{search.pageSize}" />
+	</f:metadata>
+
+	<ui:define name="content">
+
+		<div class="container">
+			<div>
+				<button type="button" class="btn btn-explorer">Filter</button>
+			</div>
+			<div class="header-search">
+				<h2>Result for search:
+					"<h:outputLabel value="#{search.searchInput}" />"
+				</h2>
+			</div>
+			<div class="row">
+				<ui:fragment rendered="#{empty search.searchStories()}">
+					<div class="col-md-12">
+						<p class="warning">No hay relatos para mostrar</p>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{not empty search.searchStories()}">
+					<ui:repeat var="story" value="#{search.listStories.subList(0, (search.listStories.size() gt 9) ? 9 : search.listStories.size())}">
+						<div class="col-md-4 col-sm-6 col-xs-12">
+							<h:form>
+								<h:outputLink value="view.xhtml">
+
+									<f:param name="id" value="#{story.id}" />
+
+									<div class="card mb-4 box-shadow indexTarget">
+										<div class="card-header">
+											<div class="gender">
+												<h:outputLabel value="#{story.genre}" />
+											</div>
+										</div>
+										<div class="card-body">
+											<div class="title">
+												<h:outputLabel value="#{story.title}" />
+											</div>
+											<div class="thematics">
+												<h:outputLabel value="#{story.primaryTheme}" />
+												,
+												<h:outputLabel value="#{story.secondaryTheme}" />
+											</div>
+											<p class="card-text">${fn:substring(story.text, 0, 60)}...</p>
+											<div class="date">
+												date:
+												<h:outputLabel value="#{story.publicationDate}" />
+											</div>
+										</div>
+										<div class="card-footer">
+											<div class="autor">
+												by:
+												<h:outputLabel value="#{story.author}" />
+											</div>
+										</div>
+									</div>
+								</h:outputLink>
+							</h:form>
+						</div>
+					</ui:repeat>
+				</ui:fragment>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h:form>
+						<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-center">
+							<li class="page-item">
+								<h:outputLink styleClass="page-link" value="search.xhtml" >
+									<f:param name="text" value="#{search.searchInput}" />
+									<f:param name="pageNumber" value="#{search.pageNumber-1}" />
+									<f:param name="pageSize" value="#{search.pageSize}" />
+									Previous
+								</h:outputLink>
+							</li>
+							<li class="page-item">
+								<h:outputLink styleClass="page-link" value="search.xhtml" >
+									<f:param name="text" value="#{search.searchInput}" />
+									<f:param name="pageNumber" value="1" />
+									<f:param name="pageSize" value="#{search.pageSize}" />
+									1
+								</h:outputLink>
+
+							</li>
+							<li class="page-item">
+								<h:outputLink styleClass="page-link" value="search.xhtml" >
+									<f:param name="text" value="#{search.searchInput}" />
+									<f:param name="pageNumber" value="2" />
+									<f:param name="pageSize" value="#{search.pageSize}" />
+									2
+								</h:outputLink>
+							</li>
+							<li class="page-item">
+								<h:outputLink styleClass="page-link" value="search.xhtml" >
+									<f:param name="text" value="#{search.searchInput}" />
+									<f:param name="pageNumber" value="3" />
+									<f:param name="pageSize" value="#{search.pageSize}" />
+									3
+								</h:outputLink>
+							</li>
+							<li class="page-item">
+								<h:outputLink styleClass="page-link" value="search.xhtml" >
+									<f:param name="text" value="#{search.searchInput}" />
+									<f:param name="pageNumber" value="#{search.pageNumber+1}" />
+									<f:param name="pageSize" value="#{search.pageSize}" />
+									Next
+								</h:outputLink>
+							</li>
+						</ul>
+						</nav>
+					</h:form>
+
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

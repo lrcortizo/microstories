@@ -20,6 +20,27 @@ a:visited {
     padding-bottom: 1%;
     border-radius: 4px;
 }
+.warning{
+	background-color:rgba(251, 103, 105, 0.6);
+	text-align:center;
+	border-radius:4px;
+	color:black;
+	font-weight:700;
+	font-size:1.4em;
+	padding-top:6%;
+	padding-bottom:6%;
+}
+
+.success{
+	background-color:rgba(10, 233, 159, 0.6);
+	text-align:center;
+	border-radius:4px;
+	color:black;
+	font-weight:700;
+	font-size:1.4em;
+	padding-top:6%;
+	padding-bottom:6%;
+}
 
 #navbar #searchNav{
 	position: relative;
@@ -61,6 +82,10 @@ footer #signatureFooter{
 
 /*INDEX*/
 
+.indexTarget{
+	min-height:510px;	
+}
+
 .btn-explorer{
 	display: flex;
 	margin-left: auto;
@@ -72,6 +97,7 @@ footer #signatureFooter{
     border-color: rgb(152, 220, 242);
 	
 }
+
 .gender{
 	font-size: 1.5em;
 	text-align: left;
@@ -84,7 +110,7 @@ footer #signatureFooter{
     margin-bottom: 15%;
 }
 .thematics{
-	font-size: 1em;
+	font-size: 0.9em;
 	text-align: right;
     color: rgba(134,142,150,1);
 }
@@ -121,7 +147,14 @@ footer #signatureFooter{
 		
 #thematicUnderline{border-bottom:1px solid #98DCF2}
 
-
+/* SEARCH */
+.header-search{
+	display: flex;
+	margin-left: auto;
+    margin-right: auto;
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
 
 /* EXPLORE */
 

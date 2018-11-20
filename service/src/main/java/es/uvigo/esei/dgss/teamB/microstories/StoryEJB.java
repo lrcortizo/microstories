@@ -53,8 +53,8 @@ public class StoryEJB {
 		String query = "SELECT s FROM Story s WHERE s.title LIKE :t OR s.text LIKE :t ORDER BY s.publicationDate DESC";
 		String queryCount = "SELECT COUNT(s) FROM Story s WHERE s.title LIKE :t OR s.text LIKE :t";
 
-		if (pageNumber == null) {
-			pageNumber = 0;
+		if (pageNumber == null || pageNumber < 1) {
+			pageNumber = 1;
 		}
 		
 		if (pageSize == null || pageSize < 10) {

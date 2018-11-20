@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      >
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html">
 <head>
 	<meta charset="UTF-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -28,12 +29,13 @@
 					<a href="#">Login</a>
 				</li>
 				<li class="navbarRight">
-					<form class="form-inline">
-	  					<input type="text" id="searchNav" class="form-control mb-2 mr-sm-2" />
-					  <a href="#">
-					  	<img id="iconSearch" src="img/search.svg" width="30"/>
-					  </a>
-					</form>
+					<h:form class="form-inline">
+	  					<h:inputText value="#{search.searchInput}" id="searchNav" class="form-control mb-2 mr-sm-2"/>
+
+						<h:commandLink action="search.goToSearchView" >
+							<img id="iconSearch" src="img/search.svg" width="30"/>
+						</h:commandLink>
+					</h:form>
 				</li>
 			</ul>
 		</nav>
@@ -47,10 +49,11 @@
 				</li>
 				<li class="formMobile">
 					<form>
-	  					<input type="text" id="searchNav" />
-					  <a href="#">
-					  	<img id="iconSearchMobile" src="img/search.svg" width="10" />
-						</a>
+						<h:inputText value="#{search.searchInput}" id="searchNav" class="form-control mb-2 mr-sm-2"/>
+
+						<h:commandLink action="search.goToSearchView" >
+							<img id="iconSearchMobile" src="img/search.svg" width="10" />
+						</h:commandLink>
 					</form>
 				</li>
 			</ul>

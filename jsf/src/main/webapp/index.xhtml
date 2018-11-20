@@ -53,18 +53,19 @@
 			</div>
 			<div class="row">
 				<ui:fragment rendered="#{empty index.listRecentStories()}">
-					<p class="warning">No hay relatos para mostrar</p>
+					<div class="col-md-12">
+						<p class="warning">No hay relatos para mostrar</p>
+					</div>
 				</ui:fragment>
 				<ui:fragment rendered="#{not empty index.listRecentStories()}">
 					<ui:repeat var="story" value="#{index.listRecentStories()}">
-						<div class="col-md-4">
-							<!-- <c:set var='link' value='view.xhtml?id=${story.id}' />-->
+						<div class="col-md-4 col-sm-6 col-xs-12">
 							<h:form>
 								<h:outputLink value="view.xhtml">
 
 									<f:param name="id" value="#{story.id}" />
 
-									<div class="card mb-4 box-shadow">
+									<div class="card mb-4 box-shadow indexTarget">
 										<div class="card-header">
 											<div class="gender">
 												<h:outputLabel value="#{story.genre}" />
@@ -87,7 +88,7 @@
 										</div>
 										<div class="card-footer">
 											<div class="autor">
-												by:
+												by:	
 												<h:outputLabel value="#{story.author}" />
 											</div>
 										</div>
