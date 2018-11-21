@@ -1,6 +1,7 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.extension.rest.client.ArquillianResteasyResource;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
@@ -14,26 +15,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.teamB.microstories.GenericTypes.ListStoryType;
-import static es.uvigo.esei.dgss.teamb.microstories.entities.IsEqualToStory.equalToStory;
-import static es.uvigo.esei.dgss.teamb.microstories.entities.StoriesDataset.existentStory;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
-import javax.annotation.security.PermitAll;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-import es.uvigo.esei.dgss.teamB.microstories.Story;
 import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
 import es.uvigo.esei.dgss.teamB.microstories.StoryResource;
 
-import static es.uvigo.esei.dgss.teamb.microstories.entities.IsEqualToStory.containsStoriesInAnyOrder;
-import static es.uvigo.esei.dgss.teamb.microstories.http.util.HasHttpStatus.hasOkStatus;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.containsStoriesInAnyOrder;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStory;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.existentStory;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.EXISTENT_ID;
+import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasOkStatus;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-@PermitAll
-@Consumes(MediaType.APPLICATION_JSON)
 @RunWith(Arquillian.class)
 public class StoryResourceRestTest {
 	private final static String BASE_PATH = "microstory/";
@@ -58,9 +55,8 @@ public class StoryResourceRestTest {
 	@Cleanup(phase = TestExecutionPhase.NONE)
 	public void beforeListRecent() {}
 	
-	@Test(expected=java.lang.NullPointerException.class) @InSequence(2)
-	@PermitAll
-	@UsingDataSet("stories.xml")
+	@Test @InSequence(2)
+	@RunAsClient
 	public void testListRecent(
 		@ArquillianResteasyResource(BASE_PATH +"recent/") ResteasyWebTarget webTarget
 	) 
@@ -86,11 +82,10 @@ public class StoryResourceRestTest {
 	@Cleanup(phase = TestExecutionPhase.NONE)
 	public void beforeGetStory() {}
 	
-	@Test(expected=java.lang.NullPointerException.class) @InSequence(5)
-	@PermitAll
-	@UsingDataSet("stories.xml")
+	@Test @InSequence(5)
+	@RunAsClient
 	public void testGetStory(
-		@ArquillianResteasyResource(BASE_PATH +"{id}/") ResteasyWebTarget webTarget
+		@ArquillianResteasyResource(BASE_PATH + "1") ResteasyWebTarget webTarget
 	) 
 	throws Exception {
 		
@@ -99,6 +94,7 @@ public class StoryResourceRestTest {
 	    assertThat(response, hasOkStatus());
 	    
 	    final Story story = response.readEntity(Story.class);
+
 	    final Story expected = existentStory();
 	    
 	    assertThat(story, is(equalToStory(expected)));

@@ -1,5 +1,8 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
+import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
+import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;

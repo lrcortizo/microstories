@@ -1,4 +1,4 @@
-package es.uvigo.esei.dgss.teamb.microstories.entities;
+package es.uvigo.esei.dgss.teamB.microstories.entities;
 
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;

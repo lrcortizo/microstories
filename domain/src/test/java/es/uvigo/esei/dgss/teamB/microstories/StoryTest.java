@@ -11,6 +11,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import es.uvigo.esei.dgss.teamB.microstories.entities.Genre;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Theme;
+
 public class StoryTest {
 
 	private String title;

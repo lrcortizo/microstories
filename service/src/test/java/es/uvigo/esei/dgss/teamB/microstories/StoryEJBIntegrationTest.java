@@ -3,7 +3,7 @@ package es.uvigo.esei.dgss.teamB.microstories;
 
 
 import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
-import es.uvigo.esei.dgss.teamB.microstories.Story;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
@@ -92,6 +92,5 @@ public class StoryEJBIntegrationTest {
     	
     	assertThat(storyEjb.findStory(1), is(not(equalTo(nullValue()))));
     }
-
-
+	
 }

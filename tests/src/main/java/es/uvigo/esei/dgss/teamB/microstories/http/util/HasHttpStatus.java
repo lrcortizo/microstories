@@ -1,4 +1,4 @@
-package es.uvigo.esei.dgss.teamb.microstories.http.util;
+package es.uvigo.esei.dgss.teamB.microstories.http.util;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.StatusType;

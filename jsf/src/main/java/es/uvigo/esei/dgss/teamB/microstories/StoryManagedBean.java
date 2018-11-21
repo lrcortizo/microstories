@@ -1,6 +1,10 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
+import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
+import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
+
 import java.util.List;
+
 
 import javax.ejb.EJB;
 import javax.inject.Named;

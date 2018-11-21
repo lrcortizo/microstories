@@ -1,11 +1,11 @@
-package es.uvigo.esei.dgss.teamb.microstories.entities;
+package es.uvigo.esei.dgss.teamB.microstories.entities;
 
-
-import es.uvigo.esei.dgss.teamB.microstories.Genre;
-import es.uvigo.esei.dgss.teamB.microstories.Story;
-import es.uvigo.esei.dgss.teamB.microstories.Theme;
 
 import java.util.*;
+
+import es.uvigo.esei.dgss.teamB.microstories.entities.Genre;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Theme;
 
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
@@ -48,7 +48,7 @@ public class StoriesDataset {
 
     public static Story[] stories() {
         return new Story[]{
-                new Story("Microrrelato 1", "Texto del microrrelato 1", "Autor 1", new Date(1339970400000L), Genre.STORY, Theme.HISTORY, Theme.CHILDREN),
+                new Story(EXISTENT_ID, "Microrrelato 1", "Texto del microrrelato 1", "Autor 1", new Date(1339970400000L), Genre.STORY, Theme.HISTORY, Theme.CHILDREN),
                 new Story(STORY_WITH_TWO_THEMES_TITLE, "Texto del microrrelato 2", "Autor 2", new Date(917132400000L), Genre.NANOSTORY, Theme.ADVENTURE, Theme.ROMANTIC),
                 new Story(STORY_WITH_ONE_THEME_TITLE, "Texto del microrrelato 3", "Autor 3", new Date(1110322800000L), Genre.POETRY, Theme.THRILLER),
         };

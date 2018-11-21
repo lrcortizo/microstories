@@ -4,6 +4,11 @@
 	version="3.1">
 	<display-name>MicroStories REST</display-name>
 
+    <servlet-mapping>
+        <servlet-name>javax.ws.rs.core.Application</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    
   <!--Defining security constraint for type of roles available -->
   <!-- security-constraint>
     <web-resource-collection>

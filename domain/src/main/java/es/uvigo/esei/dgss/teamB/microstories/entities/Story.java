@@ -1,10 +1,21 @@
-package es.uvigo.esei.dgss.teamB.microstories;
-
-import javax.persistence.*;
-import java.util.Date;
+package es.uvigo.esei.dgss.teamB.microstories.entities;
 
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.Validate.inclusiveBetween;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 
 /**
@@ -13,6 +24,7 @@ import static org.apache.commons.lang3.Validate.inclusiveBetween;
  * Setters methods implements several validations
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Story {
 	
 	@Id
@@ -44,11 +56,11 @@ public class Story {
     @Column(length = 14)
     private Theme secondaryTheme;
 
-    public Story() {
+    Story() {
     }
 
     // For test purposes
-    public Story(Integer id, String title, String text, String author, Date publicationDate, Genre genre,
+    Story(Integer id, String title, String text, String author, Date publicationDate, Genre genre,
                  Theme primaryTheme, Theme secondaryTheme) {
         this(title, text, author, publicationDate, genre, primaryTheme, secondaryTheme);
         this.id = id;

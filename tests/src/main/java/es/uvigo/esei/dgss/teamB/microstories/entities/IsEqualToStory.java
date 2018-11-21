@@ -1,8 +1,9 @@
-package es.uvigo.esei.dgss.teamb.microstories.entities;
+package es.uvigo.esei.dgss.teamB.microstories.entities;
 
-import es.uvigo.esei.dgss.teamB.microstories.Story;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
+
+import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
 /**
  * A matcher that can be used to

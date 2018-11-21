@@ -2,12 +2,14 @@ package es.uvigo.esei.dgss.teamB.microstories;
 
 import java.util.List;
 
-import es.uvigo.esei.dgss.teamB.microstories.Story;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
 @Stateless
 public class StoryEJB {

@@ -2,9 +2,10 @@ package es.uvigo.esei.dgss.teamB.microstories;
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
-import es.uvigo.esei.dgss.teamB.microstories.Story;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
+
+import java.util.List;
 
 
 
