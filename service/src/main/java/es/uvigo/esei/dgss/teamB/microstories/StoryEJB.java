@@ -1,5 +1,10 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
 import java.util.List;
 
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
@@ -47,4 +52,33 @@ public class StoryEJB {
 	}
    
 
+	@PermitAll
+	public List<Story> listSearchPagination(Integer nPagination, Integer nStories, String genre, String theme, Date date) {
+		
+		String insertDate="";
+		String insertGenre="";
+		String insertTheme="";
+		
+		if(date != null) { 
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String formattedDate = formatter.format(date);
+			
+			insertDate="AND publicationDate<'"+ formattedDate +"' ";
+		}
+		if(genre != null) { insertGenre="AND genre='"+ genre +"' "; }
+		if(theme != null) { insertTheme="AND (primaryTheme='"+ theme +"' OR secondaryTheme='"+ theme +"') "; }
+		
+		
+		return em.createQuery("SELECT story "
+				+ "FROM Story story "
+				+ "WHERE publicationDate IS NOT NULL "
+				+ insertDate
+				+ insertGenre
+				+ insertTheme
+				+ "ORDER BY publicationDate DESC "
+				, Story.class).setMaxResults(nStories).setFirstResult((nPagination-1)*nStories).getResultList();
+	}
+	
+	
 }

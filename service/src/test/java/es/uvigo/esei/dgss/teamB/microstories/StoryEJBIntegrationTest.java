@@ -10,6 +10,10 @@ import javax.inject.Inject;
 
 import static org.junit.Assert.assertThat;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -92,5 +96,72 @@ public class StoryEJBIntegrationTest {
     	
     	assertThat(storyEjb.findStory(1), is(not(equalTo(nullValue()))));
     }
+
+	
+	// getSearchPagination
+	
+	@Test(expected = javax.ejb.EJBException.class)
+	public void testListSearchPaginationNull() {
+
+		assertThat(storyEjb.listSearchPagination(null,null,null,null,null), anyOf(nullValue(), empty()));
+	}
+	
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testListSearchPaginationMaxElementsAsAsked() {
+
+		Integer nStories = 9; 
+		List<Story> list = storyEjb.listSearchPagination(1,nStories,null,null,null);
+		assertThat(list.size(), lessThan(nStories+1));
+	}
+	
+	@Test 
+	public void testListSearchPaginationBadSearch() {
+		Integer nStories = 9; 
+
+
+		assertThat(storyEjb.listSearchPagination(1,nStories,"NANOSTORY","ADVENTURE",null), anyOf(nullValue(), empty()));
+	}
+	
+	@Test 
+	@UsingDataSet("stories.xml")
+	public void testListSearchPaginationNoDate() {
+		
+		Integer nStories = 9; 
+	
+		assertThat(storyEjb.listSearchPagination(1,nStories,"NANOSTORY","CHILDREN",null), is(not(equalTo(nullValue()))));
+	}
+	
+	@Test 
+	@UsingDataSet("stories.xml")
+	public void testListSearchPaginationNoGenre(){
+		
+		Integer nStories = 9; 
+
+	
+		assertThat(storyEjb.listSearchPagination(1,nStories,null,"CHILDREN",null), is(not(equalTo(nullValue()))));
+	}
+	
+	@Test 
+	@UsingDataSet("stories.xml")
+	public void testListSearchPaginationNoTheme() {
+		
+		Integer nStories = 9; 
+	
+		assertThat(storyEjb.listSearchPagination(1,nStories,"NANOSTORY",null,null), is(not(equalTo(nullValue()))));
+	}
+	
+	@Test 
+	@SuppressWarnings("deprecation")
+	@UsingDataSet("stories.xml")
+	public void testListSearchPaginationWithDate() {
+		
+		Integer nStories = 9; 
+		
+
+		assertThat(storyEjb.listSearchPagination(1,nStories,null,null,new Date(90,4,4)), is(not(equalTo(nullValue()))));
+
+		
+	}
 	
 }
