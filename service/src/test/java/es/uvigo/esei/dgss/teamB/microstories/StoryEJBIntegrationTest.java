@@ -1,7 +1,5 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
-
-
 import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
@@ -10,9 +8,6 @@ import javax.inject.Inject;
 
 import static org.junit.Assert.assertThat;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +24,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.CoreMatchers.anyOf;
 
-
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -42,54 +36,49 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 @CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 public class StoryEJBIntegrationTest {
-	
+
 	@Inject
 	private StoryEJB storyEjb;
-	
+
 	@Deployment
 	public static Archive<?> createDeployment() {
-		return ShrinkWrap.create(WebArchive.class, "test.war")
-			.addClasses(StoryEJB.class,Story.class)
-			.addPackage(Story.class.getPackage())
-			.addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-			.addAsWebInfResource("jboss-web.xml")
-            .addAsResource("arquillian.extension.persistence.properties")
-            .addAsResource("arquillian.extension.persistence.dbunit.properties")
-			.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+		return ShrinkWrap.create(WebArchive.class, "test.war").addClasses(StoryEJB.class, Story.class)
+				.addPackage(Story.class.getPackage()).addAsResource("test-persistence.xml", "META-INF/persistence.xml")
+				.addAsWebInfResource("jboss-web.xml").addAsResource("arquillian.extension.persistence.properties")
+				.addAsResource("arquillian.extension.persistence.dbunit.properties")
+				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
 
-	//ListRecentStories
-	
+	// ListRecentStories
+
 	@Test
-	public void testListRecentStoriesNull(){
-		
+	public void testListRecentStoriesNull() {
+
 		assertThat(storyEjb.listRecentStories(), anyOf(nullValue(), empty()));
 	}
 
-	
 	@Test
 	@UsingDataSet("stories.xml")
-	public void testListRecentStoriesMaxElementsAs6(){
-		
+	public void testListRecentStoriesMaxElementsAs6() {
+
 		List<Story> list = storyEjb.listRecentStories();
 		assertThat(list.size(), lessThan(7));
 	}
 
+	// findStory
 
-	//findStory
-	
-    @Test(expected=javax.ejb.EJBException.class)
-    public void findStoryNull(){
-    	
-    	storyEjb.findStory(null);
-    }
-    
+	@Test(expected = javax.ejb.EJBException.class)
+	public void findStoryNull() {
+
+		storyEjb.findStory(null);
+	}
+
 	@Test
-    public void findStoryBadId(){
-    	
-    	assertThat(storyEjb.findStory(1), is(nullValue()));
-    }
-	
+	public void findStoryBadId() {
+
+		assertThat(storyEjb.findStory(1), is(nullValue()));
+	}
+
 	@Test
 	@UsingDataSet("stories.xml")
     public void findStory(){
@@ -97,6 +86,39 @@ public class StoryEJBIntegrationTest {
     	assertThat(storyEjb.findStory(1), is(not(equalTo(nullValue()))));
     }
 
+	
+	// getByText
+	
+	@Test
+	public void testGetByTextNull() {
+
+		assertThat(storyEjb.getByText(null, null, null), anyOf(nullValue(), empty()));
+	}
+	
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testGetByTextMaxElementsAsAsked() {
+
+		Integer pageSize = 9; 
+		List<Story> list = storyEjb.getByText(null, 1, pageSize);
+		assertThat(list.size(), lessThan(pageSize+1));
+	}
+	
+	@Test 
+	public void testGetByTextBadSearch() {
+		Integer pageSize = 9; 
+
+		assertThat(storyEjb.getByText("Microrrelato 1", 1, pageSize), anyOf(nullValue(), empty()));
+	}
+	
+	@Test 
+	@UsingDataSet("stories.xml")
+	public void testGetByText() {
+		
+		Integer pageSize = 9; 
+	
+		assertThat(storyEjb.getByText("Microrrelato 1", 1, pageSize), is(not(equalTo(nullValue()))));
+	}
 	
 	// getSearchPagination
 	
@@ -118,7 +140,6 @@ public class StoryEJBIntegrationTest {
 	@Test 
 	public void testListSearchPaginationBadSearch() {
 		Integer nStories = 9; 
-
 
 		assertThat(storyEjb.listSearchPagination(1,nStories,"NANOSTORY","ADVENTURE",null), anyOf(nullValue(), empty()));
 	}
