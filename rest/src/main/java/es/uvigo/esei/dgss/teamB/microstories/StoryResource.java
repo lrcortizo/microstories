@@ -1,5 +1,10 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -31,4 +36,47 @@ public class StoryResource {
     public Response getStory(@PathParam("id") Integer id) {
     	return Response.ok(storyEjb.findStory(id)).build();
     }
+
+    
+    @GET
+    public Response getByText(@QueryParam("contains") String contains) {
+    	return Response.ok(storyEjb.getByText(contains, 10, 10)).build();
+    }
+    
+    @GET 
+    public Response getlistSearchPagination(@QueryParam("genre") String genre, @QueryParam("theme") String theme, @QueryParam("publication") String publication, @QueryParam("pagination") Integer pagination, @QueryParam("items") Integer items) throws ParseException{
+	    	
+    	if(publication != null) {
+        Date date;
+        DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+        try {
+            date = new Date(publication); // yes, I know this is a deprecated method
+        } catch(Exception e) {
+            date = df.parse(publication);
+        }
+	        if(pagination == null) {
+				if(items==null) return Response.ok(storyEjb.listSearchPagination(1,10, genre, theme, date)).build();
+				if(items < 101) return Response.ok(storyEjb.listSearchPagination(1,items, genre, theme, date)).build();
+				else return Response.ok("You cant get more than 100 stories").build();
+			}else{
+				if(items==null) return Response.ok(storyEjb.listSearchPagination(pagination,10, genre, theme, null)).build();	
+				if(items < 101) return Response.ok(storyEjb.listSearchPagination(pagination,items, genre, theme, date)).build();
+				else return Response.ok("You cant get more than 100 stories").build();
+			}
+    	}else {
+    	
+			if(pagination == null) {
+				if(items==null) return Response.ok(storyEjb.listSearchPagination(1,10, genre, theme, null)).build();
+				if(items < 101) return Response.ok(storyEjb.listSearchPagination(1,items, genre, theme, null)).build();
+				else return Response.ok("You cant get more than 100 stories").build();
+			}else{
+				if(items==null) return Response.ok(storyEjb.listSearchPagination(pagination,10, genre, theme, null)).build();	
+				if(items < 101) return Response.ok(storyEjb.listSearchPagination(pagination,items, genre, theme, null)).build();
+				else return Response.ok("You cant get more than 100 stories").build();
+			}
+    	}
+		
+    }
+    	
+    
 }

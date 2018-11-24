@@ -106,6 +106,65 @@ public class StoryResourceRestTest {
 	@ShouldMatchDataSet("stories.xml")
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterGetStory() {}
+
+	
+	@Test @InSequence(7)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeGetByText() {}
+	
+	@Test @InSequence(8)
+	@RunAsClient
+	public void testGetByText(
+		@ArquillianResteasyResource(BASE_PATH +"?contains=ipsum") ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		
+	    final Response response = webTarget.request().get();
+
+	    assertThat(response, hasOkStatus());
+	    
+	    final List<Story> list = ListStoryType.readEntity(response);
+	    assertThat(list, containsStoriesInAnyOrder(list));
+		    
+	   
+	}
+	
+	@Test @InSequence(9)
+	@ShouldMatchDataSet("stories.xml")
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterGetByText() {}
+	
+	//ListSearchPagination
+	
+	@Test @InSequence(10)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeGetListSearchPagination() {}
+	
+	@Test @InSequence(11)
+	@RunAsClient
+	public void testGetListSearchPagination(
+		@ArquillianResteasyResource(BASE_PATH +"?genre=STORY&theme=CHILDREN&publication=2002-11-10") ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		
+	    final Response response = webTarget.request().get();
+
+	    assertThat(response, hasOkStatus());
+	    
+	    final List<Story> list = ListStoryType.readEntity(response);
+	    assertThat(list, containsStoriesInAnyOrder(list));
+		    
+	   
+	}
+	
+	@Test @InSequence(12)
+	@ShouldMatchDataSet("stories.xml")
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterGetListSearchPagination() {}
+	
+
 }
 
 

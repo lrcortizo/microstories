@@ -89,7 +89,7 @@ public class StoryEJB {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			String formattedDate = formatter.format(date);
 			
-			insertDate="AND publicationDate<'"+ formattedDate +"' ";
+			insertDate="AND publicationDate>'"+ formattedDate +"' ";
 		}
 		if(genre != null) { insertGenre="AND genre='"+ genre +"' "; }
 		if(theme != null) { insertTheme="AND (primaryTheme='"+ theme +"' OR secondaryTheme='"+ theme +"') "; }
