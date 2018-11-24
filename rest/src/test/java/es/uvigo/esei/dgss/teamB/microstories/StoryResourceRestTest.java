@@ -26,7 +26,6 @@ import es.uvigo.esei.dgss.teamB.microstories.StoryResource;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.containsStoriesInAnyOrder;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStory;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.existentStory;
-import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.EXISTENT_ID;
 import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasOkStatus;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -106,7 +105,6 @@ public class StoryResourceRestTest {
 	@ShouldMatchDataSet("stories.xml")
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterGetStory() {}
-
 	
 	@Test @InSequence(7)
 	@UsingDataSet("stories.xml")
@@ -126,8 +124,7 @@ public class StoryResourceRestTest {
 	    
 	    final List<Story> list = ListStoryType.readEntity(response);
 	    assertThat(list, containsStoriesInAnyOrder(list));
-		    
-	   
+	    
 	}
 	
 	@Test @InSequence(9)

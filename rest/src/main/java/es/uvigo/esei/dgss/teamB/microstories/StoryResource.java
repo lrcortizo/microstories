@@ -37,10 +37,26 @@ public class StoryResource {
     	return Response.ok(storyEjb.findStory(id)).build();
     }
 
-    
     @GET
-    public Response getByText(@QueryParam("contains") String contains) {
-    	return Response.ok(storyEjb.getByText(contains, 10, 10)).build();
+    public Response getByText(@QueryParam("contains") String contains, @QueryParam("pagination") Integer pagination, @QueryParam("items") Integer items) {
+    	
+    	if(pagination == null) {
+    		if (items == null) {
+    			return Response.ok(storyEjb.getByText(contains, 1, 10)).build();
+    		} else if (items < 101) {
+    			return Response.ok(storyEjb.getByText(contains, 1, items)).build();
+    		} else {
+    			return Response.ok("You cant get more than 100 stories").build();
+    		}
+    	} else {
+    		if (items == null) {
+    			return Response.ok(storyEjb.getByText(contains, pagination, 10)).build();
+    		} else if (items < 101) {
+    			return Response.ok(storyEjb.getByText(contains, pagination, items)).build();
+    		} else {
+    			return Response.ok("You cant get more than 100 stories").build();
+    		}
+    	}
     }
     
     @GET 
