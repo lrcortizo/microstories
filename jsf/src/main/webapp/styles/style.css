@@ -158,6 +158,9 @@ footer #signatureFooter{
 
 /* EXPLORE */
 
+#exploreDate {width:17%;}
+#exploreDate input{width:91%;}
+
 #formExplorer{
 	margin-top:5%;
 	margin-bottom:5%;
@@ -174,10 +177,11 @@ footer #signatureFooter{
 #formExplorer label{font-size:1.2em}
 
 .elementExplore{
-	margin-right: 2%;
-    margin-left: 3%;	
+	margin-right:2%;
+    margin-left:2%;	
 }
 
+.buttonExplore{margin-left:2%;}
 
 
 /* MOBILE VERSION */
