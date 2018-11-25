@@ -161,7 +161,35 @@ public class StoryResourceRestTest {
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterGetListSearchPagination() {}
 	
+	//topTenMostPopular
+	
+	@Test @InSequence(13)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeTopTenMostPopular() {}
+	
+	@Test @InSequence(14)
+	@RunAsClient
+	public void testTopTenMostPopular(
+		@ArquillianResteasyResource(BASE_PATH +"hottest/") ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		
+	    final Response response = webTarget.request().get();
 
+	    assertThat(response, hasOkStatus());
+	    
+	    final List<Story> list = ListStoryType.readEntity(response);
+	    assertThat(list, containsStoriesInAnyOrder(list));
+		    
+	   
+	}
+	
+	@Test @InSequence(15)
+	@ShouldMatchDataSet("stories.xml")
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterTopTenMostPopular() {}
+	
 }
 
 
