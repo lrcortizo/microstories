@@ -56,22 +56,32 @@ public class Story {
     @Column(length = 14)
     private Theme secondaryTheme;
 
+    @Column(nullable = false)
+    private Integer views;
+
     Story() {
     }
 
     // For test purposes
     Story(Integer id, String title, String text, String author, Date publicationDate, Genre genre,
-                 Theme primaryTheme, Theme secondaryTheme) {
-        this(title, text, author, publicationDate, genre, primaryTheme, secondaryTheme);
+                 Theme primaryTheme, Theme secondaryTheme, Integer views) {
+        this(title, text, author, publicationDate, genre, primaryTheme, secondaryTheme, views);
         this.id = id;
     }
 
-    public Story(String title, String text, String author, Date publicationDate, Genre genre, Theme primaryTheme) {
-        this(title, text, author, publicationDate, genre, primaryTheme, null);
+    // For test purposes
+    Story(Integer id, String title, String text, String author, Date publicationDate, Genre genre,
+          Theme primaryTheme, Integer views) {
+        this(title, text, author, publicationDate, genre, primaryTheme, null, views);
+        this.id = id;
+    }
+
+    public Story(String title, String text, String author, Date publicationDate, Genre genre, Theme primaryTheme, Integer views) {
+        this(title, text, author, publicationDate, genre, primaryTheme, null, views);
     }
 
     public Story(String title, String text, String author, Date publicationDate, Genre genre, Theme primaryTheme,
-                 Theme secondaryTheme) {
+                 Theme secondaryTheme, Integer views) {
     	this.setGenre(genre);
         this.setTitle(title);
         this.setText(text);
@@ -79,6 +89,7 @@ public class Story {
         this.setPublicationDate(publicationDate);
         this.setPrimaryTheme(primaryTheme);
         this.setSecondaryTheme(secondaryTheme);
+        this.setViews(views);
     }
 
     public Integer getId() {
@@ -167,4 +178,10 @@ public class Story {
         this.secondaryTheme = secondaryTheme;
     }
 
+    public Integer getViews() { return views; }
+
+    public void setViews(Integer views) {
+        requireNonNull(views, "views can't be null");
+        this.views = views;
+    }
 }

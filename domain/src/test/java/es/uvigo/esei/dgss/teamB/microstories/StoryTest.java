@@ -27,6 +27,7 @@ public class StoryTest {
 
 	private Theme primaryTheme;
 	private Theme secondaryTheme;
+	private Integer views;
 
 	private String newTitle;
 	private String newText;
@@ -48,6 +49,7 @@ public class StoryTest {
 		this.story = Genre.STORY;
 		this.primaryTheme = Theme.ADVENTURE;
 		this.secondaryTheme = Theme.CHILDREN;
+		this.views = 0;
 
 		this.newTitle = "New Title";
 		this.newText = "New Text";
@@ -66,7 +68,7 @@ public class StoryTest {
 		final String[] textsStory = { text, "A", StringUtils.repeat("A", 1000) };
 
 		for (String text : textsStory) {
-			final Story newStory = new Story(title, text, author, publicationDate, story, primaryTheme, secondaryTheme);
+			final Story newStory = new Story(title, text, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 
 			assertThat(newStory.getTitle(), is(equalTo(title)));
 			assertThat(newStory.getText(), is(equalTo(text)));
@@ -75,87 +77,88 @@ public class StoryTest {
 			assertThat(newStory.getGenre(), is(equalTo(story)));
 			assertThat(newStory.getPrimaryTheme(), is(equalTo(primaryTheme)));
 			assertThat(newStory.getSecondaryTheme(), is(equalTo(secondaryTheme)));
+			assertThat(newStory.getViews(), is(equalTo(views)));
 
 		}
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testStoryTitleTextAuthorGenreThemesNullTitle() {
-		new Story(null, text, author, publicationDate, story, primaryTheme, secondaryTheme);
+		new Story(null, text, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesTitleTooShort() {
-		new Story("", text, author, publicationDate, story, primaryTheme, secondaryTheme);
+		new Story("", text, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesTitleTooLong() {
-		new Story(repeat('A', 101), text, author, publicationDate, story, primaryTheme, secondaryTheme);
+		new Story(repeat('A', 101), text, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test
 	public void testStoryTitleTextAuthorGenreThemesTitleValid() {
-		Story newStory = new Story("A", text, author, publicationDate, story, primaryTheme, secondaryTheme);
+		Story newStory = new Story("A", text, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getTitle().length(), is(equalTo(1)));
-		newStory = new Story(repeat('A', 100), text, author, publicationDate, story, primaryTheme, secondaryTheme);
+		newStory = new Story(repeat('A', 100), text, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getTitle().length(), is(equalTo(100)));
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testStoryTitleTextAuthorGenreThemesNullText() {
 
-		new Story(title, null, author, publicationDate, story, primaryTheme, secondaryTheme);
+		new Story(title, null, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesTextTooShortForNanoStory() {
-		new Story("", text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		new Story("", text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesTextTooShortForPoetry() {
-		new Story("", text, author, publicationDate, poetry, primaryTheme, secondaryTheme);
+		new Story("", text, author, publicationDate, poetry, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesTextTooShortForStory() {
-		new Story("", text, author, publicationDate, story, primaryTheme, secondaryTheme);
+		new Story("", text, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesTextTooLongForNanoStory() {
-		new Story(repeat('A', 151), text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		new Story(repeat('A', 151), text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesTextTooLongForPoetry() {
-		new Story(repeat('A', 501), text, author, publicationDate, poetry, primaryTheme, secondaryTheme);
+		new Story(repeat('A', 501), text, author, publicationDate, poetry, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesTextTooLongForStory() {
-		new Story(repeat('A', 1001), text, author, publicationDate, story, primaryTheme, secondaryTheme);
+		new Story(repeat('A', 1001), text, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test
 	public void testStoryTitleTextAuthorGenreThemesTextValid() {
 		// Nanostory valid values, min and max
-		Story newStory = new Story(title, "A", author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		Story newStory = new Story(title, "A", author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getText().length(), is(equalTo(1)));
-		newStory = new Story(title, repeat('A', 150), author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		newStory = new Story(title, repeat('A', 150), author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getText().length(), is(equalTo(150)));
 
 		// Poetry valid values, min and max
-		newStory = new Story(title, "A", author, publicationDate, poetry, primaryTheme, secondaryTheme);
+		newStory = new Story(title, "A", author, publicationDate, poetry, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getText().length(), is(equalTo(1)));
-		newStory = new Story(title, repeat('A', 500), author, publicationDate, poetry, primaryTheme, secondaryTheme);
+		newStory = new Story(title, repeat('A', 500), author, publicationDate, poetry, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getText().length(), is(equalTo(500)));
 
 		// Story valid values, min and max
-		newStory = new Story(title, "A", author, publicationDate, story, primaryTheme, secondaryTheme);
+		newStory = new Story(title, "A", author, publicationDate, story, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getText().length(), is(equalTo(1)));
-		newStory = new Story(title, repeat('A', 1000), author, publicationDate, story, primaryTheme, secondaryTheme);
+		newStory = new Story(title, repeat('A', 1000), author, publicationDate, story, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getText().length(), is(equalTo(1000)));
 
 	}
@@ -163,54 +166,60 @@ public class StoryTest {
 	@Test(expected = NullPointerException.class)
 	public void testStoryTitleTextAuthorGenreThemesNullAuthor() {
 
-		new Story(title, text, null, publicationDate, story, primaryTheme, secondaryTheme);
+		new Story(title, text, null, publicationDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesAuthorTooShort() {
-		new Story(title, text, "", publicationDate, story, primaryTheme, secondaryTheme);
+		new Story(title, text, "", publicationDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesAuthorTooLong() {
-		new Story(title, text, repeat('A', 51), publicationDate, story, primaryTheme, secondaryTheme);
+		new Story(title, text, repeat('A', 51), publicationDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test
 	public void testStoryTitleTextAuthorGenreThemesAuthorValid() {
 		// Author valid values, min and max
-		Story newStory = new Story(title, text, "A", publicationDate, nanostory, primaryTheme, secondaryTheme);
+		Story newStory = new Story(title, text, "A", publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getAuthor().length(), is(equalTo(1)));
-		newStory = new Story(title, text, repeat('A', 50), publicationDate, nanostory, primaryTheme, secondaryTheme);
+		newStory = new Story(title, text, repeat('A', 50), publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getAuthor().length(), is(equalTo(50)));
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testStoryTitleTextAuthorGenreThemesNullDate() {
 
-		new Story(title, text, author, null, story, primaryTheme, secondaryTheme);
+		new Story(title, text, author, null, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testStoryTitleTextAuthorGenreThemesDateAfterCurrent() {
-		new Story(title, text, author, futureDate, story, primaryTheme, secondaryTheme);
+		new Story(title, text, author, futureDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testStoryTitleTextAuthorGenreThemesNullGenre() {
 
-		new Story(title, text, author, publicationDate, null, primaryTheme, secondaryTheme);
+		new Story(title, text, author, publicationDate, null, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testStoryTitleTextAuthorGenreThemesNullPrimaryTheme() {
 
-		new Story(title, text, author, publicationDate, story, null, secondaryTheme);
+		new Story(title, text, author, publicationDate, story, null, secondaryTheme, views);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testStoryTitleTextAuthorGenreThemesNullViews() {
+
+		new Story(title, text, author, publicationDate, story, primaryTheme, secondaryTheme, null);
 	}
 
 	@Test
 	public void testSetTitle() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setTitle(newTitle);
 
@@ -219,28 +228,28 @@ public class StoryTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testSetTitleNull() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setTitle(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetTitleTooShort() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setTitle("");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetTitleTooLong() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setTitle(repeat('A', 101));
 	}
 
 	@Test
 	public void testSetText() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setText(newText);
 
@@ -249,56 +258,56 @@ public class StoryTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testSetTextNull() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setText(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetTextTooShortForNanoStory() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setText("");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetTextTooLongForNanoStory() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setText(repeat('A', 151));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetTextTooShortForPoetry() {
-		final Story newStory = new Story(title, text, author, publicationDate, poetry, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, poetry, primaryTheme, secondaryTheme, views);
 
 		newStory.setText("");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetTextTooLongForPoetry() {
-		final Story newStory = new Story(title, text, author, publicationDate, poetry, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, poetry, primaryTheme, secondaryTheme, views);
 
 		newStory.setText(repeat('A', 501));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetTextTooShortForStory() {
-		final Story newStory = new Story(title, text, author, publicationDate, story, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 
 		newStory.setText("");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetTextTooLongForStory() {
-		final Story newStory = new Story(title, text, author, publicationDate, story, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, story, primaryTheme, secondaryTheme, views);
 
 		newStory.setText(repeat('A', 1001));
 	}
 
 	@Test
 	public void testSetAuthor() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setAuthor(newAuthor);
 
@@ -307,28 +316,28 @@ public class StoryTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testSetAuthorNull() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setAuthor(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetAuthorTooShort() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setAuthor("");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetAuthorTooLong() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setAuthor(repeat('A', 51));
 	}
 
 	@Test
 	public void testSetGenre() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setGenre(newStoryGenre);
 
@@ -337,14 +346,14 @@ public class StoryTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testSetGenreNull() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setGenre(null);
 	}
 
 	@Test
 	public void testSetPrimaryTheme() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setPrimaryTheme(newPrimaryTheme);
 
@@ -353,14 +362,14 @@ public class StoryTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testSetPrimaryThemeNull() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setPrimaryTheme(null);
 	}
 
 	@Test
 	public void testSetSecondaryTheme() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setSecondaryTheme(newSecondaryTheme);
 
@@ -369,7 +378,7 @@ public class StoryTest {
 
 	@Test
 	public void testSetSecondaryThemeNull() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setSecondaryTheme(null);
 
@@ -379,7 +388,7 @@ public class StoryTest {
 
 	@Test
 	public void testSetPublicationDate() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setPublicationDate(newPublicationDate);
 
@@ -388,7 +397,7 @@ public class StoryTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testSetPublicationDateNull() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setPublicationDate(null);
 
@@ -396,8 +405,15 @@ public class StoryTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetPublicationDateAfterCurrent() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme);
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setPublicationDate(futureDate);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testSetViewsNull() {
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
+
+		newStory.setViews(null);
 	}
 }

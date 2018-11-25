@@ -14,10 +14,11 @@ CREATE TABLE `Story` (
   `title` varchar(100) NOT NULL,
   `text` varchar(1000) NOT NULL,
   `author` varchar(50) NOT NULL,
-  `publicationDate` date NOT NULL,
+  `publicationDate` datetime NOT NULL,
   `genre` varchar(9) NOT NULL,
   `primaryTheme` varchar(14) NOT NULL,
   `secondaryTheme` varchar(14),
+  `views` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

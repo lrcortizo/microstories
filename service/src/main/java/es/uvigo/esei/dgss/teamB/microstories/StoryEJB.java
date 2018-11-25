@@ -45,6 +45,46 @@ public class StoryEJB {
 
 		return em.find(Story.class, id);
 	}
+
+	@PermitAll
+	public List<Story> topTenMostPopular (){
+		List<Story> toRet = new ArrayList<>();
+
+		List<Story> listStories = new ArrayList<>();
+		String query = "SELECT s FROM Story s ORDER BY s.publicationDate DESC";
+
+		TypedQuery<Story> typedQuery = em.createQuery(query, Story.class);
+		listStories.addAll(typedQuery.getResultList());
+
+		if (listStories.size() <= 10){
+			return listStories;
+		}
+
+		Story lessPopular;
+		Integer lessPopularViews;
+
+		for (Story storyToAdd : listStories) {
+			if (toRet.size() < 10){
+				toRet.add( storyToAdd );
+			}
+			else{
+				lessPopular = storyToAdd;
+				lessPopularViews = storyToAdd.getViews();
+				for (Story toRetStory : toRet){ //It gets the story with less views of the list
+					if (toRetStory.getViews() < lessPopularViews){
+						lessPopular = toRetStory;
+						lessPopularViews = toRetStory.getViews();
+					}
+				}
+				if (lessPopular.getId() != storyToAdd.getId()){
+					toRet.remove(lessPopular);
+					toRet.add(storyToAdd);
+				}
+			}
+		}
+
+		return toRet;
+	}
 	
 	@PermitAll
 	public List<Story> getByText(String text, Integer pageNumber, Integer pageSize) {

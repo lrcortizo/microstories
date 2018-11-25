@@ -6,8 +6,10 @@ import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.mostPopularStories;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -183,6 +185,37 @@ public class StoryEJBIntegrationTest {
 		assertThat(storyEjb.listSearchPagination(1,nStories,null,null,new Date(90,4,4)), is(not(equalTo(nullValue()))));
 
 		
+	}
+
+	// ListMostPopularStories
+
+	@Test
+	public void testTopTenMostPopularNull() {
+
+		assertThat(storyEjb.topTenMostPopular(), anyOf(nullValue(), empty()));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testTopTenMostPopularMaxElementsAs10() {
+
+		List<Story> list = storyEjb.topTenMostPopular();
+
+		assertThat(list.size(), lessThan(11));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testTopTenMostPopular() {
+
+		List<Story> list = storyEjb.topTenMostPopular();
+		List<Story> mostPopular = Arrays.asList(mostPopularStories());
+
+		int index = 0;
+		for (Story story : list){
+			assertThat(mostPopular.get(index).getId(), is(equalTo(story.getId())));
+			index++;
+		}
 	}
 	
 }

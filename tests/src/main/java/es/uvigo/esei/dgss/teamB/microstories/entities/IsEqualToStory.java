@@ -30,7 +30,8 @@ public class IsEqualToStory extends IsEqualToEntity<Story> {
                     && checkAttribute("publicationDate", Story::getPublicationDate, actual)
                     && checkAttribute("storyGenre", Story::getGenre, actual)
                     && checkAttribute("primaryTheme", Story::getPrimaryTheme, actual)
-                    && checkAttribute("secondaryTheme", Story::getSecondaryTheme, actual);
+                    && checkAttribute("secondaryTheme", Story::getSecondaryTheme, actual)
+                    && checkAttribute("views", Story::getViews, actual);
         }
     }
 
