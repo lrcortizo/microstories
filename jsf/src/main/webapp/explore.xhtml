@@ -56,7 +56,12 @@
 				</div>
 			</div>
 			<div class="row">
-			<ui:fragment rendered="#{not empty explore.listSearchPagination()}">
+				<ui:fragment rendered="#{empty explore.listSearchPagination()}">
+					<div class="col-md-12">
+						<p class="warning">No microstories to show</p>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{not empty explore.listSearchPagination()}">
 					<ui:repeat var="story" value="#{explore.listSearchPagination()}">
 						<div class="col-md-4 col-sm-6 col-xs-12">
 							<h:form>
