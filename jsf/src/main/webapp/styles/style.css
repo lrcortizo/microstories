@@ -42,7 +42,7 @@ a:visited {
 	padding-bottom:6%;
 }
 
-#navbar #searchNav{
+.searchNav{
 	position: relative;
     bottom: 9px;
 }
