@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.uvigo.esei.dgss.teamB.microstories</groupId>
 	<artifactId>dgss1819-teamB-microstories-pom</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<packaging>pom</packaging>
 
 	<name>μStories 18/19 Team B</name>
