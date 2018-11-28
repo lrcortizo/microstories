@@ -48,13 +48,18 @@
 					<img id="iconSearchMobile" src="img/user.svg" width="40"/>
 				</li>
 				<li class="formMobile">
-					<form>
+					<h:form class="form-inline">
 						<h:inputText value="#{search.searchInput}" class="form-control searchNav mb-2 mr-sm-2"/>
+						<div id="ghostButton">
+							<h:commandButton action="search?faces-redirect=true&amp;includeViewParams=true">
 
-						<h:commandLink action="search.goToSearchView" >
-							<img id="iconSearchMobile" src="img/search.svg" width="10" />
+							</h:commandButton>
+
+						</div>
+						<h:commandLink  action="search?faces-redirect=true&amp;includeViewParams=true" >
+							<img id="iconSearchMobile" src="img/search.svg" width="10"/>
 						</h:commandLink>
-					</form>
+					</h:form>
 				</li>
 			</ul>
 		</nav>

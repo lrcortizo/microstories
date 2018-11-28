@@ -17,7 +17,7 @@ public class SearchManagedBean {
     @EJB
     private StoryEJB storyEJB;
 
-    private Integer pageNumber;
+    private Integer pageNumber = 1;
 
     private Integer pageSize = 9;
 
