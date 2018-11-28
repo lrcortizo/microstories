@@ -53,6 +53,21 @@ a:visited {
     bottom: 15px;
 }
 
+#iconBackContainer{
+	display:inline-block;
+    border-radius: 35px;
+    padding-top: 7px;
+    padding-bottom: 6px;
+    padding-right: 8px;
+    padding-left: 8px;
+    margin-bottom:3%;
+    background-color:rgba(152, 220, 242, 0.3);
+}
+
+#iconBack{
+	width: 30px;
+}
+
 #navbar ul{ list-style:none;}
 
 #navbar ul li{
