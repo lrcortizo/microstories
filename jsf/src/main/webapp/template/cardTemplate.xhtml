@@ -1,0 +1,39 @@
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	<div class="col-md-4 col-sm-6 col-xs-12">
+		<h:form>
+			<h:outputLink value="view.xhtml">
+				<f:param name="id" value="#{story.id}" />
+	
+				<div class="card mb-4 box-shadow indexTarget">
+					<div class="card-header">
+						<div class="gender">
+							<h:outputLabel value="#{story.genre}" />
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="title">
+							<h:outputLabel value="#{story.title}" />
+						</div>
+						<div class="thematics">
+							<h:outputLabel value="#{story.primaryTheme}" />
+							,
+							<h:outputLabel value="#{story.secondaryTheme}" />
+						</div>
+						<p class="card-text">${fn:substring(story.text, 0, 60)}...</p>
+					</div>
+					<div class="card-footer">
+						<div class="autor">
+							by:
+							<h:outputLabel value="#{story.author}" />
+						</div>
+					</div>
+				</div>
+			</h:outputLink>
+		</h:form>
+	</div>
+</ui:composition>

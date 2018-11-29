@@ -62,50 +62,12 @@
 				</ui:fragment>
 				<ui:fragment rendered="#{not empty explore.listSearchPagination()}">
 					<ui:repeat var="story" value="#{explore.listSearchPagination()}">
-						<div class="col-md-4 col-sm-6 col-xs-12">
-							<h:form>
-								<h:outputLink value="view.xhtml">
-
-									<f:param name="id" value="#{story.id}" />
-
-									<div class="card mb-4 box-shadow indexTarget">
-										<div class="card-header">
-											<div class="gender">
-												<h:outputLabel value="#{story.genre}" />
-											</div>
-										</div>
-										<div class="card-body">
-											<div class="title">
-												<h:outputLabel value="#{story.title}" />
-											</div>
-											<div class="thematics">
-												<h:outputLabel value="#{story.primaryTheme}" />
-												,
-												<h:outputLabel value="#{story.secondaryTheme}" />
-											</div>
-											<p class="card-text">${fn:substring(story.text, 0, 60)}...</p>
-											<div class="date">
-												date:
-												<h:outputLabel value="#{story.publicationDate}" />
-											</div>
-										</div>
-										<div class="card-footer">
-											<div class="autor">
-												by:	
-												<h:outputLabel value="#{story.author}" />
-											</div>
-										</div>
-									</div>
-								</h:outputLink>
-							</h:form>
-						</div>
+						<ui:include src="/template/cardTemplate.xhtml" />
 					</ui:repeat>
 				</ui:fragment>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-				
-                
 					<nav aria-label="Page navigation example">
 					<ul class="pagination justify-content-center">
 						<li class="page-item">
