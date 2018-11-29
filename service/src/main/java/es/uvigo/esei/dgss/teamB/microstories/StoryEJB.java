@@ -3,6 +3,8 @@ package es.uvigo.esei.dgss.teamB.microstories;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -47,41 +49,33 @@ public class StoryEJB {
 	}
 
 	@PermitAll
-	public List<Story> topTenMostPopular (){
+	public List<Story> mostPopular (){
 		List<Story> toRet = new ArrayList<>();
 
-		List<Story> listStories = new ArrayList<>();
-		String query = "SELECT s FROM Story s ORDER BY s.publicationDate DESC";
+		toRet.addAll(em.createQuery(
+				"SELECT s FROM Story s where s.genre LIKE 'STORY' ORDER BY s.views DESC",
+				Story.class).setMaxResults(2).getResultList());
+		
+		toRet.addAll(em.createQuery(
+				"SELECT s FROM Story s where s.genre LIKE 'NANOSTORY' ORDER BY s.views DESC",
+				Story.class).setMaxResults(2).getResultList());
+		
+		toRet.addAll(em.createQuery(
+				"SELECT s FROM Story s where s.genre LIKE 'POETRY' ORDER BY s.views DESC",
+				Story.class).setMaxResults(2).getResultList());
+		
+		Collections.sort(toRet, new Comparator<Story>() {
 
-		TypedQuery<Story> typedQuery = em.createQuery(query, Story.class);
-		listStories.addAll(typedQuery.getResultList());
+	        public int compare(Story s1, Story s2) {
 
-		if (listStories.size() <= 10){
-			return listStories;
-		}
+	            int sComp = s2.getViews().compareTo(s1.getViews());
 
-		Story lessPopular;
-		Integer lessPopularViews;
+	            if (sComp != 0) {
+	               return sComp;
+	            } 
 
-		for (Story storyToAdd : listStories) {
-			if (toRet.size() < 10){
-				toRet.add( storyToAdd );
-			}
-			else{
-				lessPopular = storyToAdd;
-				lessPopularViews = storyToAdd.getViews();
-				for (Story toRetStory : toRet){ //It gets the story with less views of the list
-					if (toRetStory.getViews() < lessPopularViews){
-						lessPopular = toRetStory;
-						lessPopularViews = toRetStory.getViews();
-					}
-				}
-				if (lessPopular.getId() != storyToAdd.getId()){
-					toRet.remove(lessPopular);
-					toRet.add(storyToAdd);
-				}
-			}
-		}
+	            return s2.getPublicationDate().compareTo(s1.getPublicationDate());
+	    }});
 
 		return toRet;
 	}

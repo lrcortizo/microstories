@@ -1,7 +1,6 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
 import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
-import es.uvigo.esei.dgss.teamB.microstories.entities.Author;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
 import javax.annotation.security.PermitAll;
@@ -188,35 +187,21 @@ public class StoryEJBIntegrationTest {
 		
 	}
 
-	// ListMostPopularStories
+	// mostPopular
 
 	@Test
-	public void testTopTenMostPopularNull() {
+	public void testMostPopularNull() {
 
-		assertThat(storyEjb.topTenMostPopular(), anyOf(nullValue(), empty()));
+		assertThat(storyEjb.mostPopular(), anyOf(nullValue(), empty()));
 	}
 
 	@Test
 	@UsingDataSet("stories.xml")
-	public void testTopTenMostPopularMaxElementsAs10() {
+	public void testMostPopularMaxElementsAs6() {
 
-		List<Story> list = storyEjb.topTenMostPopular();
+		List<Story> list = storyEjb.mostPopular();
 
-		assertThat(list.size(), lessThan(11));
-	}
-
-	@Test
-	@UsingDataSet("stories.xml")
-	public void testTopTenMostPopular() {
-
-		List<Story> list = storyEjb.topTenMostPopular();
-		List<Story> mostPopular = Arrays.asList(mostPopularStories());
-
-		int index = 0;
-		for (Story story : list){
-			assertThat(mostPopular.get(index).getId(), is(equalTo(story.getId())));
-			index++;
-		}
+		assertThat(list.size(), lessThan(7));
 	}
 	
 	@Test
