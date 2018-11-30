@@ -43,10 +43,14 @@
 						        <f:selectItem itemValue="POETRY" />
 						        <f:selectItem itemValue="NANOSTORY" />
 						    </h:selectOneMenu>
-						    <label class="elementExplore">after of</label>
-						    <div id="exploreDate">
-						    	<h:inputText class="form-control" a:placeholder="2018-01-01" value="#{explore.date}" />
-						    </div> 
+						    <label class="elementExplore">in</label>
+						    <h:selectOneMenu value="#{explore.date}" class="form-control elementExplore" required="true">
+						        <f:selectItem itemValue="Any moment" />
+						        <f:selectItem itemValue="Today" />
+						        <f:selectItem itemValue="This week" />
+						        <f:selectItem itemValue="This month" />
+						        <f:selectItem itemValue="This year" />
+						    </h:selectOneMenu>
 			            	<h:commandButton value="submit" class="btn btn-primary elementExplore" action="explore?faces-redirect=true&amp;includeViewParams=true">
 			            	</h:commandButton>
 			        	</h:form>

@@ -2,7 +2,10 @@ package es.uvigo.esei.dgss.teamB.microstories;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -75,7 +78,13 @@ public class ExploreManagedBean {
 		String genreQ = genre;
 		String themeQ = theme;
 		
-			
+		System.out.println("Genre:.....");
+		System.out.println(genre);
+		System.out.println("Theme:.....");
+		System.out.println(theme);
+		System.out.println("Date:.....");
+		System.out.println(date);
+		
 		if (genre.equals("All")){
 			genreQ = null;
 		}
@@ -83,18 +92,50 @@ public class ExploreManagedBean {
 		if (theme.equals("All")){
 			themeQ = null;
 		}
-		
-		Date date1 = new Date();
-	    try {
-	    	
-	    	if ( date != null && !date.equals("")  ) {
-	    		date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-	    	}
-	    		
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
+		Date date1 = null;
+		if (date == null) {
+			date = "Any moment";
+		}
+		switch (date){
+			case "Any moment":
+				date1 = null;
+				break;
+			case "Today":
+				date1= new Date();
+				break;
+			case "This week":
+				if ( date != null && !date.equals("")  ) {
+					Date today = new Date(); 
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(today);
+					int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+					LocalDate dateWeek = LocalDate.now().minusDays(dayOfWeek-1);
+					date1 = Date.from(dateWeek.atStartOfDay(ZoneId.systemDefault()).toInstant());
+				}
+				break;
+
+			case "This month":
+				if ( date != null && !date.equals("")  ) {
+					Date today = new Date(); 
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(today);
+					int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH); 
+					LocalDate dateMonth = LocalDate.now().minusDays(dayOfMonth-1);
+					date1 = Date.from(dateMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+				}
+				break;
+			case "This year":
+				if ( date != null && !date.equals("")  ) {
+					Date today = new Date(); 
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(today);
+					int dayOfYear = cal.get(Calendar.DAY_OF_YEAR); 
+					LocalDate dateYear = LocalDate.now().minusDays(dayOfYear-1);
+					date1 = Date.from(dateYear.atStartOfDay(ZoneId.systemDefault()).toInstant());
+				}
+				break;
+		}
+	      
 	    listStory = storyEJB.listSearchPagination(nPagination,nStories,genreQ,themeQ,date1);
 	    return listStory;
 		
