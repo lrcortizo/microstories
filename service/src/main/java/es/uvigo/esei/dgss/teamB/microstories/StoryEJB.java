@@ -89,32 +89,11 @@ public class StoryEJB {
 	@PermitAll
 	public List<Story> getByText(String text, Integer pageNumber, Integer pageSize) {
 
-		List<Story> toRet = new ArrayList<>();
-		String query = "SELECT s FROM Story s WHERE UPPER(s.title) LIKE UPPER(:t) OR UPPER(s.text) LIKE UPPER(:t) ORDER BY s.publicationDate DESC";
-		String queryCount = "SELECT COUNT(s) FROM Story s WHERE s.title LIKE :t OR s.text LIKE :t";
+		String query = "SELECT s FROM Story s WHERE s.title LIKE :t OR s.text LIKE :t ORDER BY s.publicationDate DESC";
 
-		if (pageNumber == null || pageNumber < 1) {
-			pageNumber = 1;
-		}
-		
-		if (pageSize == null || pageSize < 10) {
-			pageSize = 10;
-		}
+		return em.createQuery(query, Story.class).setParameter("t", "%" + text + "%").setMaxResults(pageSize)
+				.setFirstResult((pageNumber - 1) * pageSize).getResultList();
 
-		TypedQuery<Story> typedQuery = em.createQuery(query, Story.class).setParameter("t", "%" + text + "%");
-
-		
-		Long count = em.createQuery(queryCount, Long.class).setParameter("t", "%" + text + "%").getSingleResult();
-
-		while (pageNumber < count.intValue()) {
-			typedQuery.setFirstResult(pageNumber - 1);
-			typedQuery.setMaxResults(pageSize);
-			toRet = typedQuery.getResultList();
-			pageNumber += pageSize;
-
-		}
-
-		return toRet;
 	}
 
 	@PermitAll
@@ -145,6 +124,22 @@ public class StoryEJB {
 				, Story.class).setMaxResults(nStories).setFirstResult((nPagination-1)*nStories).getResultList();
 	}
 	
+	@PermitAll
+	public Integer getByTextTotalOfPagination(String text, Integer nStories) {
+
+		String query = "SELECT s FROM Story s WHERE s.title LIKE :t OR s.text LIKE :t ORDER BY s.publicationDate DESC";
+
+		int nTotalStories = em.createQuery(query, Story.class).setParameter("t", "%" + text + "%").getResultList()
+				.size();
+
+		if (nTotalStories % nStories != 0) {
+			nTotalStories = (nTotalStories / nStories) + 1;
+		} else {
+			nTotalStories = (nTotalStories / nStories);
+		}
+
+		return nTotalStories;
+	}
 
 	@PermitAll
 	public Integer listSearchTotalOfPagination(Integer nStories, String genre, String theme, Date date) {

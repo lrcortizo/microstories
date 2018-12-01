@@ -91,7 +91,7 @@ public class StoryEJBIntegrationTest {
 	
 	// getByText
 	
-	@Test
+	@Test(expected = javax.ejb.EJBException.class)
 	public void testGetByTextNull() {
 
 		assertThat(storyEjb.getByText(null, null, null), anyOf(nullValue(), empty()));
@@ -233,5 +233,22 @@ public class StoryEJBIntegrationTest {
 		Integer nStories = 9;
 
 		assertThat(storyEjb.listSearchTotalOfPagination(nStories, null, null, null), is(3));
+	}
+
+	@Test
+	public void getByTextTotalOfPaginationDBEmpty() {
+
+		Integer nStories = 9;
+
+		assertThat(storyEjb.getByTextTotalOfPagination("Microrrelato 1", nStories), is(0));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void getByTextTotalOfPagination() {
+
+		Integer nStories = 9;
+
+		assertThat(storyEjb.getByTextTotalOfPagination("Microrrelato 1", nStories), is(2));
 	}
 }
