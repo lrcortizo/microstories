@@ -74,13 +74,14 @@
 				<div class="col-md-12">
 					<nav aria-label="Page navigation example">
 					<ul class="pagination justify-content-center">
+					<ui:fragment rendered="#{explore.nPagination != 1}">
 						<li class="page-item">
 							<h:outputLink styleClass="page-link" value="explore.xhtml" >
 			                	<f:param name="genre" value="#{explore.genre}" />
 			                	<f:param name="theme" value="#{explore.theme}" />
 			                	<f:param name="date" value="#{explore.date}" />
 								<f:param name="nPagination" value="#{explore.nPagination-1}" />
-								Previus
+								<h:outputLabel value="Previous" />
 							</h:outputLink>  
 						</li>
 						<li class="page-item">
@@ -88,26 +89,28 @@
 			                	<f:param name="genre" value="#{explore.genre}" />
 			                	<f:param name="theme" value="#{explore.theme}" />
 			                	<f:param name="date" value="#{explore.date}" />
-								<f:param name="nPagination" value="1" />
-								1
+								<f:param name="nPagination" value="#{explore.nPagination-1}" />
+								<h:outputLabel value="#{explore.nPagination-1}" />
 							</h:outputLink>  
 						</li>
+					</ui:fragment>
 						<li class="page-item">
 							<h:outputLink styleClass="page-link" value="explore.xhtml" >
 			                	<f:param name="genre" value="#{explore.genre}" />
 			                	<f:param name="theme" value="#{explore.theme}" />
 			                	<f:param name="date" value="#{explore.date}" />
-								<f:param name="nPagination" value="2" />
-								2
+								<f:param name="nPagination" value="#{explore.nPagination}" />
+								<h:outputLabel value="#{explore.nPagination}" />
 							</h:outputLink>  
 						</li>
+						<ui:fragment rendered="#{explore.nPagination lt explore.totalPagination}">
 						<li class="page-item">
 							<h:outputLink styleClass="page-link" value="explore.xhtml" >
 			                	<f:param name="genre" value="#{explore.genre}" />
 			                	<f:param name="theme" value="#{explore.theme}" />
 			                	<f:param name="date" value="#{explore.date}" />
-								<f:param name="nPagination" value="3" />
-								3
+								<f:param name="nPagination" value="#{explore.nPagination+1}" />
+								<h:outputLabel value="#{explore.nPagination+1}" />
 							</h:outputLink>  
 						</li>
 						<li class="page-item">
@@ -116,9 +119,10 @@
 			                	<f:param name="theme" value="#{explore.theme}" />
 			                	<f:param name="date" value="#{explore.date}" />
 								<f:param name="nPagination" value="#{explore.nPagination+1}" />
-								Next
+								<h:outputLabel value="Next" />
 							</h:outputLink>  
 						</li>
+						</ui:fragment>
 					</ul>
 					</nav>
 				</div>

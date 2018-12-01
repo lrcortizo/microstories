@@ -32,6 +32,7 @@ public class ExploreManagedBean {
 	
 	private String date;
 
+	private Integer totalPagination;
 
 	public int getnPagination() {
 		return nPagination;
@@ -137,8 +138,19 @@ public class ExploreManagedBean {
 		}
 	      
 	    listStory = storyEJB.listSearchPagination(nPagination,nStories,genreQ,themeQ,date1);
+
+	    this.setTotalPagination(storyEJB.listSearchTotalOfPagination(nStories,genreQ,themeQ,date1));
+
 	    return listStory;
 		
+	}
+
+	public Integer getTotalPagination() {
+		return totalPagination;
+	}
+
+	public void setTotalPagination(Integer totalPagination) {
+		this.totalPagination = totalPagination;
 	}
 
 }

@@ -23,6 +23,8 @@ public class SearchManagedBean {
 
     private String searchInput = "";
 
+    private Integer totalPagination;
+
     private List<Story> listStories;
 
     public List<Story> getListStories() {
@@ -59,6 +61,9 @@ public class SearchManagedBean {
 
     public List<Story> searchStories() {
         this.listStories = storyEJB.getByText(searchInput, pageNumber, pageSize);
+
+        this.setTotalPagination(storyEJB.getByTextTotalOfPagination(searchInput, pageSize));
+
         return this.listStories;
     }
 
@@ -72,5 +77,13 @@ public class SearchManagedBean {
 
         return "/search?faces-redirect=true&text=" + this.searchInput + "&pageNumber=" + this.pageNumber + "&pageSize=" + this.pageSize;
     }
+
+	public Integer getTotalPagination() {
+		return totalPagination;
+	}
+
+	public void setTotalPagination(Integer totalPagination) {
+		this.totalPagination = totalPagination;
+	}
 
 }

@@ -41,54 +41,44 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<h:form>
-						<nav aria-label="Page navigation example">
-						<ul class="pagination justify-content-center">
-							<li class="page-item">
-								<h:outputLink styleClass="page-link" value="search.xhtml" >
-									<f:param name="text" value="#{search.searchInput}" />
-									<f:param name="pageNumber" value="#{search.pageNumber-1}" />
-									<f:param name="pageSize" value="#{search.pageSize}" />
-									Previous
-								</h:outputLink>
-							</li>
-							<li class="page-item">
-								<h:outputLink styleClass="page-link" value="search.xhtml" >
-									<f:param name="text" value="#{search.searchInput}" />
-									<f:param name="pageNumber" value="1" />
-									<f:param name="pageSize" value="#{search.pageSize}" />
-									1
-								</h:outputLink>
-
-							</li>
-							<li class="page-item">
-								<h:outputLink styleClass="page-link" value="search.xhtml" >
-									<f:param name="text" value="#{search.searchInput}" />
-									<f:param name="pageNumber" value="2" />
-									<f:param name="pageSize" value="#{search.pageSize}" />
-									2
-								</h:outputLink>
-							</li>
-							<li class="page-item">
-								<h:outputLink styleClass="page-link" value="search.xhtml" >
-									<f:param name="text" value="#{search.searchInput}" />
-									<f:param name="pageNumber" value="3" />
-									<f:param name="pageSize" value="#{search.pageSize}" />
-									3
-								</h:outputLink>
-							</li>
-							<li class="page-item">
-								<h:outputLink styleClass="page-link" value="search.xhtml" >
-									<f:param name="text" value="#{search.searchInput}" />
-									<f:param name="pageNumber" value="#{search.pageNumber+1}" />
-									<f:param name="pageSize" value="#{search.pageSize}" />
-									Next
-								</h:outputLink>
-							</li>
-						</ul>
-						</nav>
-					</h:form>
-
+					<nav aria-label="Page navigation example">
+					<ul class="pagination justify-content-center">
+					<ui:fragment rendered="#{search.pageNumber != 1}">
+						<li class="page-item">
+							<h:outputLink styleClass="page-link" value="search.xhtml" >
+								<f:param name="pageNumber" value="#{search.pageNumber-1}" />
+								<h:outputLabel value="Previous" />
+							</h:outputLink>
+						</li>
+						<li class="page-item">
+							<h:outputLink styleClass="page-link" value="search.xhtml" >
+								<f:param name="pageNumber" value="#{search.pageNumber-1}" />
+								<h:outputLabel value="#{search.pageNumber-1}" />
+							</h:outputLink>
+						</li>
+					</ui:fragment>
+						<li class="page-item">
+							<h:outputLink styleClass="page-link" value="search.xhtml" >
+								<f:param name="pageNumber" value="#{search.pageNumber}" />
+								<h:outputLabel value="#{search.pageNumber}" />
+							</h:outputLink>
+						</li>
+						<ui:fragment rendered="#{search.pageNumber lt search.totalPagination}">
+						<li class="page-item">
+							<h:outputLink styleClass="page-link" value="search.xhtml" >
+								<f:param name="pageNumber" value="#{search.pageNumber+1}" />
+								<h:outputLabel value="#{search.pageNumber+1}" />
+							</h:outputLink>
+						</li>
+						<li class="page-item">
+							<h:outputLink styleClass="page-link" value="search.xhtml" >
+								<f:param name="pageNumber" value="#{search.pageNumber+1}" />
+								<h:outputLabel value="Next" />
+							</h:outputLink>
+						</li>
+						</ui:fragment>
+					</ul>
+					</nav>
 				</div>
 			</div>
 		</div>
