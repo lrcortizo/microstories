@@ -218,4 +218,20 @@ public class StoryEJBIntegrationTest {
 		}
 	}
 	
+	@Test
+	public void listSearchTotalOfPaginationDBEmpty() {
+
+		Integer nStories = 9;
+
+		assertThat(storyEjb.listSearchTotalOfPagination(nStories, null, null, null), is(0));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void listSearchTotalOfPagination() {
+
+		Integer nStories = 9;
+
+		assertThat(storyEjb.listSearchTotalOfPagination(nStories, null, null, null), is(3));
+	}
 }

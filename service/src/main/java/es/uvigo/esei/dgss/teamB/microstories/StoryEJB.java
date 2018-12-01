@@ -146,4 +146,38 @@ public class StoryEJB {
 	}
 	
 
+	@PermitAll
+	public Integer listSearchTotalOfPagination(Integer nStories, String genre, String theme, Date date) {
+
+		String insertDate = "";
+		String insertGenre = "";
+		String insertTheme = "";
+
+		if (date != null) {
+
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String formattedDate = formatter.format(date);
+
+			insertDate = "AND publicationDate>'" + formattedDate + "' ";
+		}
+		if (genre != null) {
+			insertGenre = "AND genre='" + genre + "' ";
+		}
+		if (theme != null) {
+			insertTheme = "AND (primaryTheme='" + theme + "' OR secondaryTheme='" + theme + "') ";
+		}
+
+		int nTotalStories = em
+				.createQuery("SELECT story " + "FROM Story story " + "WHERE publicationDate IS NOT NULL " + insertDate
+						+ insertGenre + insertTheme + "ORDER BY publicationDate DESC ", Story.class)
+				.getResultList().size();
+
+		if (nTotalStories % nStories != 0) {
+			nTotalStories = (nTotalStories / nStories) + 1;
+		} else {
+			nTotalStories = (nTotalStories / nStories);
+		}
+
+		return nTotalStories;
+	}
 }
