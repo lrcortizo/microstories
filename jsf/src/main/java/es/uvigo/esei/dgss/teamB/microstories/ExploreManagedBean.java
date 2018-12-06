@@ -79,13 +79,6 @@ public class ExploreManagedBean {
 		String genreQ = genre;
 		String themeQ = theme;
 		
-		System.out.println("Genre:.....");
-		System.out.println(genre);
-		System.out.println("Theme:.....");
-		System.out.println(theme);
-		System.out.println("Date:.....");
-		System.out.println(date);
-		
 		if (genre.equals("All")){
 			genreQ = null;
 		}
