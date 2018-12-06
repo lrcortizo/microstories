@@ -1,6 +1,7 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
 import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Author;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
 import javax.annotation.security.PermitAll;
@@ -248,6 +249,8 @@ public class StoryEJBIntegrationTest {
 	public void getByTextTotalOfPagination() {
 
 		Integer nStories = 9;
+
+		System.out.println("----------------------" + storyEjb.getByTextTotalOfPagination("Microrrelato 1", nStories));
 
 		assertThat(storyEjb.getByTextTotalOfPagination("Microrrelato 1", nStories), is(2));
 	}

@@ -1,8 +1,9 @@
-package es.uvigo.esei.dgss.teamB.microstories;
+package es.uvigo.esei.dgss.teamB.microstories.entities;
 
 import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.Date;
@@ -11,15 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import es.uvigo.esei.dgss.teamB.microstories.entities.Genre;
-import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
-import es.uvigo.esei.dgss.teamB.microstories.entities.Theme;
-
 public class StoryTest {
 
 	private String title;
 	private String text;
-	private String author;
+	private Author author;
 	private Date publicationDate;
 	private Genre nanostory;
 	private Genre poetry;
@@ -31,7 +28,7 @@ public class StoryTest {
 
 	private String newTitle;
 	private String newText;
-	private String newAuthor;
+	private Author newAuthor;
 	private Date newPublicationDate;
 	private Date futureDate;
 	private Genre newStoryGenre;
@@ -42,7 +39,7 @@ public class StoryTest {
 	public void setUp() throws Exception {
 		this.title = "Initial Title";
 		this.text = "Initial Text";
-		this.author = "Initial Author name";
+		this.author = new Author("pepe", "pepepass");
 		this.publicationDate = new Date();
 		this.nanostory = Genre.NANOSTORY;
 		this.poetry = Genre.POETRY;
@@ -54,7 +51,7 @@ public class StoryTest {
 		this.newTitle = "New Title";
 		this.newText = "New Text";
 
-		this.newAuthor = "New Author name";
+		this.newAuthor = new Author("juan", "juanpass");
 		this.newStoryGenre = Genre.POETRY;
 		this.newPrimaryTheme = Theme.HORROR;
 		this.newSecondaryTheme = Theme.ROMANTIC;
@@ -78,6 +75,7 @@ public class StoryTest {
 			assertThat(newStory.getPrimaryTheme(), is(equalTo(primaryTheme)));
 			assertThat(newStory.getSecondaryTheme(), is(equalTo(secondaryTheme)));
 			assertThat(newStory.getViews(), is(equalTo(views)));
+			assertThat(author.ownsStory(newStory), is(true));
 
 		}
 	}
@@ -161,31 +159,6 @@ public class StoryTest {
 		newStory = new Story(title, repeat('A', 1000), author, publicationDate, story, primaryTheme, secondaryTheme, views);
 		assertThat(newStory.getText().length(), is(equalTo(1000)));
 
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testStoryTitleTextAuthorGenreThemesNullAuthor() {
-
-		new Story(title, text, null, publicationDate, story, primaryTheme, secondaryTheme, views);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testStoryTitleTextAuthorGenreThemesAuthorTooShort() {
-		new Story(title, text, "", publicationDate, story, primaryTheme, secondaryTheme, views);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testStoryTitleTextAuthorGenreThemesAuthorTooLong() {
-		new Story(title, text, repeat('A', 51), publicationDate, story, primaryTheme, secondaryTheme, views);
-	}
-
-	@Test
-	public void testStoryTitleTextAuthorGenreThemesAuthorValid() {
-		// Author valid values, min and max
-		Story newStory = new Story(title, text, "A", publicationDate, nanostory, primaryTheme, secondaryTheme, views);
-		assertThat(newStory.getAuthor().length(), is(equalTo(1)));
-		newStory = new Story(title, text, repeat('A', 50), publicationDate, nanostory, primaryTheme, secondaryTheme, views);
-		assertThat(newStory.getAuthor().length(), is(equalTo(50)));
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -312,27 +285,19 @@ public class StoryTest {
 		newStory.setAuthor(newAuthor);
 
 		assertThat(newStory.getAuthor(), is(equalTo(newAuthor)));
+
+		assertThat(newAuthor.ownsStory(newStory), is(true));
+		assertThat(author.ownsStory(newStory), is(false));
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void testSetAuthorNull() {
 		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setAuthor(null);
-	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetAuthorTooShort() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
-
-		newStory.setAuthor("");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetAuthorTooLong() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
-
-		newStory.setAuthor(repeat('A', 51));
+		assertThat(newStory.getAuthor(), is(nullValue()));
+		assertThat(author.ownsStory(newStory), is(false));
 	}
 
 	@Test

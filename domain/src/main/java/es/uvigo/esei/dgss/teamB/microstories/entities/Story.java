@@ -5,17 +5,10 @@ import static org.apache.commons.lang3.Validate.inclusiveBetween;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -37,9 +30,6 @@ public class Story {
     @Column(nullable = false, length = 1000)
     private String text;
 
-    @Column(nullable = false, length = 50)
-    private String author;
-
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date publicationDate = null;
@@ -59,28 +49,33 @@ public class Story {
     @Column(nullable = false)
     private Integer views;
 
+    @ManyToOne
+    @JoinColumn(name = "author", referencedColumnName = "login", nullable = false)
+    @XmlTransient
+    private Author author;
+
     Story() {
     }
 
     // For test purposes
-    Story(Integer id, String title, String text, String author, Date publicationDate, Genre genre,
+    Story(Integer id, String title, String text, Author author, Date publicationDate, Genre genre,
                  Theme primaryTheme, Theme secondaryTheme, Integer views) {
         this(title, text, author, publicationDate, genre, primaryTheme, secondaryTheme, views);
         this.id = id;
     }
 
     // For test purposes
-    Story(Integer id, String title, String text, String author, Date publicationDate, Genre genre,
+    Story(Integer id, String title, String text, Author author, Date publicationDate, Genre genre,
           Theme primaryTheme, Integer views) {
         this(title, text, author, publicationDate, genre, primaryTheme, null, views);
         this.id = id;
     }
 
-    public Story(String title, String text, String author, Date publicationDate, Genre genre, Theme primaryTheme, Integer views) {
+    public Story(String title, String text, Author author, Date publicationDate, Genre genre, Theme primaryTheme, Integer views) {
         this(title, text, author, publicationDate, genre, primaryTheme, null, views);
     }
 
-    public Story(String title, String text, String author, Date publicationDate, Genre genre, Theme primaryTheme,
+    public Story(String title, String text, Author author, Date publicationDate, Genre genre, Theme primaryTheme,
                  Theme secondaryTheme, Integer views) {
     	this.setGenre(genre);
         this.setTitle(title);
@@ -131,14 +126,18 @@ public class Story {
         this.text = text;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        requireNonNull(author, "author can't be null");
-        inclusiveBetween(1, 50, author.length(), "author must have a length between 1 and 50");
+    public void setAuthor(Author author) {
+        if (this.author != null)
+            this.author.internalRemoveStory(this);
+
         this.author = author;
+
+        if (this.author != null)
+            this.author.internalAddStory(this);
     }
 
     public Date getPublicationDate() {

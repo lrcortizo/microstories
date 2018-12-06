@@ -25,6 +25,7 @@ import es.uvigo.esei.dgss.teamB.microstories.StoryResource;
 
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.containsStoriesInAnyOrder;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStory;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStoryWithoutRelations;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.existentStory;
 import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasOkStatus;
 import static org.hamcrest.CoreMatchers.is;
@@ -95,9 +96,8 @@ public class StoryResourceRestTest {
 	    final Story story = response.readEntity(Story.class);
 
 	    final Story expected = existentStory();
-	    
-	    assertThat(story, is(equalToStory(expected)));
-		    
+
+	    assertThat(story, is(equalToStoryWithoutRelations(expected)));
 	   
 	}
 	

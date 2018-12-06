@@ -10,9 +10,11 @@ import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
  * compare entities Story by their attributes.
  */
 public class IsEqualToStory extends IsEqualToEntity<Story> {
+    private final boolean checkRelations;
 
-    public IsEqualToStory(Story story) {
+    public IsEqualToStory(Story story, boolean checkRelations) {
         super(story);
+        this.checkRelations = checkRelations;
     }
 
     @Override
@@ -26,29 +28,41 @@ public class IsEqualToStory extends IsEqualToEntity<Story> {
             return checkAttribute("id", Story::getId, actual)
                     && checkAttribute("title", Story::getTitle, actual)
                     && checkAttribute("text", Story::getText, actual)
-                    && checkAttribute("author", Story::getAuthor, actual)
                     && checkAttribute("publicationDate", Story::getPublicationDate, actual)
                     && checkAttribute("storyGenre", Story::getGenre, actual)
                     && checkAttribute("primaryTheme", Story::getPrimaryTheme, actual)
                     && checkAttribute("secondaryTheme", Story::getSecondaryTheme, actual)
-                    && checkAttribute("views", Story::getViews, actual);
+                    && checkAttribute("views", Story::getViews, actual)
+         			&& (!this.checkRelations || checkAttribute("author", Story::getAuthor, actual, IsEqualToAuthor::equalToAuthorWithoutRelations));
         }
     }
 
-
     @Factory
     public static IsEqualToStory equalToStory(Story story) {
-        return new IsEqualToStory(story);
+        return new IsEqualToStory(story, true);
+    }
+
+    @Factory
+    public static IsEqualToStory equalToStoryWithoutRelations(Story story) {
+        return new IsEqualToStory(story, false);
     }
 
     @Factory
     public static Matcher<Iterable<? extends Story>> containsStoriesInAnyOrder(Story ... stories) {
         return containsEntityInAnyOrder(IsEqualToStory::equalToStory, stories);
     }
+    @Factory
+    public static Matcher<Iterable<? extends Story>> containsStoriesWithoutRelationsInAnyOrder(Story ... stories) {
+        return containsEntityInAnyOrder(IsEqualToStory::equalToStory, stories);
+    }
 
     @Factory
     public static Matcher<Iterable<? extends Story>> containsStoriesInAnyOrder(Iterable<Story> stories) {
         return containsEntityInAnyOrder(IsEqualToStory::equalToStory, stories);
+    }
+    @Factory
+    public static Matcher<Iterable<? extends Story>> containsStoriesWithoutRelationsInAnyOrder(Iterable<Story> stories) {
+        return containsEntityInAnyOrder(IsEqualToStory::equalToStoryWithoutRelations, stories);
     }
 
 }

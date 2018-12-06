@@ -5,6 +5,17 @@ DEFAULT COLLATE utf8mb4_unicode_ci;
 USE `dgss1819_teamB_microstories`;
 
 DROP TABLE IF EXISTS `Story`;
+DROP TABLE IF EXISTS `User`;
+
+--
+-- Table structure for table `User`
+--
+CREATE TABLE `User` (
+  `role` varchar(6) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `password` varchar(32) NOT NULL,
+   PRIMARY KEY (`login`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `Story`

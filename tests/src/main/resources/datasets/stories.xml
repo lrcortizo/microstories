@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <dataset>
-	<Story title="Microrrelato 1" text="Texto del microrrelato 1" author="Autor 1" publicationDate="2012-06-18" Genre="STORY" primaryTheme="HISTORY" secondaryTheme="CHILDREN" views="59"/>
-	<Story title="Microrrelato 2" text="Texto del microrrelato 2" author="Autor 2" publicationDate="1999-01-24" Genre="NANOSTORY" primaryTheme="ADVENTURE" secondaryTheme="ROMANTIC" views="19"/>
-	<Story title="Microrrelato 3" text="Texto del microrrelato 3" author="Autor 3" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="THRILLER" views="21"/>
-	<Story title="Microrrelato 4" text="Texto del microrrelato 4" author="Autor 4" publicationDate="2005-03-09" Genre="STORY" primaryTheme="CHILDREN" views="34"/>
-	<Story title="Microrrelato 5" text="Texto del microrrelato 5" author="Autor 5" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="HORROR" views="55"/>
-	<Story title="Microrrelato 6" text="Texto del microrrelato 6" author="Autor 6" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="76"/>
-	<Story title="Microrrelato 7" text="Texto del microrrelato 7" author="Autor 7" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="94"/>
-	<Story title="Microrrelato 8" text="Texto del microrrelato 8" author="Autor 8" publicationDate="2005-03-09" Genre="STORY" primaryTheme="HISTORY" views="0"/>
-	<Story title="Microrrelato 9" text="Texto del microrrelato 9" author="Autor 9" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="ADVENTURE" views="0"/>
-	<Story title="Microrrelato 10" text="Texto del microrrelato 10" author="Autor 10" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="THRILLER" views="2"/>
-	<Story title="Microrrelato 11" text="Texto del microrrelato 11" author="Autor 11" publicationDate="2005-03-09" Genre="STORY" primaryTheme="CHILDREN" views="0"/>
-	<Story title="Microrrelato 12" text="Texto del microrrelato 12" author="Autor 12" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="HORROR" views="32"/>
-	<Story title="Microrrelato 13" text="Texto del microrrelato 13" author="Autor 13" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="13"/>
-	<Story title="Microrrelato 14" text="Texto del microrrelato 14" author="Autor 14" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="81"/>
-	<Story title="Microrrelato 15" text="Texto del microrrelato 15" author="Autor 15" publicationDate="2005-03-09" Genre="STORY" primaryTheme="HISTORY" views="8"/>
-	<Story title="Microrrelato 16" text="Texto del microrrelato 16" author="Autor 16" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="ADVENTURE" views="23"/>
-	<Story title="Microrrelato 17" text="Texto del microrrelato 17" author="Autor 17" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="THRILLER" views="1"/>
-	<Story title="Microrrelato 18" text="Texto del microrrelato 18" author="Autor 18" publicationDate="2005-03-09" Genre="STORY" primaryTheme="CHILDREN" views="3"/>
-	<Story title="Microrrelato 19" text="Texto del microrrelato 19" author="Autor 19" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="HORROR" views="34"/>
-	<Story title="Microrrelato 20" text="Texto del microrrelato 20" author="Autor 20" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="2"/>
-	<Story title="Microrrelato 21" text="Texto del microrrelato 21" author="Autor 21" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="12"/>
+	<User login="jose" password="A3F6F4B40B24E2FD61F08923ED452F34" role="ADMIN"/>
+	<User login="pepe" password="B43B4D046860B2BD945BCA2597BF9F07" role="AUTHOR"/>
+	<User login="juan" password="B4FBB95580592697DC71488A1F19277E" role="AUTHOR"/>
+	<User login="ana" password="22BEEAE33E9B2657F9610621502CD7A4" role="AUTHOR"/>
+	<User login="lorena" password="05009E420932C21E5A68F5EF1AADD530" role="AUTHOR"/>
+
+	<Story id="1" title="Microrrelato 1" text="Texto del microrrelato 1" author="pepe" publicationDate="2012-06-18" Genre="STORY" primaryTheme="HISTORY" secondaryTheme="CHILDREN" views="59"/>
+	<Story id="2" title="Microrrelato 2" text="Texto del microrrelato 2" author="pepe" publicationDate="1999-01-24" Genre="NANOSTORY" primaryTheme="ADVENTURE" secondaryTheme="ROMANTIC" views="19"/>
+	<Story id="3" title="Microrrelato 3" text="Texto del microrrelato 3" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="THRILLER" views="21"/>
+	<Story id="4" title="Microrrelato 4" text="Texto del microrrelato 4" author="pepe" publicationDate="2005-03-09" Genre="STORY" primaryTheme="CHILDREN" views="34"/>
+	<Story id="5" title="Microrrelato 5" text="Texto del microrrelato 5" author="pepe" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="HORROR" views="55"/>
+	<Story id="6" title="Microrrelato 6" text="Texto del microrrelato 6" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="76"/>
+	<Story id="7" title="Microrrelato 7" text="Texto del microrrelato 7" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="94"/>
+	<Story id="8" title="Microrrelato 8" text="Texto del microrrelato 8" author="pepe" publicationDate="2005-03-09" Genre="STORY" primaryTheme="HISTORY" views="0"/>
+	<Story id="9" title="Microrrelato 9" text="Texto del microrrelato 9" author="pepe" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="ADVENTURE" views="0"/>
+	<Story id="10" title="Microrrelato 10" text="Texto del microrrelato 10" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="THRILLER" views="2"/>
+	<Story id="11" title="Microrrelato 11" text="Texto del microrrelato 11" author="pepe" publicationDate="2005-03-09" Genre="STORY" primaryTheme="CHILDREN" views="0"/>
+	<Story id="12" title="Microrrelato 12" text="Texto del microrrelato 12" author="pepe" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="HORROR" views="32"/>
+	<Story id="13" title="Microrrelato 13" text="Texto del microrrelato 13" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="13"/>
+	<Story id="14" title="Microrrelato 14" text="Texto del microrrelato 14" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="81"/>
+	<Story id="15" title="Microrrelato 15" text="Texto del microrrelato 15" author="pepe" publicationDate="2005-03-09" Genre="STORY" primaryTheme="HISTORY" views="8"/>
+	<Story id="16" title="Microrrelato 16" text="Texto del microrrelato 16" author="pepe" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="ADVENTURE" views="23"/>
+	<Story id="17" title="Microrrelato 17" text="Texto del microrrelato 17" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="THRILLER" views="1"/>
+	<Story id="18" title="Microrrelato 18" text="Texto del microrrelato 18" author="pepe" publicationDate="2005-03-09" Genre="STORY" primaryTheme="CHILDREN" views="3"/>
+	<Story id="19" title="Microrrelato 19" text="Texto del microrrelato 19" author="pepe" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="HORROR" views="34"/>
+	<Story id="20" title="Microrrelato 20" text="Texto del microrrelato 20" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="2"/>
+	<Story id="21" title="Microrrelato 21" text="Texto del microrrelato 21" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="12"/>
 </dataset>
