@@ -175,4 +175,13 @@ public class StoryEJB {
 
 		return nTotalStories;
 	}
+
+	@RolesAllowed("AUTHOR")
+	public List<Story> listMyStories() {
+
+		return em.createQuery("SELECT story " + "FROM Story story, User user "
+				+ "WHERE publicationDate IS NOT NULL AND login='" + currentUser.getName() + "'" + "ORDER BY publicationDate DESC", Story.class)
+				.getResultList();
+
+	}
 }

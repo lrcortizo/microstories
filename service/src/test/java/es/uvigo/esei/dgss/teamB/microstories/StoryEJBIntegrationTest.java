@@ -249,4 +249,25 @@ public class StoryEJBIntegrationTest {
 
 		assertThat(storyEjb.getByTextTotalOfPagination("Microrrelato 1", nStories), is(2));
 	}
+
+	@Test
+	public void testListMyStoriesNull() {
+		principal.setName("ana");
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories()), anyOf(nullValue(), empty()));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testListMyStoriesAsUser() {
+
+		assertThat(storyEjb.listMyStories(), is(not(equalTo(nullValue()))));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testListMyStoriesAsAuthor() {
+
+		principal.setName("ana");
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories()), is(not(equalTo(nullValue()))));
+	}
 }
