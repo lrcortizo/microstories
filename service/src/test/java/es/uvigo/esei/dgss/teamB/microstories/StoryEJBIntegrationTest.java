@@ -2,8 +2,12 @@ package es.uvigo.esei.dgss.teamB.microstories;
 
 import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Author;
+import es.uvigo.esei.dgss.teamB.microstories.service.util.security.RoleCaller;
+import es.uvigo.esei.dgss.teamB.microstories.service.util.security.TestPrincipal;
 
 import javax.annotation.security.PermitAll;
+import javax.ejb.EJB;
 import javax.inject.Inject;
 
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.mostPopularStories;
@@ -28,7 +32,6 @@ import static org.hamcrest.CoreMatchers.anyOf;
 
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 import org.junit.Test;
@@ -42,13 +45,20 @@ public class StoryEJBIntegrationTest {
 	@Inject
 	private StoryEJB storyEjb;
 
+	@EJB(beanName = "author-caller")
+	private RoleCaller asAuthor;
+
+	@Inject
+	private TestPrincipal principal;
+
 	@Deployment
 	public static Archive<?> createDeployment() {
-		return ShrinkWrap.create(WebArchive.class, "test.war").addClasses(StoryEJB.class, Story.class)
+		return ShrinkWrap.create(WebArchive.class, "test.war").addClasses(StoryEJB.class, Story.class, Author.class)
+				.addPackage(RoleCaller.class.getPackage()).addPackage(Author.class.getPackage())
 				.addPackage(Story.class.getPackage()).addAsResource("test-persistence.xml", "META-INF/persistence.xml")
 				.addAsWebInfResource("jboss-web.xml").addAsResource("arquillian.extension.persistence.properties")
 				.addAsResource("arquillian.extension.persistence.dbunit.properties")
-				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+				.addAsWebInfResource("beans.xml", "beans.xml");
 	}
 
 	// ListRecentStories

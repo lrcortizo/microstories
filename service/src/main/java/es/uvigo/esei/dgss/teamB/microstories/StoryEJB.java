@@ -1,6 +1,7 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,9 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Author;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -22,6 +26,8 @@ public class StoryEJB {
 	@PersistenceContext
 	private EntityManager em;
 
+	@Inject
+	private Principal currentUser;
 	/**
 	 * Returns the recent list of stories.
 	 * 
