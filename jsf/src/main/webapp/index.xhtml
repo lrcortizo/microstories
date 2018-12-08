@@ -7,7 +7,13 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+
+	
+
+	
 	<ui:define name="content">
 		<div class="container">
 			<div class="row">
@@ -17,31 +23,62 @@
 							<li data-target="#carroussel" data-slide-to="0" class="active"></li>
 							<li data-target="#carroussel" data-slide-to="1" class=""></li>
 							<li data-target="#carroussel" data-slide-to="2" class=""></li>
+							<li data-target="#carroussel" data-slide-to="3" class=""></li>
+							<li data-target="#carroussel" data-slide-to="4" class=""></li>
+							<li data-target="#carroussel" data-slide-to="5" class=""></li>
+							
 						</ol>
 						<div class="carousel-inner">
-							<div class="carousel-item active">
-								<div class="slideContent"></div>
-								<div class="carousel-caption">
-									<h2>The microstory most viewed</h2>
-									<p>Nulla vitae elit libero, a pharetra augue mollis
-										interdum.</p>
-								</div>
-							</div>
-							<div class="carousel-item">
-								<div class="slideContent"></div>
-								<div class="carousel-caption">
-									<h2>Second microstory</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-								</div>
-							</div>
-							<div class="carousel-item">
-								<div class="slideContent"></div>
-								<div class="carousel-caption">
-									<h2>Third microstory</h2>
-									<p>Praesent commodo cursus magna, vel scelerisque nisl
-										consectetur.</p>
-								</div>
-							</div>
+							<ui:repeat var="storySlide" varStatus="storySlideStatus" value="#{index.mostPopularStories()}">
+								
+								<h:panelGroup rendered="#{storySlideStatus.first}">
+								    <div class="carousel-item active">
+								    	<div class="contentImage">
+										    <h:panelGroup rendered="${storySlide.genre == 'STORY'}">
+													<img src="img/story.jpg" width="1200" />
+											</h:panelGroup>
+											<h:panelGroup rendered="${storySlide.genre == 'POETRY'}">
+													<img src="img/poetry.jpg" width="1200" />
+											</h:panelGroup>
+											<h:panelGroup rendered="${storySlide.genre == 'NANOSTORY'}">
+													<img src="img/story.jpg" width="1200" />
+											</h:panelGroup>
+										</div>
+									    
+										<div class="carousel-caption">
+											<h:outputLink value="view.xhtml">
+												<f:param name="id" value="#{storySlide.id}" />
+												<h2 class="titleCarrousel"><h:outputLabel value="#{storySlide.title}" /></h2>
+												<p> <span class="genreCarrousel"><h:outputLabel value="#{storySlide.genre}" /></span></p>
+												<p class="textCarrousel">${fn:substring(storySlide.text, 0, 30)}...</p>
+											</h:outputLink>
+										</div>
+									</div>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{not storySlideStatus.first}">
+								    <div class="carousel-item">
+										<div class="contentImage">
+										    <h:panelGroup rendered="${storySlide.genre == 'STORY'}">
+													<img src="img/story.jpg" width="1200" />
+											</h:panelGroup>
+											<h:panelGroup rendered="${storySlide.genre == 'POETRY'}">
+													<img src="img/poetry.jpg" width="1200" />
+											</h:panelGroup>
+											<h:panelGroup rendered="${storySlide.genre == 'NANOSTORY'}">
+													<img src="img/nanostory.jpg" width="1200" />
+											</h:panelGroup>
+										</div>
+										<div class="carousel-caption">
+											<h:outputLink value="view.xhtml">
+												<f:param name="id" value="#{storySlide.id}" />
+												<h2 class="titleCarrousel"><h:outputLabel value="#{storySlide.title}" /></h2>
+												<p> <span class="genreCarrousel"><h:outputLabel value="#{storySlide.genre}" /></span></p>
+												<p class="textCarrousel">${fn:substring(storySlide.text, 0, 30)}...</p>
+											</h:outputLink>
+										</div>
+									</div>
+								</h:panelGroup>
+							</ui:repeat>
 						</div>
 					</div>
 				</div>

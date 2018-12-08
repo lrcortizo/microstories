@@ -97,6 +97,8 @@ footer #signatureFooter{
 
 /*INDEX*/
 
+
+
 .indexTarget{
 	min-height:410px;	
 }
@@ -148,6 +150,21 @@ footer #signatureFooter{
 			background-color:rgba(152, 220, 242, 0.8);
 			border-radius:4px;
 }
+
+.titleCarrousel{
+		font-size:3em;		
+}
+
+.genreCarrousel{
+	background-color:white;
+	color:black;
+	padding:1%;
+	border-radius:10px;
+}
+
+.contentImage{max-height:500px;}
+
+
 /* SINGLE STORY */
 
 #cardView{margin-top:4%;
