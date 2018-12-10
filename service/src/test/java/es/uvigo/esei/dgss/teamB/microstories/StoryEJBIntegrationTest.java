@@ -8,9 +8,13 @@ import es.uvigo.esei.dgss.teamB.microstories.service.util.security.TestPrincipal
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 
+import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStoryWithoutRelations;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.mostPopularStories;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.storyToCreate;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.storyToUpdate;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
@@ -53,7 +57,8 @@ public class StoryEJBIntegrationTest {
 
 	@Deployment
 	public static Archive<?> createDeployment() {
-		return ShrinkWrap.create(WebArchive.class, "test.war").addClasses(StoryEJB.class, Story.class, Author.class)
+		return ShrinkWrap.create(WebArchive.class, "test.war")
+				.addClasses(StoryEJB.class, Story.class, Author.class)
 				.addPackage(RoleCaller.class.getPackage()).addPackage(Author.class.getPackage())
 				.addPackage(Story.class.getPackage()).addAsResource("test-persistence.xml", "META-INF/persistence.xml")
 				.addAsWebInfResource("jboss-web.xml").addAsResource("arquillian.extension.persistence.properties")
@@ -269,5 +274,59 @@ public class StoryEJBIntegrationTest {
 
 		principal.setName("ana");
 		assertThat(asAuthor.call(() -> storyEjb.listMyStories()), is(not(equalTo(nullValue()))));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testCreateStoryAsUser() {
+
+		assertThat(storyEjb.createStory(storyToCreate()), is(not(equalTo(nullValue()))));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testCreateStoryAsAuthor() {
+
+		principal.setName("ana");
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listMyStories().size());
+
+		assertThat(asAuthor.call(() -> storyEjb.createStory(storyToCreate())), is(not(equalTo(nullValue()))));
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories().size()), is((equalTo(numStoriesBefore+1))));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testUpdateStoryAsUser() {
+
+		assertThat(storyEjb.updateStory(storyToUpdate()), is(not(equalTo(nullValue()))));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testUpdateStoryAsAuthor() {
+
+		principal.setName("ana");
+		assertThat(asAuthor.call(() -> storyEjb.updateStory(storyToUpdate())), is(not(equalTo(nullValue()))));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testUpdateStoryAsDifferentAuthor() {
+
+		principal.setName("pepe");
+		assertThat(asAuthor.call(() -> storyEjb.updateStory(storyToUpdate())), is(not(equalTo(nullValue()))));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	@UsingDataSet("stories.xml")
+	public void testUpdateStoryAuthorNull() {
+		try {
+			principal.setName("ana");
+			Story storyToUpdate = storyToUpdate();
+			storyToUpdate.setAuthor(null);
+			asAuthor.call(() -> storyEjb.updateStory(storyToUpdate));
+		}catch(EJBTransactionRolledbackException e) {
+			throw (IllegalArgumentException) e.getCause();
+		}
 	}
 }

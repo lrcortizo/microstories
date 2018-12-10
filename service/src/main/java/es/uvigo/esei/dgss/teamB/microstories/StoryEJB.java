@@ -14,6 +14,7 @@ import es.uvigo.esei.dgss.teamB.microstories.entities.Author;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJBAccessException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -179,9 +180,41 @@ public class StoryEJB {
 	@RolesAllowed("AUTHOR")
 	public List<Story> listMyStories() {
 
-		return em.createQuery("SELECT story " + "FROM Story story, User user "
-				+ "WHERE publicationDate IS NOT NULL AND login='" + currentUser.getName() + "'" + "ORDER BY publicationDate DESC", Story.class)
+		final Author author = em.find(Author.class, currentUser.getName());
+
+		return em.createQuery("SELECT story " + "FROM Story story "
+				+ "WHERE publicationDate IS NOT NULL AND story.author=:a ORDER BY publicationDate DESC", Story.class)
+				.setParameter("a", author)
 				.getResultList();
 
+	}
+
+
+	@RolesAllowed("AUTHOR")
+	public Story createStory(Story story) {
+
+		final Author author = em.find(Author.class, currentUser.getName());
+
+		if (story.getAuthor() != null && !story.getAuthor().getLogin().equals(author.getLogin())) {
+			throw new EJBAccessException("Story's author is not the user logged");
+		} else {
+			story.setAuthor(author);
+
+			em.persist(story);
+
+			return story;
+		}
+	}
+
+	@RolesAllowed("AUTHOR")
+	public Story updateStory(Story story) {
+		if (story.getAuthor() == null)
+			throw new IllegalArgumentException("Story must have an author");
+
+		if (story.getAuthor().getLogin().equals(this.currentUser.getName())) {
+			return em.merge(story);
+		} else {
+			throw new EJBAccessException("Story's author is not the user logged");
+		}
 	}
 }

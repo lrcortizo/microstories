@@ -46,6 +46,18 @@ public class StoriesDataset {
                 .toArray(Story[]::new);
     }
 
+    public static Story storyToCreate() {
+
+        return new Story("Nuevo Microrrelato", "Texto del nuevo microrrelato", null, new Date(), Genre.POETRY, Theme.HORROR, 32);
+
+    }
+
+    public static Story storyToUpdate() {
+
+        return new Story(1,"Nuevo Microrrelato", "Texto del nuevo microrrelato", new Author("ana", "anapass"), new Date(), Genre.POETRY, Theme.HORROR, 32);
+
+    }
+
     public static Story[] stories() {
         return new Story[]{
                 new Story(EXISTENT_ID, "Microrrelato 1", "Texto del microrrelato 1", new Author("pepe", "pepepass"), new Date(1339970400000L), Genre.STORY, Theme.HISTORY, Theme.CHILDREN, 59),

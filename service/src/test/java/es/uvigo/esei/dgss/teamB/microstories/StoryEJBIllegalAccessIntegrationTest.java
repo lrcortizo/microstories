@@ -1,6 +1,5 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
-import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Author;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 import es.uvigo.esei.dgss.teamB.microstories.service.util.security.RoleCaller;
@@ -9,6 +8,7 @@ import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
 import javax.inject.Inject;
 
+import es.uvigo.esei.dgss.teamB.microstories.service.util.security.TestPrincipal;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.CleanupUsingScript;
@@ -21,6 +21,9 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.storyToCreate;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.storyToUpdate;
+
 @RunWith(Arquillian.class)
 @UsingDataSet("stories.xml")
 @CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
@@ -31,6 +34,9 @@ public class StoryEJBIllegalAccessIntegrationTest {
 	
 	@EJB(beanName = "author-caller")
 	private RoleCaller asAuthor;
+
+	@Inject
+	private TestPrincipal principal;
 
 	@Deployment
 	public static Archive<?> createDeployment() {
@@ -101,4 +107,29 @@ public class StoryEJBIllegalAccessIntegrationTest {
 	public void testListMyStoriesRoleAuthor() {
 		asAuthor.run(this::testListMyStoriesNoRole);
 	}
+
+	@Test(expected = EJBAccessException.class)
+	public void testCreateStoryNoRole() {
+
+		storyEjb.createStory(storyToCreate());
+	}
+
+	@Test
+	public void testCreateStoryRoleAuthor() {
+		principal.setName("pepe");
+		asAuthor.run(this::testListMyStoriesNoRole);
+	}
+
+	@Test(expected = EJBAccessException.class)
+	public void testUpdateStoryNoRole() {
+
+		storyEjb.updateStory(storyToUpdate());
+	}
+
+	@Test
+	public void testUpdateStoryRoleAuthor() {
+		principal.setName("pepe");
+		asAuthor.run(this::testListMyStoriesNoRole);
+	}
+
 }
