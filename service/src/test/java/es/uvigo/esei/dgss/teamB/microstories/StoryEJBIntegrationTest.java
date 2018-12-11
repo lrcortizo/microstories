@@ -329,4 +329,30 @@ public class StoryEJBIntegrationTest {
 			throw (IllegalArgumentException) e.getCause();
 		}
 	}
+	
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testRemoveStoryAsUser() {
+
+		storyEjb.removeStory(1);
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testRemoveStoryAsAuthor() {
+
+		principal.setName("pepe");
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listMyStories().size());
+
+		asAuthor.call(() -> storyEjb.removeStory(1));
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories().size()), is((equalTo(numStoriesBefore-1))));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testRemoveStoryAsDifferentAuthor() {
+
+		principal.setName("ana");
+		asAuthor.call(() -> storyEjb.removeStory(1));
+	}
 }

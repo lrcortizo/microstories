@@ -131,5 +131,17 @@ public class StoryEJBIllegalAccessIntegrationTest {
 		principal.setName("pepe");
 		asAuthor.run(this::testListMyStoriesNoRole);
 	}
+	
+	@Test(expected = EJBAccessException.class)
+	public void testRemoveStoryNoRole() {
+
+		storyEjb.removeStory(1);
+	}
+
+	@Test
+	public void testRemoveStoryRoleAuthor() {
+		principal.setName("pepe");
+		asAuthor.run(this::testListMyStoriesNoRole);
+	}
 
 }

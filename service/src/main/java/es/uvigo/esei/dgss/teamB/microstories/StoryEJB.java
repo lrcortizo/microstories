@@ -217,4 +217,20 @@ public class StoryEJB {
 			throw new EJBAccessException("Story's author is not the user logged");
 		}
 	}
+	
+	@RolesAllowed("AUTHOR")
+	public int removeStory(int id) {
+		final Story story = this.findStory(id);
+		
+		if (story.getAuthor().getLogin().equals(this.currentUser.getName())) {
+			
+			story.setAuthor(null);
+			em.remove(story);
+			return id;
+		} else {
+			throw new EJBAccessException("Story's author is not the user logged");
+		}
+		
+		
+	}
 }
