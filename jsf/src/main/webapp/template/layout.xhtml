@@ -25,11 +25,22 @@
 				<li>
 					<a href="./">Home</a>
 				</li>
-				<li class="navbarRight" data-toggle="modal" data-target="#loginModal">
-					<a href="#">
-						Login
-					</a>
-				</li>
+				<h:panelGroup rendered="${login.currentUser.name == 'anonymous'}">					
+					<li class="navbarRight" data-toggle="modal" data-target="#loginModal">
+						<a href="#">
+							Login
+						</a>
+					</li>
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="${login.currentUser.name != 'anonymous'}">
+					<li class="navbarRight logoutNavbar">
+						#{login.currentUser}
+						<h:commandButton class="btn btn-secondary" value="Logout" action="#{login.doLogout}" />
+					</li>
+				</h:panelGroup>
+					
+				
 				<li class="navbarRight">
 					<h:form class="form-inline">
 	  					<h:inputText value="#{search.searchInput}" class="form-control searchNav mb-2 mr-sm-2"/>
@@ -41,6 +52,8 @@
 				</li>
 			</ul>
 		</nav>
+		
+		
 		<!-- Modal LOGIN-->
 		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -52,20 +65,17 @@
 		        		</button>
 		      		</div>
 		      		<div class="modal-body">
-		        		<form>
+		        		<h:form>						
 		        			<div class="form-group">
 					    		<label> Username</label>
-					    		<input type="text" class="form-control" />
+					    		<h:inputText value="#{login.login}" class="form-control" />
 					  		</div>
 					  		<div class="form-group">
 					    		<label>Password</label>
-					    		<input type="password" class="form-control" />
+					    		<h:inputSecret value="#{login.password}" class="form-control searchNav mb-2 mr-sm-2" />
 					  		</div>
-		        			<button type="button" class="btn btn-primary">
-		        				Send
-		        			</button>
-		        		
-		        		</form>
+							<h:commandButton value = "Login" class="btn btn-primary" action="#{login.doLogin}"  /> 
+		        		</h:form>
 		      		</div>
 		      		<div class="modal-footer">
 		        		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

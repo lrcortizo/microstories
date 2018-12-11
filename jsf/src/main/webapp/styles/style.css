@@ -84,6 +84,11 @@ a:visited {
 		
 #navbar .navbarRight{float:right;}	
 
+.logoutNavbar{
+	position: relative;
+    top: 0px;
+   }
+
 footer{
 	 background: rgba(152, 220, 242, 0.3);
 	 width:100%;
