@@ -6,6 +6,7 @@ import es.uvigo.esei.dgss.teamB.microstories.service.util.security.RoleCaller;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.teamB.microstories.service.util.security.TestPrincipal;
@@ -100,10 +101,10 @@ public class StoryEJBIllegalAccessIntegrationTest {
 
 	@Test(expected = EJBAccessException.class)
 	public void testListMyStoriesNoRole() {
-		storyEjb.listMyStories();
+		storyEjb.listMyStories(null,null);
 	}
 
-	@Test
+	@Test(expected = EJBTransactionRolledbackException.class)
 	public void testListMyStoriesRoleAuthor() {
 		asAuthor.run(this::testListMyStoriesNoRole);
 	}
@@ -114,7 +115,7 @@ public class StoryEJBIllegalAccessIntegrationTest {
 		storyEjb.createStory(storyToCreate());
 	}
 
-	@Test
+	@Test(expected = EJBTransactionRolledbackException.class)
 	public void testCreateStoryRoleAuthor() {
 		principal.setName("pepe");
 		asAuthor.run(this::testListMyStoriesNoRole);
@@ -126,7 +127,7 @@ public class StoryEJBIllegalAccessIntegrationTest {
 		storyEjb.updateStory(storyToUpdate());
 	}
 
-	@Test
+	@Test(expected = EJBTransactionRolledbackException.class)
 	public void testUpdateStoryRoleAuthor() {
 		principal.setName("pepe");
 		asAuthor.run(this::testListMyStoriesNoRole);
@@ -138,7 +139,7 @@ public class StoryEJBIllegalAccessIntegrationTest {
 		storyEjb.removeStory(1);
 	}
 
-	@Test
+	@Test(expected=EJBTransactionRolledbackException.class)
 	public void testRemoveStoryRoleAuthor() {
 		principal.setName("pepe");
 		asAuthor.run(this::testListMyStoriesNoRole);

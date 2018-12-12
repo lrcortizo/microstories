@@ -178,13 +178,13 @@ public class StoryEJB {
 	}
 
 	@RolesAllowed("AUTHOR")
-	public List<Story> listMyStories() {
+	public List<Story> listMyStories(Integer nPagination, Integer nStories) {
 
 		final Author author = em.find(Author.class, currentUser.getName());
 
 		return em.createQuery("SELECT story " + "FROM Story story "
 				+ "WHERE publicationDate IS NOT NULL AND story.author=:a ORDER BY publicationDate DESC", Story.class)
-				.setParameter("a", author)
+				.setParameter("a", author).setMaxResults(nStories).setFirstResult((nPagination-1)*nStories)
 				.getResultList();
 
 	}
