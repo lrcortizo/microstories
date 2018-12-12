@@ -1,7 +1,6 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
 import javax.ejb.EJB;
-import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,4 +21,9 @@ public class AuthorResource {
 	@Context
 	private UriInfo uriInfo;
 
+	@Path("{login}/microstory")
+    @GET
+    public Response getListMyStories() {
+        return Response.ok(storyEjb.listMyStories()).build();
+    }
 }

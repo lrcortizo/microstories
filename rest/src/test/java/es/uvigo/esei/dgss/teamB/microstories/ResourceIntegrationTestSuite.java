@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
+	AuthorResourceRestTest.class,
 	StoryResourceRestTest.class
 })
 @RunWith(Suite.class)

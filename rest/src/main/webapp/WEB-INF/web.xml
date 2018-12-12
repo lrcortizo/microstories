@@ -10,22 +10,22 @@
     </servlet-mapping>
 
   <!--Defining security constraint for type of roles available -->
-  <!-- security-constraint>
+  <security-constraint>
     <web-resource-collection>
-      <web-resource-name>admin</web-resource-name>
-      <url-pattern>/api/owner/*</url-pattern>
+      <web-resource-name>author</web-resource-name>
+      <url-pattern>/user/*</url-pattern>
       <http-method-omission>OPTIONS</http-method-omission>
     </web-resource-collection>
     <auth-constraint>
-      <role-name>ADMIN</role-name>
+      <role-name>AUTHOR</role-name>
     </auth-constraint>
-  </security-constraint -->
+  </security-constraint>
   
 
   <!--Defining security role -->
-  <!-- security-role>
-    <role-name>ADMIN</role-name>
-  </security-role -->
+  <security-role>
+    <role-name>AUTHOR</role-name>
+  </security-role>
   
   <login-config>
     <auth-method>BASIC</auth-method>
