@@ -3,6 +3,7 @@ package es.uvigo.esei.dgss.teamB.microstories;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.extension.rest.client.ArquillianResteasyResource;
+import org.jboss.arquillian.extension.rest.client.Header;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.*;
@@ -13,10 +14,12 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import es.uvigo.esei.dgss.teamB.microstories.GenericTypes.ListStoryType;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -25,19 +28,24 @@ import es.uvigo.esei.dgss.teamB.microstories.StoryResource;
 
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.containsStoriesInAnyOrder;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStoryWithoutRelations;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.newStory;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.existentStory;
+import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasCreatedStatus;
 import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasOkStatus;
+import static javax.ws.rs.client.Entity.json;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(Arquillian.class)
 public class StoryResourceRestTest {
 	private final static String BASE_PATH = "microstory/";
+	private static final String BASIC_AUTHORIZATION = "ana";
 
 	@Deployment
 	public static Archive<?> createDeployment() {
 		return ShrinkWrap.create(WebArchive.class, "test.war")
 			.addClasses(StoryResource.class, StorySchedulerEJB.class)
+			.addClasses(CORSFilter.class, IllegalArgumentExceptionMapper.class, SecurityExceptionMapper.class)
 			.addPackage(StoryEJB.class.getPackage())
 			.addPackage(Story.class.getPackage())
 			.addAsResource("test-persistence.xml", "META-INF/persistence.xml")
@@ -161,7 +169,7 @@ public class StoryResourceRestTest {
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterGetListSearchPagination() {}
 	
-	//topTenMostPopular
+	//mostPopular
 	
 	@Test @InSequence(13)
 	@UsingDataSet("stories.xml")
@@ -189,6 +197,51 @@ public class StoryResourceRestTest {
 	@ShouldMatchDataSet("stories.xml")
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterMostPopular() {}
+	
+	//createStory
+	
+	@Test @InSequence(16)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeCreate() {}
+	
+	@Test @InSequence(17)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testCreate(
+		@ArquillianResteasyResource(BASE_PATH) ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		testCreateStory(webTarget, newStory());
+	}
+	
+	@Test @InSequence(18)
+	@ShouldMatchDataSet("stories.xml")
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterCreate() {}
+	
+	private void testCreateStory(WebTarget webTarget, Story newStory) {
+		testCreateStory(webTarget, newStory, newStory);
+	}
+	
+	private void testCreateStory(WebTarget webTarget, Story newStory, Story persistentStory) {
+	    final Response response = webTarget.request().post(json(newStory));
+
+	    assertThat(response, hasCreatedStatus());
+	    
+	    final String location = response.getHeaderString("Location");
+	    
+	    final Response responseGet = authorizedJsonRequestGet(location);
+	    final Story story = responseGet.readEntity(Story.class);
+		assertThat(story, is(equalToStoryWithoutRelations(persistentStory)));
+	}
+	
+	private static Response authorizedJsonRequestGet(String uri) {
+		return ClientBuilder.newClient().target(uri)
+			.request(MediaType.APPLICATION_JSON_TYPE)
+			.header("Authorization", BASIC_AUTHORIZATION)
+		.get();
+	}
 	
 }
 
