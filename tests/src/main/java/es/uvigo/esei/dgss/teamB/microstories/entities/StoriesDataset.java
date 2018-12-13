@@ -45,6 +45,13 @@ public class StoriesDataset {
                         genresSet.contains(story.getSecondaryTheme()))
                 .toArray(Story[]::new);
     }
+    
+    public static Story newStory() {
+    	
+        return new Story("Nuevo Microrrelato", "Texto del nuevo microrrelato", new Author("ana", "anapass"), new Date(), Genre.POETRY, Theme.HORROR, 32);
+    
+    }    
+    
 
     public static Story storyToCreate() {
 
