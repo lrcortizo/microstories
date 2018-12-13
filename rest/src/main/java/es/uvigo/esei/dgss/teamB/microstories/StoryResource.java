@@ -96,7 +96,7 @@ public class StoryResource {
     
     @Path("hottest")
     @GET
-    public Response topTenMostPopular() {
+    public Response mostPopular() {
     	return Response.ok(storyEjb.mostPopular()).build();
     }
     

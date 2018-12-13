@@ -42,7 +42,7 @@ public class StoryEJBIllegalAccessIntegrationTest {
 	@Deployment
 	public static Archive<?> createDeployment() {
 		return ShrinkWrap.create(WebArchive.class, "test.war")
-				.addClasses(StoryEJB.class, Story.class, Author.class)
+				.addClasses(StoryEJB.class, Story.class, StorySchedulerEJB.class, Author.class)
 				.addPackage(RoleCaller.class.getPackage())
 				.addPackage(Author.class.getPackage())
 				.addPackage(Story.class.getPackage())

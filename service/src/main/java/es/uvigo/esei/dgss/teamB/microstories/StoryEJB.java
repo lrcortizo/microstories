@@ -15,11 +15,11 @@ import es.uvigo.esei.dgss.teamB.microstories.entities.Author;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBAccessException;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 @Stateless
 public class StoryEJB {
@@ -29,6 +29,10 @@ public class StoryEJB {
 
 	@Inject
 	private Principal currentUser;
+	
+	@EJB
+	private StorySchedulerEJB storySchedulerEJB;
+	
 	/**
 	 * Returns the recent list of stories.
 	 * 
@@ -51,8 +55,14 @@ public class StoryEJB {
 	 */
 	@PermitAll
 	public Story findStory(Integer id) {
-
-		return em.find(Story.class, id);
+		
+		Story toRet = em.find(Story.class, id);
+		
+		if(toRet != null) {
+			storySchedulerEJB.increaseView(toRet);
+		}
+			
+		return toRet;
 	}
 
 	@PermitAll

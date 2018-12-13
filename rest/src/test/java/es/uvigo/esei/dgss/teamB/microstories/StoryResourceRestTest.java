@@ -24,7 +24,6 @@ import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
 import es.uvigo.esei.dgss.teamB.microstories.StoryResource;
 
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.containsStoriesInAnyOrder;
-import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStory;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStoryWithoutRelations;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.existentStory;
 import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasOkStatus;
@@ -38,7 +37,7 @@ public class StoryResourceRestTest {
 	@Deployment
 	public static Archive<?> createDeployment() {
 		return ShrinkWrap.create(WebArchive.class, "test.war")
-			.addClass(StoryResource.class)
+			.addClasses(StoryResource.class, StorySchedulerEJB.class)
 			.addPackage(StoryEJB.class.getPackage())
 			.addPackage(Story.class.getPackage())
 			.addAsResource("test-persistence.xml", "META-INF/persistence.xml")
@@ -96,13 +95,14 @@ public class StoryResourceRestTest {
 	    final Story story = response.readEntity(Story.class);
 
 	    final Story expected = existentStory();
+	    
+	    expected.setViews(expected.getViews()+1);
 
 	    assertThat(story, is(equalToStoryWithoutRelations(expected)));
 	   
 	}
 	
 	@Test @InSequence(6)
-	@ShouldMatchDataSet("stories.xml")
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterGetStory() {}
 	
@@ -166,11 +166,11 @@ public class StoryResourceRestTest {
 	@Test @InSequence(13)
 	@UsingDataSet("stories.xml")
 	@Cleanup(phase = TestExecutionPhase.NONE)
-	public void beforeTopTenMostPopular() {}
+	public void beforeMostPopular() {}
 	
 	@Test @InSequence(14)
 	@RunAsClient
-	public void testTopTenMostPopular(
+	public void testMostPopular(
 		@ArquillianResteasyResource(BASE_PATH +"hottest/") ResteasyWebTarget webTarget
 	) 
 	throws Exception {
@@ -188,7 +188,7 @@ public class StoryResourceRestTest {
 	@Test @InSequence(15)
 	@ShouldMatchDataSet("stories.xml")
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
-	public void afterTopTenMostPopular() {}
+	public void afterMostPopular() {}
 	
 }
 

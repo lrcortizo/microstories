@@ -11,13 +11,10 @@ import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 
-import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStoryWithoutRelations;
-import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.mostPopularStories;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.storyToCreate;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.storyToUpdate;
 import static org.junit.Assert.assertThat;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +55,7 @@ public class StoryEJBIntegrationTest {
 	@Deployment
 	public static Archive<?> createDeployment() {
 		return ShrinkWrap.create(WebArchive.class, "test.war")
-				.addClasses(StoryEJB.class, Story.class, Author.class)
+				.addClasses(StoryEJB.class, Story.class, Author.class, StorySchedulerEJB.class)
 				.addPackage(RoleCaller.class.getPackage()).addPackage(Author.class.getPackage())
 				.addPackage(Story.class.getPackage()).addAsResource("test-persistence.xml", "META-INF/persistence.xml")
 				.addAsWebInfResource("jboss-web.xml").addAsResource("arquillian.extension.persistence.properties")
@@ -92,7 +89,9 @@ public class StoryEJBIntegrationTest {
 
 	@Test
 	public void findStoryBadId() {
-
+		System.out.println("====> " +storyEjb);
+	
+		
 		assertThat(storyEjb.findStory(1), is(nullValue()));
 	}
 

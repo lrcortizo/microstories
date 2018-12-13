@@ -2,6 +2,8 @@ package es.uvigo.esei.dgss.teamB.microstories;
 
 import java.util.List;
 
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -12,6 +14,7 @@ import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
 @Startup
 @Singleton
+@Lock(LockType.WRITE)
 public class StorySchedulerEJB {
 
 	@PersistenceContext
@@ -25,5 +28,11 @@ public class StorySchedulerEJB {
 			story.setViews(0);
 			em.persist(story);
 		}
+	}
+	
+	public void increaseView(Story story) {
+		System.out.println("..... getviews "+story.getViews());
+		story.setViews(story.getViews()+1);
+		em.persist(story);
 	}
 }
