@@ -181,12 +181,33 @@ public class StoryEJB {
 	public List<Story> listMyStories(Integer nPagination, Integer nStories) {
 
 		final Author author = em.find(Author.class, currentUser.getName());
+		
+		if(nPagination == null) { nPagination=1;}
+		if(nStories == null) {nStories=9;}
 
 		return em.createQuery("SELECT story " + "FROM Story story "
 				+ "WHERE publicationDate IS NOT NULL AND story.author=:a ORDER BY publicationDate DESC", Story.class)
 				.setParameter("a", author).setMaxResults(nStories).setFirstResult((nPagination-1)*nStories)
 				.getResultList();
 
+	}
+
+	@RolesAllowed("AUTHOR")
+	public Integer listMyStoriesTotalOfPagination(Integer nStories) {
+
+		final Author author = em.find(Author.class, currentUser.getName());
+
+		int nTotalStories = em.createQuery(
+				"SELECT story FROM Story story WHERE publicationDate IS NOT NULL AND story.author=:a ORDER BY publicationDate DESC",
+				Story.class).setParameter("a", author).getResultList().size();
+
+		if (nTotalStories % nStories != 0) {
+			nTotalStories = (nTotalStories / nStories) + 1;
+		} else {
+			nTotalStories = (nTotalStories / nStories);
+		}
+
+		return nTotalStories;
 	}
 
 

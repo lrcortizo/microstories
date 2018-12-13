@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+	<ui:define name="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="header-mystories">
+						<h2>My Stories: </h2>
+						<f:metadata>
+					       <f:viewParam name="nPagination" value="#{mystories.nPagination}"/>
+					    </f:metadata>
+					</div>
+				</div>
+				<ui:fragment rendered="#{empty mystories.listMyStories()}">
+					<div class="col-md-12">
+						<p class="warning">You didn`t write Stories</p>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{not empty  mystories.listMyStories()}">
+					<ui:repeat var="story" value="#{ mystories.listMyStories()}">
+						<ui:include src="/template/cardTemplate.xhtml" />
+					</ui:repeat>
+				</ui:fragment>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<nav aria-label="Page navigation example">
+					<ul class="pagination justify-content-center">
+					<ui:fragment rendered="#{mystories.nPagination != 1}">
+						<li class="page-item">
+							<h:outputLink styleClass="page-link" value="mystories.xhtml" >
+								<f:param name="nPagination" value="#{mystories.nPagination-1}" />
+								<h:outputLabel value="Previous" />
+							</h:outputLink>  
+						</li>
+						<li class="page-item">
+							<h:outputLink styleClass="page-link" value="mystories.xhtml" >
+								<f:param name="nPagination" value="#{mystories.nPagination-1}" />
+								<h:outputLabel value="#{mystories.nPagination-1}" />
+							</h:outputLink>  
+						</li>
+					</ui:fragment>
+						<li class="page-item">
+							<h:outputLink styleClass="page-link" value="mystories.xhtml" >
+								<f:param name="nPagination" value="#{mystories.nPagination}" />
+								<h:outputLabel value="#{mystories.nPagination}" />
+							</h:outputLink>  
+						</li>
+						<ui:fragment rendered="#{mystories.nPagination lt mystories.totalPagination}">
+						<li class="page-item">
+							<h:outputLink styleClass="page-link" value="mystories.xhtml" >
+								<f:param name="nPagination" value="#{mystories.nPagination+1}" />
+								<h:outputLabel value="#{mystories.nPagination+1}" />
+							</h:outputLink>  
+						</li>
+						<li class="page-item">
+							<h:outputLink styleClass="page-link" value="mystories.xhtml" >
+								<f:param name="nPagination" value="#{mystories.nPagination+1}" />
+								<h:outputLabel value="Next" />
+							</h:outputLink>  
+						</li>
+						</ui:fragment>
+					</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

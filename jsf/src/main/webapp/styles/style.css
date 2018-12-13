@@ -220,6 +220,15 @@ footer #signatureFooter{
 
 .buttonExplore{margin-left:2%;}
 
+/* MYSTORIES */
+.header-mystories{
+	display: flex;
+	margin-left: auto;
+    margin-right: auto;
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+
 
 /* MOBILE VERSION */
 @media only screen and (max-width: 600px) {

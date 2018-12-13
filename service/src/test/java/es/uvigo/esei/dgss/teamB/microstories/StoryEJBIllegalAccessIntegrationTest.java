@@ -104,7 +104,7 @@ public class StoryEJBIllegalAccessIntegrationTest {
 		storyEjb.listMyStories(null,null);
 	}
 
-	@Test(expected = EJBTransactionRolledbackException.class)
+	@Test
 	public void testListMyStoriesRoleAuthor() {
 		asAuthor.run(this::testListMyStoriesNoRole);
 	}
@@ -115,7 +115,7 @@ public class StoryEJBIllegalAccessIntegrationTest {
 		storyEjb.createStory(storyToCreate());
 	}
 
-	@Test(expected = EJBTransactionRolledbackException.class)
+	@Test
 	public void testCreateStoryRoleAuthor() {
 		principal.setName("pepe");
 		asAuthor.run(this::testListMyStoriesNoRole);
@@ -127,7 +127,7 @@ public class StoryEJBIllegalAccessIntegrationTest {
 		storyEjb.updateStory(storyToUpdate());
 	}
 
-	@Test(expected = EJBTransactionRolledbackException.class)
+	@Test
 	public void testUpdateStoryRoleAuthor() {
 		principal.setName("pepe");
 		asAuthor.run(this::testListMyStoriesNoRole);
@@ -139,7 +139,7 @@ public class StoryEJBIllegalAccessIntegrationTest {
 		storyEjb.removeStory(1);
 	}
 
-	@Test(expected=EJBTransactionRolledbackException.class)
+	@Test
 	public void testRemoveStoryRoleAuthor() {
 		principal.setName("pepe");
 		asAuthor.run(this::testListMyStoriesNoRole);

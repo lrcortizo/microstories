@@ -253,7 +253,7 @@ public class StoryEJBIntegrationTest {
 		assertThat(storyEjb.getByTextTotalOfPagination("Microrrelato 1", nStories), is(2));
 	}
 
-	@Test(expected = javax.ejb.EJBException.class)
+	@Test
 	public void testListMyStoriesNull() {
 		principal.setName("pepe");
 		assertThat(asAuthor.call(() -> storyEjb.listMyStories(null,null)), anyOf(nullValue(), empty()));
@@ -266,7 +266,7 @@ public class StoryEJBIntegrationTest {
 		assertThat(storyEjb.listMyStories(null,null), is(not(equalTo(nullValue()))));
 	}
 
-	@Test(expected = javax.ejb.EJBException.class)
+	@Test
 	@UsingDataSet("stories.xml")
 	public void testListMyStoriesAsAuthor() {
 
@@ -274,7 +274,7 @@ public class StoryEJBIntegrationTest {
 		assertThat(asAuthor.call(() -> storyEjb.listMyStories(null,null)), is(not(equalTo(nullValue()))));
 	}
 
-	@Test(expected = javax.ejb.EJBException.class)
+	@Test
 	@UsingDataSet("stories.xml")
 	public void testListMyStoriesAsAuthorMaxElementsAsNormal() {
 
@@ -283,7 +283,7 @@ public class StoryEJBIntegrationTest {
 
 	}
 
-	@Test(expected = javax.ejb.EJBException.class)
+	@Test
 	@UsingDataSet("stories.xml")
 	public void testListMyStoriesAsAuthorMaxElementsAs9() {
 
@@ -294,6 +294,28 @@ public class StoryEJBIntegrationTest {
 
 	}
 
+	@Test
+	public void ListMyStoriesTotalOfPaginationDBEmpty() {
+
+		Integer nStories = 9;
+
+		principal.setName("pepe");
+
+		assertThat( asAuthor.call(() ->storyEjb.listMyStoriesTotalOfPagination(nStories)), is(0));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void ListMyStoriesTotalOfPagination() {
+
+		Integer nStories = 9;
+
+		principal.setName("pepe");
+
+		assertThat(asAuthor.call(() ->storyEjb.listMyStoriesTotalOfPagination(nStories)), is(3));
+	}
+
+
 	@Test(expected = javax.ejb.EJBException.class)
 	@UsingDataSet("stories.xml")
 	public void testCreateStoryAsUser() {
@@ -301,7 +323,7 @@ public class StoryEJBIntegrationTest {
 		assertThat(storyEjb.createStory(storyToCreate()), is(not(equalTo(nullValue()))));
 	}
 
-	@Test(expected = javax.ejb.EJBException.class)
+	@Test
 	@UsingDataSet("stories.xml")
 	public void testCreateStoryAsAuthor() {
 
@@ -355,15 +377,16 @@ public class StoryEJBIntegrationTest {
 		storyEjb.removeStory(1);
 	}
 
-	@Test(expected=EJBTransactionRolledbackException.class)
+	@Test
 	@UsingDataSet("stories.xml")
 	public void testRemoveStoryAsAuthor() {
 
+		int nStories = 100;
 		principal.setName("pepe");
-		int numStoriesBefore = asAuthor.call(() -> storyEjb.listMyStories(null,null).size());
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listMyStories(null,nStories).size());
 
 		asAuthor.call(() -> storyEjb.removeStory(1));
-		assertThat(asAuthor.call(() -> storyEjb.listMyStories(null,null).size()), is((equalTo(numStoriesBefore-1))));
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories(null,nStories).size()), is((equalTo(numStoriesBefore-1))));
 	}
 
 	@Test(expected = javax.ejb.EJBException.class)

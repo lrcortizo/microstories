@@ -41,7 +41,7 @@ public class LoginManagedBean {
 		System.out.println(this.getLogin());
 		try {
 			request.login(this.getLogin(), this.getPassword());
-			return redirectTo("/explore.xhtml");
+			return redirectTo("/mystories.xhtml");
 			
 		} catch (ServletException e) {
 			return this.getViewId();
