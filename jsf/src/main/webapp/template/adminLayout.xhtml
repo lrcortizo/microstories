@@ -20,11 +20,23 @@
 </head>
 <body>
 	<div class="container">
-		<nav id="navbar" class="d-none d-sm-block">
+		<nav id="navbar" class="d-none d-sm-block navbarAdmin">
 			<ul>
 				<li>
-					<a href="./">Home</a>
+					<a href="home.xhtml">Home</a>
 				</li>
+				<h:panelGroup rendered="${login.currentUser.name != 'anonymous'}">
+					<li>
+						<a href="./">Public View</a>
+					</li>
+					<li>
+						<a href="mystories.xhtml">My stories</a>
+					</li>
+					<li>
+						<a href="#">My favs</a>
+					</li>
+				</h:panelGroup>
+				
 				<h:panelGroup rendered="${login.currentUser.name == 'anonymous'}">					
 					<li class="navbarRight" data-toggle="modal" data-target="#loginModal">
 						<a href="#">
@@ -35,22 +47,11 @@
 				
 				<h:panelGroup rendered="${login.currentUser.name != 'anonymous'}">
 					<li class="navbarRight logoutNavbar">
-						<a href="home.xhtml" >
-							#{login.currentUser}
-						</a>
+						#{login.currentUser}
 						<h:commandButton class="btn btn-secondary" value="Logout" action="#{login.doLogout}" />
 					</li>
 				</h:panelGroup>
 					
-				
-				<li class="navbarRight">
-					<h:form class="form-inline">
-	  					<h:inputText value="#{search.searchInput}" class="form-control searchNav mb-2 mr-sm-2"/>
-						<h:commandLink action="search.goToSearchView" >
-							<img id="iconSearch" src="img/search.svg" width="30"/>
-						</h:commandLink>
-					</h:form>
-				</li>
 			</ul>
 		</nav>
 		
@@ -112,7 +113,7 @@
 	<div id="content">
 		<ui:insert name="content"></ui:insert>
 	</div>
-	<footer>
+	<footer id="footerAdmin">
 		<div class="row">
 			<div class="col-md-4"></div>
 			<div class="col-md-4"></div>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 @Named("login")
 @RequestScoped
 public class LoginManagedBean {
+	
 	@Inject
 	private Principal currentUserPrincipal;
 	
@@ -38,10 +39,9 @@ public class LoginManagedBean {
 
 	
 	public String doLogin() {
-		System.out.println(this.getLogin());
 		try {
 			request.login(this.getLogin(), this.getPassword());
-			return redirectTo("/mystories.xhtml");
+			return redirectTo("/home.xhtml");
 			
 		} catch (ServletException e) {
 			return this.getViewId();
@@ -50,7 +50,6 @@ public class LoginManagedBean {
 	
 	public String doLogout() throws ServletException {
 		request.logout();
-		
 		return redirectTo("/index.xhtml");
 	}
 	
