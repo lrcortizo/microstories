@@ -11,6 +11,7 @@ a:visited {
   color: inherit; /* blue colors for links too */
   text-decoration: inherit; /* no underline */
 }
+.btn{color:white !important;}
 
 /*LAYOUT*/
 .logoutNavbar{
