@@ -161,15 +161,10 @@ public class StoryTest {
 
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void testStoryTitleTextAuthorGenreThemesNullDate() {
 
 		new Story(title, text, author, null, story, primaryTheme, secondaryTheme, views);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testStoryTitleTextAuthorGenreThemesDateAfterCurrent() {
-		new Story(title, text, author, futureDate, story, primaryTheme, secondaryTheme, views);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -360,19 +355,12 @@ public class StoryTest {
 		assertThat(newStory.getPublicationDate(), is(equalTo(newPublicationDate)));
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void testSetPublicationDateNull() {
 		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
 
 		newStory.setPublicationDate(null);
 
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetPublicationDateAfterCurrent() {
-		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
-
-		newStory.setPublicationDate(futureDate);
 	}
 
 	@Test(expected = NullPointerException.class)

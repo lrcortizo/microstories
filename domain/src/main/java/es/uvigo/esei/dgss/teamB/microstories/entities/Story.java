@@ -54,7 +54,7 @@ public class Story {
     @XmlTransient
     private Author author;
 
-    Story() {
+    public Story() {
     }
 
     // For test purposes
@@ -145,9 +145,6 @@ public class Story {
     }
 
     public void setPublicationDate(Date publicationDate) {
-        requireNonNull(publicationDate, "publicationDate can't be null");
-        inclusiveBetween(new Date(0), new Date(), publicationDate,
-                "publicationDate must be previous to the current time");
         this.publicationDate = publicationDate;
     }
 

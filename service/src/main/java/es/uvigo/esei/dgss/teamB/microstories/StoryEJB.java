@@ -70,15 +70,15 @@ public class StoryEJB {
 		List<Story> toRet = new ArrayList<>();
 
 		toRet.addAll(em.createQuery(
-				"SELECT s FROM Story s where s.genre LIKE 'STORY' ORDER BY s.views DESC",
+				"SELECT s FROM Story s where publicationDate IS NOT NULL AND s.genre LIKE 'STORY' ORDER BY s.views DESC",
 				Story.class).setMaxResults(2).getResultList());
 		
 		toRet.addAll(em.createQuery(
-				"SELECT s FROM Story s where s.genre LIKE 'NANOSTORY' ORDER BY s.views DESC",
+				"SELECT s FROM Story s where publicationDate IS NOT NULL AND s.genre LIKE 'NANOSTORY' ORDER BY s.views DESC",
 				Story.class).setMaxResults(2).getResultList());
 		
 		toRet.addAll(em.createQuery(
-				"SELECT s FROM Story s where s.genre LIKE 'POETRY' ORDER BY s.views DESC",
+				"SELECT s FROM Story s where publicationDate IS NOT NULL AND s.genre LIKE 'POETRY' ORDER BY s.views DESC",
 				Story.class).setMaxResults(2).getResultList());
 		
 		Collections.sort(toRet, new Comparator<Story>() {
@@ -196,7 +196,7 @@ public class StoryEJB {
 		if(nStories == null) {nStories=9;}
 
 		return em.createQuery("SELECT story " + "FROM Story story "
-				+ "WHERE publicationDate IS NOT NULL AND story.author=:a ORDER BY publicationDate DESC", Story.class)
+				+ "WHERE story.author=:a ORDER BY publicationDate DESC", Story.class)
 				.setParameter("a", author).setMaxResults(nStories).setFirstResult((nPagination-1)*nStories)
 				.getResultList();
 
@@ -230,7 +230,7 @@ public class StoryEJB {
 			throw new EJBAccessException("Story's author is not the user logged");
 		} else {
 			story.setAuthor(author);
-
+			story.setViews(0);
 			em.persist(story);
 
 			return story;
@@ -243,6 +243,7 @@ public class StoryEJB {
 			throw new IllegalArgumentException("Story must have an author");
 
 		if (story.getAuthor().getLogin().equals(this.currentUser.getName())) {
+			
 			return em.merge(story);
 		} else {
 			throw new EJBAccessException("Story's author is not the user logged");

@@ -240,10 +240,11 @@ footer #signatureFooter{
 
 .elementExplore{
 	margin-right:2%;
-    margin-left:2%;	
 }
 
 .buttonExplore{margin-left:2%;}
+
+.elementTextArea{height:200px;}
 
 /* MYSTORIES */
 .header-mystories{

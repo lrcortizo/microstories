@@ -11,9 +11,6 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="content">
-		<f:metadata>
-			<f:viewParam name="id" value="#{edit.id}" />
-		</f:metadata>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
@@ -29,16 +26,15 @@
 					<h:panelGroup rendered="${login.currentUser.name != 'anonymous'}">
 						<div class="cardHome">
 							<div class="card">
-								<h1 class="card-header">Edit Story</h1>
+								<h1 class="card-header">Create Story</h1>
 								<div class="card-body">
 									<h:form>
 										<div class="form-group">
 											<label>Title</label>
-											<h:inputText value="#{edit.title}" class="form-control" />
-										</div>
-										<div class="form-group">
+											<h:inputText value="#{create.title}" class="form-control" />
+										</div><div class="form-group">
 											<label>Genre</label>
-											<h:selectOneMenu value="#{edit.genre}"
+											<h:selectOneMenu value="#{create.genre}"
 												class="form-control elementExplore" required="true">
 												<f:selectItem itemValue="STORY" />
 												<f:selectItem itemValue="POETRY" />
@@ -47,7 +43,7 @@
 										</div>
 										<div class="form-group">
 											<label>First Thematic</label>
-											<h:selectOneMenu value="#{edit.primaryTheme}"
+											<h:selectOneMenu value="#{create.primaryTheme}"
 												class="form-control elementExplore" required="true">
 												<f:selectItem itemValue="ADVENTURE" />
 												<f:selectItem itemValue="SCIENCEFICTION" />
@@ -60,7 +56,7 @@
 										</div>
 										<div class="form-group">
 											<label>Secondary Thematic</label>
-											<h:selectOneMenu value="#{edit.secondaryTheme}"
+											<h:selectOneMenu value="#{create.secondaryTheme}"
 												class="form-control elementExplore" required="true">
 												<f:selectItem itemValue="ADVENTURE" />
 												<f:selectItem itemValue="SCIENCEFICTION" />
@@ -73,9 +69,9 @@
 										</div>
 										<div class="form-group">
 											<label>Text</label>
-											<h:inputTextarea value="#{edit.text}" class="form-control elementTextArea" />
+											<h:inputTextarea value="#{create.text}" class="form-control" />
 										</div>
-										<h:commandButton value="submit" class="btn btn-success" action="#{edit.doEdit(edit.id)}">
+										<h:commandButton value="submit" class="btn btn-success" action="#{create.doCreate()}">
 			            				</h:commandButton>
 									</h:form>
 								</div>
