@@ -34,6 +34,19 @@ CREATE TABLE `Story` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Table structure for table `Favourite`
+--
+CREATE TABLE `Favourite` (
+  `author` varchar(100) NOT NULL,
+  `id` int(11) NOT NULL,
+   PRIMARY KEY (`author`, `id`),
+   KEY `FK_Favourite_Author` (`author`),
+   CONSTRAINT `FK_Favourite_Author_login` FOREIGN KEY (`author`) REFERENCES `User` (`login`),
+   KEY `FK_Favourite_Story` (`id`),
+   CONSTRAINT `FK_Favourite_Story_id` FOREIGN KEY (`id`) REFERENCES `Story` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
 -- User creation
 --
 GRANT ALL PRIVILEGES ON dgss1819_teamB_microstories.* TO microstories@localhost IDENTIFIED BY 'microstoriespass';

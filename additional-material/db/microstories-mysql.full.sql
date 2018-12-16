@@ -6,6 +6,7 @@ USE `dgss1819_teamB_microstories`;
 
 DROP TABLE IF EXISTS `Story`;
 DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `Favourite`;
 
 --
 -- Table structure for table `User`
@@ -33,6 +34,19 @@ CREATE TABLE `Story` (
    PRIMARY KEY (`id`),
    KEY `FK_Story_Author` (`author`),
    CONSTRAINT `FK_Story_Author_login` FOREIGN KEY (`author`) REFERENCES `User` (`login`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `Favourite`
+--
+CREATE TABLE `Favourite` (
+  `author` varchar(100) NOT NULL,
+  `id` int(11) NOT NULL,
+   PRIMARY KEY (`author`, `id`),
+   KEY `FK_Favourite_Author` (`author`),
+   CONSTRAINT `FK_Favourite_Author_login` FOREIGN KEY (`author`) REFERENCES `User` (`login`),
+   KEY `FK_Favourite_Story` (`id`),
+   CONSTRAINT `FK_Favourite_Story_id` FOREIGN KEY (`id`) REFERENCES `Story` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

@@ -7,7 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	StoryTest.class,
-	AuthorTest.class
+	AuthorTest.class,
 })
 public class EntitiesTestSuite {}
 

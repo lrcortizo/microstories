@@ -28,19 +28,38 @@ public class Author extends User implements Serializable {
 	)
 	private Collection<Story> stories;
 	
+	@OneToMany(
+			mappedBy = "author",
+			targetEntity = Favourite.class,
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.EAGER
+		)
+	private Collection<Story> favouriteStories;
+	
 	// Required for JPA
 	Author() {}
 	
 	public Author(String login, String password) {
 		super(login, password);
 		this.stories = new ArrayList<>();
+		this.favouriteStories = new ArrayList<>();
 	}
 
 	public Author(String login, String password, Story ... stories) {
 		super(login, password);
 		this.stories = new ArrayList<>();
+		this.favouriteStories = new ArrayList<>();
 		
 		stream(stories).forEach(this::addStory);
+	}
+	
+	public Author(String login, String password, Story [] favourites, Story ... stories) {
+		super(login, password);
+		this.stories = new ArrayList<>();
+		this.favouriteStories = new ArrayList<>();
+		stream(stories).forEach(this::addStory);
+		stream(favourites).forEach(this::addFavouriteStory);
 	}
 
 	public Collection<Story> getStories() {
@@ -80,5 +99,46 @@ public class Author extends User implements Serializable {
 		requireNonNull(story, "story can't be null");
 		
 		this.stories.remove(story);
+	}
+	
+	public Collection<Story> getFavouriteStories() {
+		return favouriteStories;
+	}
+
+	public void addFavouriteStory (Story story) {
+		requireNonNull(story, "story can't be null");
+		
+		if (!this.ownsFavouriteStory(story)) {
+			System.out.println("\n \n -----1-------"+ this +"--------------- \n \n");
+			story.addIsFavourite(this);
+		}
+	}
+	
+	public void removeFavouriteStory (Story story) {
+		requireNonNull(story, "story can't be null");
+		
+		if (this.ownsFavouriteStory(story)) {
+			story.removeIsFavourite(this);
+		} else {
+			throw new IllegalArgumentException("story doesn't belong to this owner");
+		}
+	}
+	
+	public boolean ownsFavouriteStory(Story story) {
+		return this.favouriteStories.contains(story);
+	}
+	
+	void internalAddFavouriteStory(Story story) {
+		requireNonNull(story, "story can't be null");
+		
+		if (!this.ownsFavouriteStory(story))
+			this.favouriteStories.add(story);
+	}
+	
+	void internalRemoveFavouriteStory(Story story) {
+		requireNonNull(story, "story can't be null");
+		
+		if (this.ownsFavouriteStory(story))
+			this.favouriteStories.remove(story);
 	}
 }

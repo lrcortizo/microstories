@@ -12,6 +12,10 @@ ALTER TABLE `User` AUTO_INCREMENT = 1;
 --
 DELETE FROM `Story`;
 --
--- Reset AUTO_INCREMENT for table `Story`
+-- Reset AUTO_INCREMENT for table `Favourite`
 --
 ALTER TABLE `Story` AUTO_INCREMENT = 1;
+--
+-- Remove data for table `Story`
+--
+DELETE FROM `Favourite`;

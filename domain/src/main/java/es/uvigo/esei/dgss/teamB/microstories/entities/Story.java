@@ -3,6 +3,8 @@ package es.uvigo.esei.dgss.teamB.microstories.entities;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.Validate.inclusiveBetween;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -53,6 +55,15 @@ public class Story {
     @JoinColumn(name = "author", referencedColumnName = "login", nullable = false)
     @XmlTransient
     private Author author;
+    
+	@OneToMany(
+			mappedBy = "story",
+			targetEntity = Favourite.class,
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.EAGER
+		)
+	private Collection<Author> isFavourite;
 
     public Story() {
     }
@@ -85,6 +96,7 @@ public class Story {
         this.setPrimaryTheme(primaryTheme);
         this.setSecondaryTheme(secondaryTheme);
         this.setViews(views);
+        this.isFavourite = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -180,4 +192,23 @@ public class Story {
         requireNonNull(views, "views can't be null");
         this.views = views;
     }
+
+	public Collection<Author> getIsFavourite() {
+		return isFavourite;
+	}
+
+	public void addIsFavourite(Author author) {
+        if (author != null) {
+            author.internalAddFavouriteStory(this);
+        	this.isFavourite.add(author);
+        }
+	}
+	
+	public void removeIsFavourite(Author author) {
+        if (author != null) {
+            author.internalRemoveFavouriteStory(this);
+        	this.isFavourite.remove(author);
+        }
+	}
+    
 }
