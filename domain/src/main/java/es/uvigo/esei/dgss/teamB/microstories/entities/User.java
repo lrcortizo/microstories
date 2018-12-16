@@ -70,4 +70,5 @@ public abstract class User implements Serializable {
 			throw new RuntimeException("MD5 algorithm not found", e);
 		}
 	}
+	
 }

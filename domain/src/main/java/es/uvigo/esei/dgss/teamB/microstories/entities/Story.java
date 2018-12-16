@@ -3,6 +3,7 @@ package es.uvigo.esei.dgss.teamB.microstories.entities;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.Validate.inclusiveBetween;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -53,6 +54,15 @@ public class Story {
     @JoinColumn(name = "author", referencedColumnName = "login", nullable = false)
     @XmlTransient
     private Author author;
+    
+	@OneToMany(
+			mappedBy = "story",
+			targetEntity = Author.class,
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.EAGER
+		)
+	private Collection<User> isFavourite;
 
     Story() {
     }
@@ -183,4 +193,17 @@ public class Story {
         requireNonNull(views, "views can't be null");
         this.views = views;
     }
+
+	public Collection<User> getIsFavourite() {
+		return isFavourite;
+	}
+
+	public void addIsFavourite(User user) {
+		this.isFavourite.add(user);
+	}
+	
+	public void removeIsFavourite(User user) {
+		this.isFavourite.remove(user);
+	}
+    
 }
