@@ -40,13 +40,13 @@ CREATE TABLE `Story` (
 -- Table structure for table `Favourite`
 --
 CREATE TABLE `Favourite` (
-  `author` varchar(100) NOT NULL,
-  `id` int(11) NOT NULL,
-   PRIMARY KEY (`author`, `id`),
-   KEY `FK_Favourite_Author` (`author`),
-   CONSTRAINT `FK_Favourite_Author_login` FOREIGN KEY (`author`) REFERENCES `User` (`login`),
-   KEY `FK_Favourite_Story` (`id`),
-   CONSTRAINT `FK_Favourite_Story_id` FOREIGN KEY (`id`) REFERENCES `Story` (`id`)
+  `author_login` varchar(100) NOT NULL,
+  `story_id` int(11) NOT NULL,
+   PRIMARY KEY (`author_login`, `story_id`),
+   KEY `FK_Favourite_Author` (`author_login`),
+   CONSTRAINT `FK_Favourite_Author_login` FOREIGN KEY (`author_login`) REFERENCES `User` (`login`),
+   KEY `FK_Favourite_Story` (`story_id`),
+   CONSTRAINT `FK_Favourite_Story_id` FOREIGN KEY (`story_id`) REFERENCES `Story` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
