@@ -18,6 +18,7 @@ import es.uvigo.esei.dgss.teamB.microstories.GenericTypes.ListStoryType;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -30,6 +31,7 @@ import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.cont
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStoryWithoutRelations;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.newStory;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.existentStory;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.storyToUpdate;
 import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasCreatedStatus;
 import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasOkStatus;
 import static javax.ws.rs.client.Entity.json;
@@ -43,6 +45,7 @@ import static org.junit.Assert.assertThat;
 public class StoryResourceRestTest {
 	private final static String BASE_PATH = "microstory/";
 	private static final String BASIC_AUTHORIZATION = "Basic YW5hOmFuYXBhc3M=";
+	public static final String EXISTENT_ID = "21";
 
 	@Deployment
 	public static Archive<?> createDeployment() {
@@ -244,6 +247,51 @@ public class StoryResourceRestTest {
 			.header("Authorization", BASIC_AUTHORIZATION)
 		.get();
 	}
+	
+	@Test @InSequence(19)
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeUpdate() {}
+	
+	@Test @InSequence(20)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testUpdate(
+		@ArquillianResteasyResource(BASE_PATH) ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		testUpdateStory(webTarget, newStory());
+	}
+	
+	@Test @InSequence(21)
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterUpdate() {}
+	
+	private void testUpdateStory(WebTarget webTarget, Story story) {
+		final Response response = webTarget.request().post(json(story));
+		
+		assertThat(response, hasCreatedStatus());
+	}
+	
+	@Test @InSequence(22)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeDelete() {}
+	
+	@Test @InSequence(23)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testDelete(
+		@ArquillianResteasyResource(BASE_PATH + EXISTENT_ID) ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		final Response response = webTarget.request().delete();
+
+	    assertThat(response, hasOkStatus());
+	}
+	
+	@Test @InSequence(24)
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterDelete() {}
 	
 }
 
