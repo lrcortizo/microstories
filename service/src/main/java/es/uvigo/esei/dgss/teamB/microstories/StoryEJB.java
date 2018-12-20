@@ -1,6 +1,5 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
-
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -243,7 +242,6 @@ public class StoryEJB {
 			throw new IllegalArgumentException("Story must have an author");
 
 		if (story.getAuthor().getLogin().equals(this.currentUser.getName())) {
-			
 			return em.merge(story);
 		} else {
 			throw new EJBAccessException("Story's author is not the user logged");
@@ -262,7 +260,5 @@ public class StoryEJB {
 		} else {
 			throw new EJBAccessException("Story's author is not the user logged");
 		}
-		
-		
 	}
 }

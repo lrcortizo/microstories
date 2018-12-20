@@ -27,5 +27,5 @@
 	<Story id="18" title="Microrrelato 18" text="Texto del microrrelato 18" author="pepe" publicationDate="2005-03-09" Genre="STORY" primaryTheme="CHILDREN" views="3"/>
 	<Story id="19" title="Microrrelato 19" text="Texto del microrrelato 19" author="pepe" publicationDate="2005-03-09" Genre="NANOSTORY" primaryTheme="HORROR" views="34"/>
 	<Story id="20" title="Microrrelato 20" text="Texto del microrrelato 20" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="2"/>
-	<Story id="21" title="Microrrelato 21" text="Texto del microrrelato 21" author="pepe" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="12"/>
+	<Story id="21" title="Microrrelato 21" text="Texto del microrrelato 21" author="ana" publicationDate="2005-03-09" Genre="POETRY" primaryTheme="HORROR" views="12"/>
 </dataset>

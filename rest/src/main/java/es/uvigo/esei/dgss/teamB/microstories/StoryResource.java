@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -120,5 +121,21 @@ public class StoryResource {
 					.build();
 	}
 	
-    
+	@PUT
+	public Response updateStory(Story story) {
+		this.storyEjb.updateStory(story);
+		
+		return Response.ok().build();
+	}
+	
+	@Path("{id}")
+	@DELETE
+	public Response deleteStory(@PathParam("id") Integer id) {
+		if (id == null)
+			throw new IllegalArgumentException("id can't be null");
+		
+		this.storyEjb.removeStory(id);
+		
+		return Response.ok().build();
+	}
 }
