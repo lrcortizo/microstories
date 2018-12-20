@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static java.util.Collections.unmodifiableCollection;
 import static java.util.Objects.requireNonNull;
@@ -32,8 +33,7 @@ public class Author extends User implements Serializable {
 			mappedBy = "author",
 			targetEntity = Favourite.class,
 			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			fetch = FetchType.EAGER
+			orphanRemoval = true
 		)
 	private Collection<Story> favouriteStories;
 	
