@@ -49,4 +49,12 @@ public class MyStoriesManagedBean {
 		this.setTotalPagination(storyEJB.listMyStoriesTotalOfPagination(nStories));
 		return storyEJB.listMyStories(nPagination, nStories);
 	}
+	
+	public String deleteStory(int id) {
+
+		storyEJB.removeStory(id);
+		return "/mystories.xhtml?faces-redirect=true";
+		
+	}
+	
 }
