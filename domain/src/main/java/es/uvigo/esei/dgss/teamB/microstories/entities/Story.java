@@ -156,9 +156,13 @@ public class Story {
         return publicationDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
-        this.publicationDate = publicationDate;
-    }
+	public void setPublicationDate(Date publicationDate) {
+		if (publicationDate != null) {
+			inclusiveBetween(new Date(0), new Date(), publicationDate,
+					"publicationDate must be previous to the current time");
+		}
+		this.publicationDate = publicationDate;
+	}
 
     public Genre getGenre() {
         return genre;

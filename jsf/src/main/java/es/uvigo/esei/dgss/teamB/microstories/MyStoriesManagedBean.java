@@ -1,5 +1,6 @@
 package es.uvigo.esei.dgss.teamB.microstories;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -55,6 +56,21 @@ public class MyStoriesManagedBean {
 		storyEJB.removeStory(id);
 		return "/mystories.xhtml?faces-redirect=true";
 		
+	}
+
+	public String publicateStory(int id) {
+
+		Story storyPublicate = storyEJB.findStory(id);
+
+		if (storyPublicate.getPublicationDate() != null) {
+			storyPublicate.setPublicationDate(null);
+		} else {
+			storyPublicate.setPublicationDate(new Date());
+		}
+
+		storyEJB.updateStory(storyPublicate);
+
+		return "/mystories.xhtml?faces-redirect=true";
 	}
 	
 }

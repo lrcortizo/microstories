@@ -167,6 +167,11 @@ public class StoryTest {
 		new Story(title, text, author, null, story, primaryTheme, secondaryTheme, views);
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testStoryTitleTextAuthorGenreThemesDateAfterCurrent() {
+		new Story(title, text, author, futureDate, story, primaryTheme, secondaryTheme, views);
+	}
+
 	@Test(expected = NullPointerException.class)
 	public void testStoryTitleTextAuthorGenreThemesNullGenre() {
 
@@ -361,6 +366,13 @@ public class StoryTest {
 
 		newStory.setPublicationDate(null);
 
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetPublicationDateAfterCurrent() {
+		final Story newStory = new Story(title, text, author, publicationDate, nanostory, primaryTheme, secondaryTheme, views);
+
+		newStory.setPublicationDate(futureDate);
 	}
 
 	@Test(expected = NullPointerException.class)
