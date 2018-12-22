@@ -261,4 +261,39 @@ public class StoryEJB {
 			throw new EJBAccessException("Story's author is not the user logged");
 		}
 	}
+	
+	@RolesAllowed("AUTHOR")
+	public List<Story> listFavouriteStories(Integer nPagination, Integer nStories) {
+
+		final Author author = em.find(Author.class, currentUser.getName());
+		
+		if(nPagination == null) { nPagination=1;}
+		if(nStories == null) {nStories=9;}
+
+		return em.createQuery("SELECT favourite.story FROM Favourite favourite "
+				+ "WHERE favourite.author = :a", Story.class)
+				.setParameter("a", author).setMaxResults(nStories)
+				.setFirstResult((nPagination - 1) * nStories)
+				.getResultList();
+
+	}
+	
+	@RolesAllowed("AUTHOR")
+	public Integer listFavouriteStoriesTotalOfPagination(Integer nStories) {
+
+		final Author author = em.find(Author.class, currentUser.getName());
+
+		int nTotalStories = em.createQuery(
+				"SELECT favourite.story FROM Favourite favourite "
+						+ "WHERE favourite.author = :a",
+				Story.class).setParameter("a", author).getResultList().size();
+
+		if (nTotalStories % nStories != 0) {
+			nTotalStories = (nTotalStories / nStories) + 1;
+		} else {
+			nTotalStories = (nTotalStories / nStories);
+		}
+
+		return nTotalStories;
+	}
 }
