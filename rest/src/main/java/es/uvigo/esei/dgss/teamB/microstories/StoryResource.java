@@ -138,4 +138,28 @@ public class StoryResource {
 		
 		return Response.ok().build();
 	}
+	
+	@Path("user/{login}/microstory/favourite")
+	@GET
+	public Response listFavouriteStories(@PathParam("login") String login, @QueryParam("pagination") Integer pagination, @QueryParam("items") Integer items) {
+		this.storyEjb.listFavouriteStories(pagination, items);
+		
+    	if(pagination == null) {
+    		if (items == null) {
+    			return Response.ok(this.storyEjb.listFavouriteStories(1, 10)).build();
+    		} else if (items < 101) {
+    			return Response.ok(this.storyEjb.listFavouriteStories(1, items)).build();
+    		} else {
+    			return Response.ok("You cant get more than 100 stories").build();
+    		}
+    	} else {
+    		if (items == null) {
+    			return Response.ok(this.storyEjb.listFavouriteStories(pagination, 10)).build();
+    		} else if (items < 101) {
+    			return Response.ok(this.storyEjb.listFavouriteStories(pagination, items)).build();
+    		} else {
+    			return Response.ok("You cant get more than 100 stories").build();
+    		}
+    	}
+	}
 }

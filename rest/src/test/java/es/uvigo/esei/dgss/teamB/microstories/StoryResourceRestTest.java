@@ -293,6 +293,36 @@ public class StoryResourceRestTest {
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterDelete() {}
 	
+	//List favourite stories
+	
+	@Test @InSequence(25)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeListFavouriteStories() {}
+	
+	@Test @InSequence(26)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testListFavouriteStories(
+		@ArquillianResteasyResource(BASE_PATH +"user/ana/microstory/favourite/") ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		
+	    final Response response = webTarget.request().get();
+
+	    assertThat(response, hasOkStatus());
+	    
+	    final List<Story> list = ListStoryType.readEntity(response);
+	    assertThat(list, containsStoriesInAnyOrder(list));
+		    
+	   
+	}
+	
+	@Test @InSequence(27)
+	@ShouldMatchDataSet("stories.xml")
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterListFavouriteStories() {}
+	
 }
 
 
