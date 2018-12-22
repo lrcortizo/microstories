@@ -24,6 +24,15 @@ public class Favourite {
 	@Id
 	@ManyToOne
 	private Story story;
+	
+	public Favourite() {}
+	
+	public Favourite(Author author, Story story) {
+		this.author = author;
+		this.story = story;
+	}
+
+
 
 	public Author geAuthor() {
 		return author;

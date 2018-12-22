@@ -63,7 +63,7 @@ public class Story {
 			orphanRemoval = true,
 			fetch = FetchType.EAGER
 		)
-	private Collection<Author> isFavourite;
+	private Collection<Favourite> isFavourite;
 
     public Story() {
     }
@@ -197,21 +197,21 @@ public class Story {
         this.views = views;
     }
 
-	public Collection<Author> getIsFavourite() {
+	public Collection<Favourite> getIsFavourite() {
 		return isFavourite;
 	}
 
-	public void addIsFavourite(Author author) {
-        if (author != null) {
-            author.internalAddFavouriteStory(this);
-        	this.isFavourite.add(author);
+	public void addIsFavourite(Favourite favourite) {
+        if (favourite != null) {
+        	this.isFavourite.add(favourite);
+        	favourite.setStory(this);
         }
 	}
 	
-	public void removeIsFavourite(Author author) {
-        if (author != null) {
-            author.internalRemoveFavouriteStory(this);
-        	this.isFavourite.remove(author);
+	public void removeIsFavourite(Favourite favourite) {
+        if (favourite != null) {
+        	this.isFavourite.remove(favourite);
+        	favourite.setStory(null);
         }
 	}
     

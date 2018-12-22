@@ -14,10 +14,11 @@ import static org.junit.Assert.assertThat;
 
 public class AuthorTest extends UserTest {
 	private Story[] stories;
-	private Story[] favourites;
+	private Favourite[] favourites;
  	private Story storyOwned;
- 	private Story favouriteStoryOwned;
+ 	private Favourite favouriteStoryOwned;
 	private Story storyNotOwned;
+	private Favourite favouriteStoryNotOwned;
 	private Story[] storiesWithoutAuthor;
 
 	@Before
@@ -27,12 +28,13 @@ public class AuthorTest extends UserTest {
 			new Story("Title2", "Text2", null, new Date(), Genre.POETRY, Theme.THRILLER, Theme.HORROR,0),
 		};
 		
-		this.favourites = new Story[] {
-			new Story("Title1", "Text1", null, new Date(), Genre.STORY, Theme.ADVENTURE, Theme.CHILDREN,0),
-			new Story("Title2", "Text2", null, new Date(), Genre.POETRY, Theme.THRILLER, Theme.HORROR,0),
+		this.favourites = new Favourite[] {
+			new Favourite(new Author(login, password), this.stories[0]),
+			new Favourite(new Author(login, password), this.stories[1])
 		};
 
 		this.storyNotOwned = new Story("Title2", "Text2", null, new Date(), Genre.POETRY, Theme.THRILLER, Theme.HORROR,0);
+		this.favouriteStoryNotOwned = new Favourite(new Author(login, password), this.stories[1]);
 		this.storyOwned = this.stories[1];
 		this.favouriteStoryOwned = this.favourites[1];
 		this.storiesWithoutAuthor = copyOfRange(this.stories, 0, 1);
@@ -224,10 +226,9 @@ public class AuthorTest extends UserTest {
 	public void testAddFavouriteStory() {
 		final Author author = new Author(login, password);
 		
-		author.addFavouriteStory(storyNotOwned);
+		author.addFavouriteStory(favouriteStoryNotOwned);
 		
-		assertThat(author.getFavouriteStories(), contains(storyNotOwned));
-		assertThat(storyNotOwned.getIsFavourite().contains(author), is(true));
+		assertThat(author.getFavouriteStories(), contains(favouriteStoryNotOwned));
 	}
 
 	@Test
@@ -252,7 +253,6 @@ public class AuthorTest extends UserTest {
 
 		author.removeFavouriteStory(favouriteStoryOwned);
 		assertThat(author.getFavouriteStories().contains(favouriteStoryOwned), is(false));
-		assertThat(favouriteStoryOwned.getIsFavourite().contains(author), is(false));
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -266,24 +266,24 @@ public class AuthorTest extends UserTest {
 	public void testRemoveFavouriteStoryNotOwned() {
 		final Author author = new Author(login, password);
 
-		author.removeFavouriteStory(storyNotOwned);
+		author.removeFavouriteStory(favouriteStoryNotOwned);
 	}
 	
 	@Test
 	public void testOwnsFavouriteStory() {
 		final Author author = new Author(login, password, favourites, stories);
 
-		for (Story story : favourites) {
-			assertThat(author.ownsFavouriteStory(story), is(true));
+		for (Favourite favourite : favourites) {
+			assertThat(author.ownsFavouriteStory(favourite), is(true));
 		}
-		assertThat(author.ownsFavouriteStory(storyNotOwned), is(false));
+		assertThat(author.ownsFavouriteStory(favouriteStoryNotOwned), is(false));
 	}
 
 	@Test
 	public void testOwnsFavouriteStoryNotOwned() {
 		final Author author = new Author(login, password, favourites, stories);
 
-		assertThat(author.ownsFavouriteStory(storyNotOwned), is(false));
+		assertThat(author.ownsFavouriteStory(favouriteStoryNotOwned), is(false));
 	}
 
 	@Test
@@ -291,46 +291,6 @@ public class AuthorTest extends UserTest {
 		final Author author = new Author(login, password, favourites, stories);
 
 		assertThat(author.ownsFavouriteStory(null), is(false));
-	}
-	
-	@Test
-	public void testInternalAddFavouriteStory() {
-		final Author author = new Author(login, password);
-
-		author.internalAddStory(storyNotOwned);
-
-		assertThat(author.getStories(), contains(storyNotOwned));
-	}
-
-	@Test
-	public void testInternalAddFavouriteStoryAlreadyOwned() {
-		final Author author = new Author(login, password, favourites, stories);
-
-		author.internalAddFavouriteStory(favouriteStoryOwned);
-
-		assertThat(author.getStories(), containsInAnyOrder(stories));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testInternalAddFavouriteStoryNull() {
-		final Author author = new Author(login, password);
-
-		author.internalAddFavouriteStory(null);
-	}
-
-	@Test
-	public void testInternalRemoveFavouriteStory() {
-		final Author author = new Author(login, password, favourites, stories);
-
-		author.internalRemoveFavouriteStory(favouriteStoryOwned);
-		assertThat(author.getFavouriteStories().contains(favouriteStoryOwned), is(false));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testInternalRemoveFavouriteStoryNull() {
-		final Author author = new Author(login, password, favourites, stories);
-
-		author.internalRemoveFavouriteStory(null);
 	}
 	
 }
