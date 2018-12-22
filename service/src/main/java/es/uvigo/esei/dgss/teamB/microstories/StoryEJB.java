@@ -10,6 +10,7 @@ import java.util.List;
 
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Author;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Favourite;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -295,5 +296,22 @@ public class StoryEJB {
 		}
 
 		return nTotalStories;
+	}
+
+	@RolesAllowed("AUTHOR")
+	public Favourite addFavourite(int storyId) {
+
+		final Story story = em.find(Story.class, storyId);
+
+		final Author author = em.find(Author.class, currentUser.getName());
+
+		Favourite favourite = new Favourite();
+
+		favourite.setAuthor(author);
+		favourite.setStory(story);
+		
+		em.persist(favourite);
+		
+		return favourite;
 	}
 }

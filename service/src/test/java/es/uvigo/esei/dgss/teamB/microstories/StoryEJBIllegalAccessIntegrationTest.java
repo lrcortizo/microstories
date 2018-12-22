@@ -145,4 +145,16 @@ public class StoryEJBIllegalAccessIntegrationTest {
 		asAuthor.run(this::testListMyStoriesNoRole);
 	}
 
+	@Test(expected = EJBAccessException.class)
+	public void testAddFavouriteNoRole() {
+
+		storyEjb.addFavourite(1);
+	}
+
+	@Test
+	public void testAddFavouriteRoleAuthor() {
+		principal.setName("pepe");
+		asAuthor.run(this::testAddFavouriteNoRole);
+	}
+
 }
