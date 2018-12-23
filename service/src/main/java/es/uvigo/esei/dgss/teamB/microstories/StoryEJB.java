@@ -314,4 +314,22 @@ public class StoryEJB {
 		
 		return favourite;
 	}
+
+	@RolesAllowed("AUTHOR")
+	public Favourite removeFavourite(int storyId) {
+
+		final Story story = em.find(Story.class, storyId);
+
+		final Author author = em.find(Author.class, currentUser.getName());
+
+		Favourite favourite = new Favourite();
+
+		favourite.setAuthor(author);
+		favourite.setStory(story);
+
+		em.createQuery("DELETE FROM Favourite WHERE story = :s AND author= :b").setParameter("b", author)
+				.setParameter("s", story).executeUpdate();
+
+		return favourite;
+	}
 }

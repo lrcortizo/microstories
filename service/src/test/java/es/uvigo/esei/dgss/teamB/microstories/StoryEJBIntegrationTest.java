@@ -483,4 +483,49 @@ public class StoryEJBIntegrationTest {
 				is((equalTo(numStoriesBefore + 1))));
 	}
 
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testRemoveFavouriteStoryAsUser() {
+
+		storyEjb.removeFavourite(1);
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testRemoveFavouriteAsAuthor() {
+
+		principal.setName("ana");
+
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size());
+
+		assertThat(asAuthor.call(() -> storyEjb.addFavourite(1)), is(not(equalTo(nullValue()))));
+
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()),
+				is((equalTo(numStoriesBefore + 1))));
+
+		assertThat(asAuthor.call(() -> storyEjb.removeFavourite(1)), is(not(equalTo(nullValue()))));
+
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()),
+				is((equalTo(numStoriesBefore))));
+	}
+
+	@Test(expected = javax.ejb.EJBTransactionRolledbackException.class)
+	@UsingDataSet("stories.xml")
+	public void testRemoveFavouriteNoExistStoryAsAuthor() {
+
+		principal.setName("ana");
+
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size());
+
+		assertThat(asAuthor.call(() -> storyEjb.addFavourite(40)), is(not(equalTo(nullValue()))));
+
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()),
+				is((equalTo(numStoriesBefore + 1))));
+
+		assertThat(asAuthor.call(() -> storyEjb.removeFavourite(40)), is(not(equalTo(nullValue()))));
+
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()),
+				is((equalTo(numStoriesBefore))));
+	}
+
 }

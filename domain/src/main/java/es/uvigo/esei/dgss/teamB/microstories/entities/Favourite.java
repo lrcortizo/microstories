@@ -34,7 +34,7 @@ public class Favourite {
 
 
 
-	public Author geAuthor() {
+	public Author getAuthor() {
 		return author;
 	}
 
