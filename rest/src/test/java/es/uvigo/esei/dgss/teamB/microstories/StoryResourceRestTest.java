@@ -18,7 +18,6 @@ import es.uvigo.esei.dgss.teamB.microstories.GenericTypes.ListStoryType;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,7 +30,6 @@ import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.cont
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStoryWithoutRelations;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.newStory;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.existentStory;
-import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.storyToUpdate;
 import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasCreatedStatus;
 import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasOkStatus;
 import static javax.ws.rs.client.Entity.json;
@@ -322,6 +320,27 @@ public class StoryResourceRestTest {
 	@ShouldMatchDataSet("stories.xml")
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterListFavouriteStories() {}
+	
+	@Test @InSequence(28)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeDeleteFavourite() {}
+	
+	@Test @InSequence(29)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testDeleteFavourite(
+		@ArquillianResteasyResource(BASE_PATH + "user/ana/microstory/favourite/1") ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		final Response response = webTarget.request().delete();
+
+	    assertThat(response, hasOkStatus());
+	}
+	
+	@Test @InSequence(30)
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterDeleteFavourite() {}
 	
 }
 

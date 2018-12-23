@@ -162,4 +162,15 @@ public class StoryResource {
     		}
     	}
 	}
+	
+	@Path("/user/{login}/microstory/favourite/{id}")
+	@DELETE
+	public Response removeFavourite(@PathParam("id") Integer id) {
+		if (id == null)
+			throw new IllegalArgumentException("id can't be null");
+		
+		this.storyEjb.removeFavourite(id);
+		
+		return Response.ok().build();
+	}
 }
