@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+	<ui:define name="content">
+		<div class="container">
+			<h:panelGroup rendered="${login.currentUser.name == 'anonymous'}">
+				<div class="neededLogin">
+					This is a admin view, if you want see your private view please <a
+						href="#" class="btn btn-success" data-toggle="modal"
+						data-target="#loginModal"> Login </a>
+				</div>
+			</h:panelGroup>
+
+			<h:panelGroup rendered="${login.currentUser.name != 'anonymous'}">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="header-mystories">
+							<h2>My Stories:</h2>
+							<f:metadata>
+								<f:viewParam name="nPagination" value="#{mystories.nPagination}" />
+							</f:metadata>
+						</div>
+					</div>
+					<ui:fragment rendered="#{empty mystories.listMyStories()}">
+						<div class="col-md-12">
+							<p class="warning">You didn`t write Stories</p>
+						</div>
+					</ui:fragment>
+					<ui:fragment rendered="#{not empty  mystories.listMyStories()}">
+						
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">Title</th>
+										<th scope="col">View</th>
+										<th scope="col">Publish</th>
+										<th scope="col">Edit</th>
+										<th scope="col">Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<ui:repeat var="story" value="#{ mystories.listMyStories()}">
+									<tr>
+										<td>
+											<h:outputLabel value="#{story.title}" />
+										</td>
+										<td>
+											<h:outputLink value="view.xhtml" styleClass="btn btn-primary">
+												<f:param name="id" value="#{story.id}" />
+											    <h:outputText value="View" />
+											</h:outputLink>
+										</td>
+										<td>
+											<button type="button" class="btn btn-success" data-toggle="modal" data-target="#publish#{story.id}">
+											Publish
+											</button>
+										</td>
+										<td>
+											<h:outputLink value="editStory.xhtml" styleClass="btn btn-warning">
+												<f:param name="id" value="#{story.id}" />
+											    <h:outputText value="Edit" />
+											</h:outputLink>
+										</td>
+										<td>
+											<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete#{story.id}">
+											  Delete
+											</button>
+										</td>
+										<!-- Modal -->
+										<div class="modal fade" id="publish#{story.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										  <div class="modal-dialog" role="document">
+										    <div class="modal-content">
+										      <div class="modal-header">
+										        <h5 class="modal-title" id="exampleModalLabel">Publish Story #{story.title}</h5>
+										        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										          <span aria-hidden="true">&times;</span>
+										        </button>
+										      </div>
+										      <div class="modal-body">
+										      <ui:fragment rendered="#{story.publicationDate == null}">
+										        Are you sure to publicate?
+										      </ui:fragment>
+										      <ui:fragment rendered="#{story.publicationDate != null}">
+										        Are you sure to unpublicate?
+										      </ui:fragment>
+										      </div>
+										      <div class="modal-footer">
+										        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										        <h:form>
+											        <h:commandButton value="Save" class="btn btn-success" action="#{mystories.publicateStory(story.id)}">
+													</h:commandButton>
+												</h:form>
+										      </div>
+										    </div>
+										  </div>
+										</div>
+
+										<div class="modal fade" id="delete#{story.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										  <div class="modal-dialog" role="document">
+										    <div class="modal-content">
+										      <div class="modal-header">
+										        <h5 class="modal-title" id="exampleModalLabel">Delete Story #{story.title}</h5>
+										        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										          <span aria-hidden="true">&times;</span>
+										        </button>
+										      </div>
+										      <div class="modal-body">
+										        Are you sure?
+										      </div>
+										      <div class="modal-footer">
+										        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										        <h:form>
+											        <h:commandButton value="Delete" class="btn btn-danger" action="#{mystories.deleteStory(story.id)}">
+					            					</h:commandButton>
+					            				</h:form>	
+										      </div>
+										    </div>
+										  </div>
+										</div>
+																			
+									</tr>
+									</ui:repeat>
+									
+								</tbody>
+							</table>
+	
+	
+					</ui:fragment>
+				</div>
+			</h:panelGroup>
+			<div class="row">
+				<div class="col-md-12">
+					<nav aria-label="Page navigation example">
+					<ul class="pagination justify-content-center">
+						<ui:fragment rendered="#{mystories.nPagination != 1}">
+							<li class="page-item"><h:outputLink styleClass="page-link"
+									value="mystories.xhtml">
+									<f:param name="nPagination" value="#{mystories.nPagination-1}" />
+									<h:outputLabel value="Previous" />
+								</h:outputLink></li>
+							<li class="page-item"><h:outputLink styleClass="page-link"
+									value="mystories.xhtml">
+									<f:param name="nPagination" value="#{mystories.nPagination-1}" />
+									<h:outputLabel value="#{mystories.nPagination-1}" />
+								</h:outputLink></li>
+						</ui:fragment>
+						<li class="page-item"><h:outputLink styleClass="page-link"
+								value="mystories.xhtml">
+								<f:param name="nPagination" value="#{mystories.nPagination}" />
+								<h:outputLabel value="#{mystories.nPagination}" />
+							</h:outputLink></li>
+						<ui:fragment
+							rendered="#{mystories.nPagination lt mystories.totalPagination}">
+							<li class="page-item"><h:outputLink styleClass="page-link"
+									value="mystories.xhtml">
+									<f:param name="nPagination" value="#{mystories.nPagination+1}" />
+									<h:outputLabel value="#{mystories.nPagination+1}" />
+								</h:outputLink></li>
+							<li class="page-item"><h:outputLink styleClass="page-link"
+									value="mystories.xhtml">
+									<f:param name="nPagination" value="#{mystories.nPagination+1}" />
+									<h:outputLabel value="Next" />
+								</h:outputLink></li>
+						</ui:fragment>
+					</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

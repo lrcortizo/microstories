@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/template/adminLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+	<ui:define name="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h:panelGroup rendered="${login.currentUser.name == 'anonymous'}">
+						<div class="neededLogin">
+							This is a admin view, if you want see your private view please 
+							<a href="#" class="btn btn-success" data-toggle="modal" data-target="#loginModal">
+								Login
+							</a>
+						</div>					
+						
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="${login.currentUser.name != 'anonymous'}">
+						<div class="cardHome">
+							<div class="card">
+								<div class="card-body">
+							    	<h5 class="card-title">Hi!, #{login.currentUser}</h5>
+							    	<p class="card-text">
+							    		<ul>
+							    			<li> 
+							    				<p>
+							    					See your stories 
+							    					<a href="mystories.xhtml"> 
+							    						<img src="img/showStories.svg" width="50" />
+							    					</a>
+							    				</p>
+							    			</li>
+							    			<li> 
+							    				<p>
+							    					Create a story 
+													<a href="createStory.xhtml">
+							    						<img src="img/createStory.svg" width="50" />
+							    					</a>
+							    				</p>
+							    			</li>
+							    			<li> 
+							    				<p>
+							    					Your favourites stories
+							    					<a href="myFavourites.xhtml"> 
+							    						<img src="img/fav.png" width="50" />
+							    					</a>
+							    				</p>
+							    			</li>
+							    		</ul>
+							    	</p>
+							  	</div>
+							</div>
+						</div>
+					</h:panelGroup>
+				
+				</div>
+			</div>
+		</div>
+	</ui:define>
+	
+</ui:composition>

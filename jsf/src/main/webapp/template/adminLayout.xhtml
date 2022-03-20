@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>MicroStories</title>
+	<meta name="description"
+		content="MicroStories" />
+	<link
+		href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700"
+		rel="stylesheet" />
+	<link
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="styles/style.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="container">
+		<nav id="navbar" class="d-none d-sm-block navbarAdmin">
+			<ul>
+				<li>
+					<a href="home.xhtml">Home</a>
+				</li>
+				<h:panelGroup rendered="${login.currentUser.name != 'anonymous'}">
+					<li>
+						<a href="./">Public View</a>
+					</li>
+					<li>
+						<a href="mystories.xhtml">My stories</a>
+					</li>
+					<li>
+						<a href="#">My favs</a>
+					</li>
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="${login.currentUser.name == 'anonymous'}">					
+					<li class="navbarRight" data-toggle="modal" data-target="#loginModal">
+						<a href="#">
+							Login
+						</a>
+					</li>
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="${login.currentUser.name != 'anonymous'}">
+					<li class="navbarRight logoutNavbar">
+						#{login.currentUser}
+						<h:commandButton class="btn btn-secondary" value="Logout" action="#{login.doLogout}" />
+					</li>
+				</h:panelGroup>
+					
+			</ul>
+		</nav>
+		
+		
+		<!-- Modal LOGIN-->
+		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+		    	<div class="modal-content">
+		      		<div class="modal-header">
+		        		<h5 class="modal-title">Login </h5>
+		        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          			<span aria-hidden="true">X</span>
+		        		</button>
+		      		</div>
+		      		<div class="modal-body">
+		        		<h:form>						
+		        			<div class="form-group">
+					    		<label> Username</label>
+					    		<h:inputText value="#{login.login}" class="form-control" />
+					  		</div>
+					  		<div class="form-group">
+					    		<label>Password</label>
+					    		<h:inputSecret value="#{login.password}" class="form-control searchNav mb-2 mr-sm-2" />
+					  		</div>
+							<h:commandButton value = "Login" class="btn btn-primary" action="#{login.doLogin}"  /> 
+		        		</h:form>
+		      		</div>
+		      		<div class="modal-footer">
+		        		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      		</div>
+		    	</div>
+		  	</div>
+		</div>
+		<nav id="navbarMobile" class="d-block d-sm-none">
+			<ul>
+				<li>
+					<a href="./">Home</a>
+				</li>
+				<li>
+					<img id="iconSearchMobile" src="img/user.svg" width="40"/>
+				</li>
+				<li class="formMobile">
+					<h:form class="form-inline">
+						<h:inputText value="#{search.searchInput}" class="form-control searchNav mb-2 mr-sm-2"/>
+						<div id="ghostButton">
+							<h:commandButton action="search?faces-redirect=true&amp;includeViewParams=true">
+
+							</h:commandButton>
+
+						</div>
+						<h:commandLink  action="search?faces-redirect=true&amp;includeViewParams=true" >
+							<img id="iconSearchMobile" src="img/search.svg" width="10"/>
+						</h:commandLink>
+					</h:form>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div id="content">
+		<ui:insert name="content"></ui:insert>
+	</div>
+	<footer id="footerAdmin">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<div id="signatureFooter">
+					<p>MicroStories</p>
+					<p>TeamB</p>
+				</div>
+			</div>
+
+		</div>
+	</footer>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+</body>
+</html>

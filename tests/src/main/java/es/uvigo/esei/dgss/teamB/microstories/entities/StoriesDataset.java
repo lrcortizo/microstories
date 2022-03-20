@@ -45,46 +45,65 @@ public class StoriesDataset {
                         genresSet.contains(story.getSecondaryTheme()))
                 .toArray(Story[]::new);
     }
+    
+    public static Story newStory() {
+    	
+        return new Story("Nuevo Microrrelato", "Texto del nuevo microrrelato", new Author("ana", "anapass"), new Date(), Genre.POETRY, Theme.HORROR, 32);
+    
+    }    
+    
+
+    public static Story storyToCreate() {
+
+        return new Story("Nuevo Microrrelato", "Texto del nuevo microrrelato", null, new Date(), Genre.POETRY, Theme.HORROR, 32);
+
+    }
+
+    public static Story storyToUpdate() {
+
+        return new Story(1,"Nuevo Microrrelato", "Texto del nuevo microrrelato", new Author("ana", "anapass"), new Date(), Genre.POETRY, Theme.HORROR, 32);
+
+    }
 
     public static Story[] stories() {
         return new Story[]{
-                new Story(EXISTENT_ID, "Microrrelato 1", "Texto del microrrelato 1", "Autor 1", new Date(1339970400000L), Genre.STORY, Theme.HISTORY, Theme.CHILDREN, 59),
-                new Story(STORY_WITH_TWO_THEMES_TITLE, "Texto del microrrelato 2", "Autor 2", new Date(917132400000L), Genre.NANOSTORY, Theme.ADVENTURE, Theme.ROMANTIC, 19),
-                new Story(STORY_WITH_ONE_THEME_TITLE, "Texto del microrrelato 3", "Autor 3", new Date(1110322800000L), Genre.POETRY, Theme.HISTORY, 21),
-                new Story("Microrrelato 4", "Texto del microrrelato 4", "Autor 4", new Date(1110322800000L), Genre.POETRY, Theme.CHILDREN, 34),
-                new Story("Microrrelato 5", "Texto del microrrelato 5", "Autor 5", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 55),
-                new Story("Microrrelato 6", "Texto del microrrelato 6", "Autor 6", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 76),
-                new Story("Microrrelato 7", "Texto del microrrelato 7", "Autor 7", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 94),
-                new Story("Microrrelato 8", "Texto del microrrelato 8", "Autor 8", new Date(1110322800000L), Genre.POETRY, Theme.HISTORY, 0),
-                new Story("Microrrelato 9", "Texto del microrrelato 9", "Autor 9", new Date(1110322800000L), Genre.POETRY, Theme.ADVENTURE, 0),
-                new Story("Microrrelato 10", "Texto del microrrelato 10", "Autor 10", new Date(1110322800000L), Genre.POETRY, Theme.THRILLER, 2),
-                new Story("Microrrelato 11", "Texto del microrrelato 11", "Autor 11", new Date(1110322800000L), Genre.POETRY, Theme.CHILDREN, 0),
-                new Story("Microrrelato 12", "Texto del microrrelato 12", "Autor 12", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 32),
-                new Story("Microrrelato 13", "Texto del microrrelato 13", "Autor 13", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 13),
-                new Story("Microrrelato 14", "Texto del microrrelato 14", "Autor 14", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 81),
-                new Story("Microrrelato 15", "Texto del microrrelato 15", "Autor 15", new Date(1110322800000L), Genre.POETRY, Theme.HISTORY, 8),
-                new Story("Microrrelato 16", "Texto del microrrelato 16", "Autor 16", new Date(1110322800000L), Genre.POETRY, Theme.ADVENTURE, 23),
-                new Story("Microrrelato 17", "Texto del microrrelato 17", "Autor 17", new Date(1110322800000L), Genre.POETRY, Theme.THRILLER, 1),
-                new Story("Microrrelato 18", "Texto del microrrelato 18", "Autor 18", new Date(1110322800000L), Genre.POETRY, Theme.CHILDREN, 3),
-                new Story("Microrrelato 19", "Texto del microrrelato 19", "Autor 19", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 34),
-                new Story("Microrrelato 20", "Texto del microrrelato 20", "Autor 20", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 2),
-                new Story("Microrrelato 21", "Texto del microrrelato 21", "Autor 21", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 12),
+                new Story(EXISTENT_ID, "Microrrelato 1", "Texto del microrrelato 1", new Author("pepe", "pepepass"), new Date(1339970400000L), Genre.STORY, Theme.HISTORY, Theme.CHILDREN, 59),
+                new Story(STORY_WITH_TWO_THEMES_TITLE, "Texto del microrrelato 2", new Author("pepe", "pepepass"), new Date(917132400000L), Genre.NANOSTORY, Theme.ADVENTURE, Theme.ROMANTIC, 19),
+                new Story(STORY_WITH_ONE_THEME_TITLE, "Texto del microrrelato 3", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HISTORY, 21),
+                new Story("Microrrelato 4", "Texto del microrrelato 4", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.CHILDREN, 34),
+                new Story("Microrrelato 5", "Texto del microrrelato 5", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 55),
+                new Story("Microrrelato 6", "Texto del microrrelato 6", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 76),
+                new Story("Microrrelato 7", "Texto del microrrelato 7", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 94),
+                new Story("Microrrelato 8", "Texto del microrrelato 8", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HISTORY, 0),
+                new Story("Microrrelato 9", "Texto del microrrelato 9", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.ADVENTURE, 0),
+                new Story("Microrrelato 10", "Texto del microrrelato 10", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.THRILLER, 2),
+                new Story("Microrrelato 11", "Texto del microrrelato 11", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.CHILDREN, 0),
+                new Story("Microrrelato 12", "Texto del microrrelato 12", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 32),
+                new Story("Microrrelato 13", "Texto del microrrelato 13", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 13),
+                new Story("Microrrelato 14", "Texto del microrrelato 14", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 81),
+                new Story("Microrrelato 15", "Texto del microrrelato 15", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HISTORY, 8),
+                new Story("Microrrelato 16", "Texto del microrrelato 16", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.ADVENTURE, 23),
+                new Story("Microrrelato 17", "Texto del microrrelato 17", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.THRILLER, 1),
+                new Story("Microrrelato 18", "Texto del microrrelato 18", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.CHILDREN, 3),
+                new Story("Microrrelato 19", "Texto del microrrelato 19", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 34),
+                new Story("Microrrelato 20", "Texto del microrrelato 20", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 2),
+                new Story("Microrrelato 21", "Texto del microrrelato 21", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 12),
 
         };
     }
 
     public static Story[] mostPopularStories() {
         return new Story[]{
-                new Story(EXISTENT_ID, "Microrrelato 1", "Texto del microrrelato 1", "Autor 1", new Date(1339970400000L), Genre.STORY, Theme.HISTORY, Theme.CHILDREN, 59),
-                new Story(3, STORY_WITH_ONE_THEME_TITLE, "Texto del microrrelato 3", "Autor 3", new Date(1110322800000L), Genre.POETRY, Theme.THRILLER, 21),
-                new Story(4,"Microrrelato 4", "Texto del microrrelato 4", "Autor 4", new Date(1110322800000L), Genre.STORY, Theme.CHILDREN, 34),
-                new Story(5,"Microrrelato 5", "Texto del microrrelato 5", "Autor 5", new Date(1110322800000L), Genre.NANOSTORY, Theme.HORROR, 55),
-                new Story(6,"Microrrelato 6", "Texto del microrrelato 6", "Autor 6", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 76),
-                new Story(7,"Microrrelato 7", "Texto del microrrelato 7", "Autor 7", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 94),
-                new Story(12,"Microrrelato 12", "Texto del microrrelato 12", "Autor 12", new Date(1110322800000L), Genre.NANOSTORY, Theme.HORROR, 32),
-                new Story(14,"Microrrelato 14", "Texto del microrrelato 14", "Autor 14", new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 81),
-                new Story(16,"Microrrelato 16", "Texto del microrrelato 16", "Autor 16", new Date(1110322800000L), Genre.NANOSTORY, Theme.ADVENTURE, 23),
-                new Story(19,"Microrrelato 19", "Texto del microrrelato 19", "Autor 19", new Date(1110322800000L), Genre.NANOSTORY, Theme.HORROR, 34),
+                new Story(EXISTENT_ID, "Microrrelato 1", "Texto del microrrelato 1", new Author("pepe", "pepepass"), new Date(1339970400000L), Genre.STORY, Theme.HISTORY, Theme.CHILDREN, 59),
+                new Story(3, STORY_WITH_ONE_THEME_TITLE, "Texto del microrrelato 3", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.THRILLER, 21),
+                new Story(4,"Microrrelato 4", "Texto del microrrelato 4", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.STORY, Theme.CHILDREN, 34),
+                new Story(5,"Microrrelato 5", "Texto del microrrelato 5", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.NANOSTORY, Theme.HORROR, 55),
+                new Story(6,"Microrrelato 6", "Texto del microrrelato 6", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 76),
+                new Story(7,"Microrrelato 7", "Texto del microrrelato 7", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 94),
+                new Story(12,"Microrrelato 12", "Texto del microrrelato 12", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.NANOSTORY, Theme.HORROR, 32),
+                new Story(14,"Microrrelato 14", "Texto del microrrelato 14", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.POETRY, Theme.HORROR, 81),
+                new Story(16,"Microrrelato 16", "Texto del microrrelato 16", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.NANOSTORY, Theme.ADVENTURE, 23),
+                new Story(19,"Microrrelato 19", "Texto del microrrelato 19", new Author("pepe", "pepepass"), new Date(1110322800000L), Genre.NANOSTORY, Theme.HORROR, 34),
 
         };
     }
@@ -149,7 +168,8 @@ public class StoriesDataset {
     }
 
     public static Story nonExistentStory() {
-        return new Story(nonExistentStoryId(), nonExistentStoryId() + " title", nonExistentStoryId().toString() + "text", nonExistentStoryId().toString() + "author",
+        return new Story(nonExistentStoryId(), nonExistentStoryId() + " title", nonExistentStoryId().toString() + "text",
+                new Author(nonExistentStoryId().toString() + "authorlogin", nonExistentStoryId().toString() + "authorpass"),
                 new Date(), Genre.STORY, Theme.THRILLER, Theme.HORROR, 0);
     }
 

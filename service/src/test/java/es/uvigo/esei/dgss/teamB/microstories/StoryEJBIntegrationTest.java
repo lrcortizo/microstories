@@ -2,14 +2,19 @@ package es.uvigo.esei.dgss.teamB.microstories;
 
 import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
+import es.uvigo.esei.dgss.teamB.microstories.entities.Author;
+import es.uvigo.esei.dgss.teamB.microstories.service.util.security.RoleCaller;
+import es.uvigo.esei.dgss.teamB.microstories.service.util.security.TestPrincipal;
 
 import javax.annotation.security.PermitAll;
+import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 
-import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.mostPopularStories;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.storyToCreate;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.storyToUpdate;
 import static org.junit.Assert.assertThat;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +33,6 @@ import static org.hamcrest.CoreMatchers.anyOf;
 
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 import org.junit.Test;
@@ -42,13 +46,21 @@ public class StoryEJBIntegrationTest {
 	@Inject
 	private StoryEJB storyEjb;
 
+	@EJB(beanName = "author-caller")
+	private RoleCaller asAuthor;
+
+	@Inject
+	private TestPrincipal principal;
+
 	@Deployment
 	public static Archive<?> createDeployment() {
-		return ShrinkWrap.create(WebArchive.class, "test.war").addClasses(StoryEJB.class, Story.class)
+		return ShrinkWrap.create(WebArchive.class, "test.war")
+				.addClasses(StoryEJB.class, Story.class, Author.class, StorySchedulerEJB.class)
+				.addPackage(RoleCaller.class.getPackage()).addPackage(Author.class.getPackage())
 				.addPackage(Story.class.getPackage()).addAsResource("test-persistence.xml", "META-INF/persistence.xml")
 				.addAsWebInfResource("jboss-web.xml").addAsResource("arquillian.extension.persistence.properties")
 				.addAsResource("arquillian.extension.persistence.dbunit.properties")
-				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+				.addAsWebInfResource("beans.xml", "beans.xml");
 	}
 
 	// ListRecentStories
@@ -77,7 +89,9 @@ public class StoryEJBIntegrationTest {
 
 	@Test
 	public void findStoryBadId() {
-
+		System.out.println("====> " +storyEjb);
+	
+		
 		assertThat(storyEjb.findStory(1), is(nullValue()));
 	}
 
@@ -91,7 +105,7 @@ public class StoryEJBIntegrationTest {
 	
 	// getByText
 	
-	@Test
+	@Test(expected = javax.ejb.EJBException.class)
 	public void testGetByTextNull() {
 
 		assertThat(storyEjb.getByText(null, null, null), anyOf(nullValue(), empty()));
@@ -187,35 +201,331 @@ public class StoryEJBIntegrationTest {
 		
 	}
 
-	// ListMostPopularStories
+	// mostPopular
 
 	@Test
-	public void testTopTenMostPopularNull() {
+	public void testMostPopularNull() {
 
-		assertThat(storyEjb.topTenMostPopular(), anyOf(nullValue(), empty()));
+		assertThat(storyEjb.mostPopular(), anyOf(nullValue(), empty()));
 	}
 
 	@Test
 	@UsingDataSet("stories.xml")
-	public void testTopTenMostPopularMaxElementsAs10() {
+	public void testMostPopularMaxElementsAs6() {
 
-		List<Story> list = storyEjb.topTenMostPopular();
+		List<Story> list = storyEjb.mostPopular();
 
-		assertThat(list.size(), lessThan(11));
+		assertThat(list.size(), lessThan(7));
+	}
+	
+	@Test
+	public void listSearchTotalOfPaginationDBEmpty() {
+
+		Integer nStories = 9;
+
+		assertThat(storyEjb.listSearchTotalOfPagination(nStories, null, null, null), is(0));
 	}
 
 	@Test
 	@UsingDataSet("stories.xml")
-	public void testTopTenMostPopular() {
+	public void listSearchTotalOfPagination() {
 
-		List<Story> list = storyEjb.topTenMostPopular();
-		List<Story> mostPopular = Arrays.asList(mostPopularStories());
+		Integer nStories = 9;
 
-		int index = 0;
-		for (Story story : list){
-			assertThat(mostPopular.get(index).getId(), is(equalTo(story.getId())));
-			index++;
+		assertThat(storyEjb.listSearchTotalOfPagination(nStories, null, null, null), is(3));
+	}
+
+	@Test
+	public void getByTextTotalOfPaginationDBEmpty() {
+
+		Integer nStories = 9;
+
+		assertThat(storyEjb.getByTextTotalOfPagination("Microrrelato 1", nStories), is(0));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void getByTextTotalOfPagination() {
+
+		Integer nStories = 9;
+
+		assertThat(storyEjb.getByTextTotalOfPagination("Microrrelato 1", nStories), is(2));
+	}
+
+	@Test
+	public void testListMyStoriesNull() {
+		principal.setName("pepe");
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories(null,null)), anyOf(nullValue(), empty()));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testListMyStoriesAsUser() {
+
+		assertThat(storyEjb.listMyStories(null,null), is(not(equalTo(nullValue()))));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testListMyStoriesAsAuthor() {
+
+		principal.setName("ana");
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories(null,null)), is(not(equalTo(nullValue()))));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testListMyStoriesAsAuthorMaxElementsAsNormal() {
+
+		principal.setName("pepe");
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories(null, null).size()), lessThan(11));
+
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testListMyStoriesAsAuthorMaxElementsAs9() {
+
+		Integer nStories = 9;
+
+		principal.setName("pepe");
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories(null, nStories).size()), lessThan(nStories + 1));
+
+	}
+
+	@Test
+	public void ListMyStoriesTotalOfPaginationDBEmpty() {
+
+		Integer nStories = 9;
+
+		principal.setName("pepe");
+
+		assertThat( asAuthor.call(() ->storyEjb.listMyStoriesTotalOfPagination(nStories)), is(0));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void ListMyStoriesTotalOfPagination() {
+
+		Integer nStories = 9;
+
+		principal.setName("pepe");
+
+		assertThat(asAuthor.call(() ->storyEjb.listMyStoriesTotalOfPagination(nStories)), is(3));
+	}
+
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testCreateStoryAsUser() {
+
+		assertThat(storyEjb.createStory(storyToCreate()), is(not(equalTo(nullValue()))));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testCreateStoryAsAuthor() {
+
+		principal.setName("ana");
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listMyStories(null,null).size());
+
+		assertThat(asAuthor.call(() -> storyEjb.createStory(storyToCreate())), is(not(equalTo(nullValue()))));
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories(null,null).size()), is((equalTo(numStoriesBefore+1))));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testUpdateStoryAsUser() {
+
+		assertThat(storyEjb.updateStory(storyToUpdate()), is(not(equalTo(nullValue()))));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testUpdateStoryAsAuthor() {
+
+		principal.setName("ana");
+		assertThat(asAuthor.call(() -> storyEjb.updateStory(storyToUpdate())), is(not(equalTo(nullValue()))));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testUpdateStoryAsDifferentAuthor() {
+
+		principal.setName("pepe");
+		assertThat(asAuthor.call(() -> storyEjb.updateStory(storyToUpdate())), is(not(equalTo(nullValue()))));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	@UsingDataSet("stories.xml")
+	public void testUpdateStoryAuthorNull() {
+		try {
+			principal.setName("ana");
+			Story storyToUpdate = storyToUpdate();
+			storyToUpdate.setAuthor(null);
+			asAuthor.call(() -> storyEjb.updateStory(storyToUpdate));
+		}catch(EJBTransactionRolledbackException e) {
+			throw (IllegalArgumentException) e.getCause();
 		}
 	}
 	
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testRemoveStoryAsUser() {
+
+		storyEjb.removeStory(1);
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testRemoveStoryAsAuthor() {
+
+		int nStories = 100;
+		principal.setName("pepe");
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listMyStories(null,nStories).size());
+
+		asAuthor.call(() -> storyEjb.removeStory(1));
+		assertThat(asAuthor.call(() -> storyEjb.listMyStories(null,nStories).size()), is((equalTo(numStoriesBefore-1))));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testRemoveStoryAsDifferentAuthor() {
+
+		principal.setName("ana");
+		asAuthor.call(() -> storyEjb.removeStory(1));
+	}
+	
+	//List favourite stories
+	@Test
+	public void testListFavouriteStoriesNull() {
+		principal.setName("pepe");
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null,null)), anyOf(nullValue(), empty()));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testListFavouriteStoriesAsUser() {
+
+		assertThat(storyEjb.listFavouriteStories(null,null), is(not(equalTo(nullValue()))));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testListFavouriteStoriesAsAuthor() {
+
+		principal.setName("ana");
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null,null)), is(not(equalTo(nullValue()))));
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testListFavouriteStoriesAsAuthorMaxElementsAsNormal() {
+
+		principal.setName("pepe");
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()), lessThan(11));
+
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testListFavouriteStoriesAsAuthorMaxElementsAs9() {
+
+		Integer nStories = 9;
+
+		principal.setName("pepe");
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, nStories).size()), lessThan(nStories + 1));
+
+	}
+
+	@Test
+	public void ListFavouriteStoriesTotalOfPaginationDBEmpty() {
+
+		Integer nStories = 9;
+
+		principal.setName("pepe");
+
+		assertThat( asAuthor.call(() ->storyEjb.listFavouriteStoriesTotalOfPagination(nStories)), is(0));
+	}
+	
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testAddFavouriteStoryAsUser() {
+
+		storyEjb.addFavourite(1);
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testAddFavouriteAsAuthor() {
+
+		principal.setName("ana");
+
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size());
+
+		assertThat(asAuthor.call(() -> storyEjb.addFavourite(1)), is(not(equalTo(nullValue()))));
+
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()),
+				is((equalTo(numStoriesBefore + 1))));
+	}
+
+	@Test(expected = javax.ejb.EJBTransactionRolledbackException.class)
+	@UsingDataSet("stories.xml")
+	public void testAddFavouriteNoExistStoryAsAuthor() {
+
+		principal.setName("ana");
+
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size());
+
+		assertThat(asAuthor.call(() -> storyEjb.addFavourite(40)), is(not(equalTo(nullValue()))));
+
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()),
+				is((equalTo(numStoriesBefore + 1))));
+	}
+
+	@Test(expected = javax.ejb.EJBException.class)
+	@UsingDataSet("stories.xml")
+	public void testRemoveFavouriteStoryAsUser() {
+
+		storyEjb.removeFavourite(1);
+	}
+
+	@Test
+	@UsingDataSet("stories.xml")
+	public void testRemoveFavouriteAsAuthor() {
+
+		principal.setName("ana");
+
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size());
+
+		assertThat(asAuthor.call(() -> storyEjb.addFavourite(1)), is(not(equalTo(nullValue()))));
+
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()),
+				is((equalTo(numStoriesBefore + 1))));
+
+		assertThat(asAuthor.call(() -> storyEjb.removeFavourite(1)), is(not(equalTo(nullValue()))));
+
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()),
+				is((equalTo(numStoriesBefore))));
+	}
+
+	@Test(expected = javax.ejb.EJBTransactionRolledbackException.class)
+	@UsingDataSet("stories.xml")
+	public void testRemoveFavouriteNoExistStoryAsAuthor() {
+
+		principal.setName("ana");
+
+		int numStoriesBefore = asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size());
+
+		assertThat(asAuthor.call(() -> storyEjb.addFavourite(40)), is(not(equalTo(nullValue()))));
+
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()),
+				is((equalTo(numStoriesBefore + 1))));
+
+		assertThat(asAuthor.call(() -> storyEjb.removeFavourite(40)), is(not(equalTo(nullValue()))));
+
+		assertThat(asAuthor.call(() -> storyEjb.listFavouriteStories(null, null).size()),
+				is((equalTo(numStoriesBefore))));
+	}
+
 }

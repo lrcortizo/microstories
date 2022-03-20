@@ -6,7 +6,9 @@
 	version="2.1">
 	<persistence-unit name="test">
 		<jta-data-source>java:jboss/datasources/dgss1819/teamB/microstories</jta-data-source>
-		<class>import es.uvigo.esei.dgss.teamB.microstories.entities.Story;</class>
+		<class>es.uvigo.esei.dgss.teamB.microstories.entities.Story</class>
+		<class>es.uvigo.esei.dgss.teamB.microstories.entities.Author</class>
+		<class>es.uvigo.esei.dgss.teamB.microstories.entities.Favourite</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 
 		<properties>

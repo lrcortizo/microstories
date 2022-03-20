@@ -5,6 +5,17 @@ DEFAULT COLLATE utf8mb4_unicode_ci;
 USE `dgss1819_teamB_microstories`;
 
 DROP TABLE IF EXISTS `Story`;
+DROP TABLE IF EXISTS `User`;
+
+--
+-- Table structure for table `User`
+--
+CREATE TABLE `User` (
+  `role` varchar(6) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `password` varchar(32) NOT NULL,
+   PRIMARY KEY (`login`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `Story`
@@ -14,12 +25,25 @@ CREATE TABLE `Story` (
   `title` varchar(100) NOT NULL,
   `text` varchar(1000) NOT NULL,
   `author` varchar(50) NOT NULL,
-  `publicationDate` datetime NOT NULL,
+  `publicationDate` datetime,
   `genre` varchar(9) NOT NULL,
-  `primaryTheme` varchar(14) NOT NULL,
+  `primaryTheme` varchar(14),
   `secondaryTheme` varchar(14),
   `views` int(11) NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `Favourite`
+--
+CREATE TABLE `Favourite` (
+  `author` varchar(100) NOT NULL,
+  `id` int(11) NOT NULL,
+   PRIMARY KEY (`author`, `id`),
+   KEY `FK_Favourite_Author` (`author`),
+   CONSTRAINT `FK_Favourite_Author_login` FOREIGN KEY (`author`) REFERENCES `User` (`login`),
+   KEY `FK_Favourite_Story` (`id`),
+   CONSTRAINT `FK_Favourite_Story_id` FOREIGN KEY (`id`) REFERENCES `Story` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

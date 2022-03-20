@@ -3,19 +3,14 @@ package es.uvigo.esei.dgss.teamB.microstories.entities;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.Validate.inclusiveBetween;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -37,9 +32,6 @@ public class Story {
     @Column(nullable = false, length = 1000)
     private String text;
 
-    @Column(nullable = false, length = 50)
-    private String author;
-
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date publicationDate = null;
@@ -59,28 +51,42 @@ public class Story {
     @Column(nullable = false)
     private Integer views;
 
-    Story() {
+    @ManyToOne
+    @JoinColumn(name = "author", referencedColumnName = "login", nullable = false)
+    @XmlTransient
+    private Author author;
+    
+	@OneToMany(
+			mappedBy = "story",
+			targetEntity = Favourite.class,
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.EAGER
+		)
+	private Collection<Favourite> isFavourite;
+
+    public Story() {
     }
 
     // For test purposes
-    Story(Integer id, String title, String text, String author, Date publicationDate, Genre genre,
+    Story(Integer id, String title, String text, Author author, Date publicationDate, Genre genre,
                  Theme primaryTheme, Theme secondaryTheme, Integer views) {
         this(title, text, author, publicationDate, genre, primaryTheme, secondaryTheme, views);
         this.id = id;
     }
 
     // For test purposes
-    Story(Integer id, String title, String text, String author, Date publicationDate, Genre genre,
+    Story(Integer id, String title, String text, Author author, Date publicationDate, Genre genre,
           Theme primaryTheme, Integer views) {
         this(title, text, author, publicationDate, genre, primaryTheme, null, views);
         this.id = id;
     }
 
-    public Story(String title, String text, String author, Date publicationDate, Genre genre, Theme primaryTheme, Integer views) {
+    public Story(String title, String text, Author author, Date publicationDate, Genre genre, Theme primaryTheme, Integer views) {
         this(title, text, author, publicationDate, genre, primaryTheme, null, views);
     }
 
-    public Story(String title, String text, String author, Date publicationDate, Genre genre, Theme primaryTheme,
+    public Story(String title, String text, Author author, Date publicationDate, Genre genre, Theme primaryTheme,
                  Theme secondaryTheme, Integer views) {
     	this.setGenre(genre);
         this.setTitle(title);
@@ -90,6 +96,7 @@ public class Story {
         this.setPrimaryTheme(primaryTheme);
         this.setSecondaryTheme(secondaryTheme);
         this.setViews(views);
+        this.isFavourite = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -131,26 +138,31 @@ public class Story {
         this.text = text;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        requireNonNull(author, "author can't be null");
-        inclusiveBetween(1, 50, author.length(), "author must have a length between 1 and 50");
+    public void setAuthor(Author author) {
+        if (this.author != null)
+            this.author.internalRemoveStory(this);
+
         this.author = author;
+
+        if (this.author != null)
+            this.author.internalAddStory(this);
     }
 
     public Date getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
-        requireNonNull(publicationDate, "publicationDate can't be null");
-        inclusiveBetween(new Date(0), new Date(), publicationDate,
-                "publicationDate must be previous to the current time");
-        this.publicationDate = publicationDate;
-    }
+	public void setPublicationDate(Date publicationDate) {
+		if (publicationDate != null) {
+			inclusiveBetween(new Date(0), new Date(), publicationDate,
+					"publicationDate must be previous to the current time");
+		}
+		this.publicationDate = publicationDate;
+	}
 
     public Genre getGenre() {
         return genre;
@@ -184,4 +196,23 @@ public class Story {
         requireNonNull(views, "views can't be null");
         this.views = views;
     }
+
+	public Collection<Favourite> getIsFavourite() {
+		return isFavourite;
+	}
+
+	public void addIsFavourite(Favourite favourite) {
+        if (favourite != null) {
+        	this.isFavourite.add(favourite);
+        	favourite.setStory(this);
+        }
+	}
+	
+	public void removeIsFavourite(Favourite favourite) {
+        if (favourite != null) {
+        	this.isFavourite.remove(favourite);
+        	favourite.setStory(null);
+        }
+	}
+    
 }

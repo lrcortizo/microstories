@@ -27,6 +27,11 @@ public class HasHttpStatus extends TypeSafeMatcher<Response> {
 	public void describeTo(Description description) {
 		description.appendValue(this.status);
 	}
+	
+	@Override
+	protected void describeMismatchSafely(Response item, Description mismatchDescription) {
+		mismatchDescription.appendText("was: ").appendValue(item.getStatusInfo());
+	}
 
 	@Override
 	protected boolean matchesSafely(Response item) {

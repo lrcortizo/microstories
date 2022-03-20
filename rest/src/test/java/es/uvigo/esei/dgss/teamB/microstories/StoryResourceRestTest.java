@@ -3,6 +3,7 @@ package es.uvigo.esei.dgss.teamB.microstories;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.extension.rest.client.ArquillianResteasyResource;
+import org.jboss.arquillian.extension.rest.client.Header;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.persistence.*;
@@ -13,10 +14,12 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import es.uvigo.esei.dgss.teamB.microstories.GenericTypes.ListStoryType;
 import es.uvigo.esei.dgss.teamB.microstories.entities.Story;
 
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -24,20 +27,29 @@ import es.uvigo.esei.dgss.teamB.microstories.StoryEJB;
 import es.uvigo.esei.dgss.teamB.microstories.StoryResource;
 
 import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.containsStoriesInAnyOrder;
-import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStory;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.IsEqualToStory.equalToStoryWithoutRelations;
+import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.newStory;
 import static es.uvigo.esei.dgss.teamB.microstories.entities.StoriesDataset.existentStory;
+import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasCreatedStatus;
 import static es.uvigo.esei.dgss.teamB.microstories.http.util.HasHttpStatus.hasOkStatus;
+import static javax.ws.rs.client.Entity.json;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 @RunWith(Arquillian.class)
 public class StoryResourceRestTest {
 	private final static String BASE_PATH = "microstory/";
+	private static final String BASIC_AUTHORIZATION = "Basic YW5hOmFuYXBhc3M=";
+	public static final String EXISTENT_ID = "21";
 
 	@Deployment
 	public static Archive<?> createDeployment() {
 		return ShrinkWrap.create(WebArchive.class, "test.war")
-			.addClass(StoryResource.class)
+			.addClasses(StoryResource.class, StorySchedulerEJB.class)
+			.addClasses(CORSFilter.class, IllegalArgumentExceptionMapper.class, SecurityExceptionMapper.class)
 			.addPackage(StoryEJB.class.getPackage())
 			.addPackage(Story.class.getPackage())
 			.addAsResource("test-persistence.xml", "META-INF/persistence.xml")
@@ -96,13 +108,13 @@ public class StoryResourceRestTest {
 
 	    final Story expected = existentStory();
 	    
-	    assertThat(story, is(equalToStory(expected)));
-		    
+	    expected.setViews(expected.getViews()+1);
+
+	    assertThat(story, is(equalToStoryWithoutRelations(expected)));
 	   
 	}
 	
 	@Test @InSequence(6)
-	@ShouldMatchDataSet("stories.xml")
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterGetStory() {}
 	
@@ -161,16 +173,16 @@ public class StoryResourceRestTest {
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
 	public void afterGetListSearchPagination() {}
 	
-	//topTenMostPopular
+	//mostPopular
 	
 	@Test @InSequence(13)
 	@UsingDataSet("stories.xml")
 	@Cleanup(phase = TestExecutionPhase.NONE)
-	public void beforeTopTenMostPopular() {}
+	public void beforeMostPopular() {}
 	
 	@Test @InSequence(14)
 	@RunAsClient
-	public void testTopTenMostPopular(
+	public void testMostPopular(
 		@ArquillianResteasyResource(BASE_PATH +"hottest/") ResteasyWebTarget webTarget
 	) 
 	throws Exception {
@@ -188,7 +200,147 @@ public class StoryResourceRestTest {
 	@Test @InSequence(15)
 	@ShouldMatchDataSet("stories.xml")
 	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
-	public void afterTopTenMostPopular() {}
+	public void afterMostPopular() {}
+	
+	//createStory
+	
+	@Test @InSequence(16)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeCreate() {}
+	
+	@Test @InSequence(17)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testCreate(
+		@ArquillianResteasyResource(BASE_PATH) ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		testCreateStory(webTarget, newStory());
+	}
+	
+	@Test @InSequence(18)
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterCreate() {}
+	
+	private void testCreateStory(WebTarget webTarget, Story newStory) {
+		testCreateStory(webTarget, newStory, newStory);
+	}
+	
+	private void testCreateStory(WebTarget webTarget, Story newStory, Story persistentStory) {
+	    final Response response = webTarget.request().post(json(newStory));
+
+	    assertThat(response, hasCreatedStatus());
+	    
+	    final String location = response.getHeaderString("Location");
+	    
+	    final Response responseGet = authorizedJsonRequestGet(location);
+	    final Story story = responseGet.readEntity(Story.class);
+		assertThat(story, is(not(equalTo(nullValue()))));
+	}
+	
+	private static Response authorizedJsonRequestGet(String uri) {
+		return ClientBuilder.newClient().target(uri)
+			.request(MediaType.APPLICATION_JSON_TYPE)
+			.header("Authorization", BASIC_AUTHORIZATION)
+		.get();
+	}
+	
+	@Test @InSequence(19)
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeUpdate() {}
+	
+	@Test @InSequence(20)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testUpdate(
+		@ArquillianResteasyResource(BASE_PATH) ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		testUpdateStory(webTarget, newStory());
+	}
+	
+	@Test @InSequence(21)
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterUpdate() {}
+	
+	private void testUpdateStory(WebTarget webTarget, Story story) {
+		final Response response = webTarget.request().post(json(story));
+		
+		assertThat(response, hasCreatedStatus());
+	}
+	
+	@Test @InSequence(22)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeDelete() {}
+	
+	@Test @InSequence(23)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testDelete(
+		@ArquillianResteasyResource(BASE_PATH + EXISTENT_ID) ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		final Response response = webTarget.request().delete();
+
+	    assertThat(response, hasOkStatus());
+	}
+	
+	@Test @InSequence(24)
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterDelete() {}
+	
+	//List favourite stories
+	
+	@Test @InSequence(25)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeListFavouriteStories() {}
+	
+	@Test @InSequence(26)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testListFavouriteStories(
+		@ArquillianResteasyResource(BASE_PATH +"user/ana/microstory/favourite/") ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		
+	    final Response response = webTarget.request().get();
+
+	    assertThat(response, hasOkStatus());
+	    
+	    final List<Story> list = ListStoryType.readEntity(response);
+	    assertThat(list, containsStoriesInAnyOrder(list));
+		    
+	   
+	}
+	
+	@Test @InSequence(27)
+	@ShouldMatchDataSet("stories.xml")
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterListFavouriteStories() {}
+	
+	@Test @InSequence(28)
+	@UsingDataSet("stories.xml")
+	@Cleanup(phase = TestExecutionPhase.NONE)
+	public void beforeDeleteFavourite() {}
+	
+	@Test @InSequence(29)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testDeleteFavourite(
+		@ArquillianResteasyResource(BASE_PATH + "user/ana/microstory/favourite/1") ResteasyWebTarget webTarget
+	) 
+	throws Exception {
+		final Response response = webTarget.request().delete();
+
+	    assertThat(response, hasOkStatus());
+	}
+	
+	@Test @InSequence(30)
+	@CleanupUsingScript({ "cleanup.sql", "cleanup-autoincrement.sql" })
+	public void afterDeleteFavourite() {}
 	
 }
 

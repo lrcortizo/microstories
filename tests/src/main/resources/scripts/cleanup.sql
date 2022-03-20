@@ -1,1 +1,2 @@
+DELETE FROM Favourite;
 DELETE FROM Story;

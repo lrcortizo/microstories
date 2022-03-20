@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	StoryEJBIntegrationTest.class,
+	StoryEJBIllegalAccessIntegrationTest.class
 })
 public class ServiceIntegrationTestSuite {
 }

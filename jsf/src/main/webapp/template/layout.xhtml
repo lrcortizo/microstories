@@ -25,13 +25,27 @@
 				<li>
 					<a href="./">Home</a>
 				</li>
-				<li class="navbarRight">
-					<a href="#">Login</a>
-				</li>
+				<h:panelGroup rendered="${login.currentUser.name == 'anonymous'}">					
+					<li class="navbarRight" data-toggle="modal" data-target="#loginModal">
+						<a href="#">
+							Login
+						</a>
+					</li>
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="${login.currentUser.name != 'anonymous'}">
+					<li class="navbarRight logoutNavbar">
+						<a href="home.xhtml" >
+							#{login.currentUser}
+						</a>
+						<h:commandButton class="btn btn-secondary" value="Logout" action="#{login.doLogout}" />
+					</li>
+				</h:panelGroup>
+					
+				
 				<li class="navbarRight">
 					<h:form class="form-inline">
 	  					<h:inputText value="#{search.searchInput}" class="form-control searchNav mb-2 mr-sm-2"/>
-
 						<h:commandLink action="search.goToSearchView" >
 							<img id="iconSearch" src="img/search.svg" width="30"/>
 						</h:commandLink>
@@ -39,6 +53,37 @@
 				</li>
 			</ul>
 		</nav>
+		
+		
+		<!-- Modal LOGIN-->
+		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+		    	<div class="modal-content">
+		      		<div class="modal-header">
+		        		<h5 class="modal-title">Login </h5>
+		        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          			<span aria-hidden="true">X</span>
+		        		</button>
+		      		</div>
+		      		<div class="modal-body">
+		        		<h:form>						
+		        			<div class="form-group">
+					    		<label> Username</label>
+					    		<h:inputText value="#{login.login}" class="form-control" />
+					  		</div>
+					  		<div class="form-group">
+					    		<label>Password</label>
+					    		<h:inputSecret value="#{login.password}" class="form-control searchNav mb-2 mr-sm-2" />
+					  		</div>
+							<h:commandButton value = "Login" class="btn btn-primary" action="#{login.doLogin}"  /> 
+		        		</h:form>
+		      		</div>
+		      		<div class="modal-footer">
+		        		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      		</div>
+		    	</div>
+		  	</div>
+		</div>
 		<nav id="navbarMobile" class="d-block d-sm-none">
 			<ul>
 				<li>
@@ -48,13 +93,18 @@
 					<img id="iconSearchMobile" src="img/user.svg" width="40"/>
 				</li>
 				<li class="formMobile">
-					<form>
+					<h:form class="form-inline">
 						<h:inputText value="#{search.searchInput}" class="form-control searchNav mb-2 mr-sm-2"/>
+						<div id="ghostButton">
+							<h:commandButton action="search?faces-redirect=true&amp;includeViewParams=true">
 
-						<h:commandLink action="search.goToSearchView" >
-							<img id="iconSearchMobile" src="img/search.svg" width="10" />
+							</h:commandButton>
+
+						</div>
+						<h:commandLink  action="search?faces-redirect=true&amp;includeViewParams=true" >
+							<img id="iconSearchMobile" src="img/search.svg" width="10"/>
 						</h:commandLink>
-					</form>
+					</h:form>
 				</li>
 			</ul>
 		</nav>

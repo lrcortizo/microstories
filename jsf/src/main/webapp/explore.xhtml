@@ -7,7 +7,6 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
@@ -44,10 +43,14 @@
 						        <f:selectItem itemValue="POETRY" />
 						        <f:selectItem itemValue="NANOSTORY" />
 						    </h:selectOneMenu>
-						    <label class="elementExplore">after of</label>
-						    <div id="exploreDate">
-						    	<h:inputText class="form-control" a:placeholder="2018-01-01" value="#{explore.date}" />
-						    </div> 
+						    <label class="elementExplore">in</label>
+						    <h:selectOneMenu value="#{explore.date}" class="form-control elementExplore" required="true">
+						        <f:selectItem itemValue="Any moment" />
+						        <f:selectItem itemValue="Today" />
+						        <f:selectItem itemValue="This week" />
+						        <f:selectItem itemValue="This month" />
+						        <f:selectItem itemValue="This year" />
+						    </h:selectOneMenu>
 			            	<h:commandButton value="submit" class="btn btn-primary elementExplore" action="explore?faces-redirect=true&amp;includeViewParams=true">
 			            	</h:commandButton>
 			        	</h:form>
@@ -56,61 +59,29 @@
 				</div>
 			</div>
 			<div class="row">
-			<ui:fragment rendered="#{not empty explore.listSearchPagination()}">
+				<ui:fragment rendered="#{empty explore.listSearchPagination()}">
+					<div class="col-md-12">
+						<p class="warning">No microstories to show</p>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{not empty explore.listSearchPagination()}">
 					<ui:repeat var="story" value="#{explore.listSearchPagination()}">
-						<div class="col-md-4 col-sm-6 col-xs-12">
-							<h:form>
-								<h:outputLink value="view.xhtml">
-
-									<f:param name="id" value="#{story.id}" />
-
-									<div class="card mb-4 box-shadow indexTarget">
-										<div class="card-header">
-											<div class="gender">
-												<h:outputLabel value="#{story.genre}" />
-											</div>
-										</div>
-										<div class="card-body">
-											<div class="title">
-												<h:outputLabel value="#{story.title}" />
-											</div>
-											<div class="thematics">
-												<h:outputLabel value="#{story.primaryTheme}" />
-												,
-												<h:outputLabel value="#{story.secondaryTheme}" />
-											</div>
-											<p class="card-text">${fn:substring(story.text, 0, 60)}...</p>
-											<div class="date">
-												date:
-												<h:outputLabel value="#{story.publicationDate}" />
-											</div>
-										</div>
-										<div class="card-footer">
-											<div class="autor">
-												by:	
-												<h:outputLabel value="#{story.author}" />
-											</div>
-										</div>
-									</div>
-								</h:outputLink>
-							</h:form>
-						</div>
+						<ui:include src="/template/cardTemplate.xhtml" />
 					</ui:repeat>
 				</ui:fragment>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-				
-                
 					<nav aria-label="Page navigation example">
 					<ul class="pagination justify-content-center">
+					<ui:fragment rendered="#{explore.nPagination != 1}">
 						<li class="page-item">
 							<h:outputLink styleClass="page-link" value="explore.xhtml" >
 			                	<f:param name="genre" value="#{explore.genre}" />
 			                	<f:param name="theme" value="#{explore.theme}" />
 			                	<f:param name="date" value="#{explore.date}" />
 								<f:param name="nPagination" value="#{explore.nPagination-1}" />
-								Previus
+								<h:outputLabel value="Previous" />
 							</h:outputLink>  
 						</li>
 						<li class="page-item">
@@ -118,26 +89,28 @@
 			                	<f:param name="genre" value="#{explore.genre}" />
 			                	<f:param name="theme" value="#{explore.theme}" />
 			                	<f:param name="date" value="#{explore.date}" />
-								<f:param name="nPagination" value="1" />
-								1
+								<f:param name="nPagination" value="#{explore.nPagination-1}" />
+								<h:outputLabel value="#{explore.nPagination-1}" />
 							</h:outputLink>  
 						</li>
+					</ui:fragment>
 						<li class="page-item">
 							<h:outputLink styleClass="page-link" value="explore.xhtml" >
 			                	<f:param name="genre" value="#{explore.genre}" />
 			                	<f:param name="theme" value="#{explore.theme}" />
 			                	<f:param name="date" value="#{explore.date}" />
-								<f:param name="nPagination" value="2" />
-								2
+								<f:param name="nPagination" value="#{explore.nPagination}" />
+								<h:outputLabel value="#{explore.nPagination}" />
 							</h:outputLink>  
 						</li>
+						<ui:fragment rendered="#{explore.nPagination lt explore.totalPagination}">
 						<li class="page-item">
 							<h:outputLink styleClass="page-link" value="explore.xhtml" >
 			                	<f:param name="genre" value="#{explore.genre}" />
 			                	<f:param name="theme" value="#{explore.theme}" />
 			                	<f:param name="date" value="#{explore.date}" />
-								<f:param name="nPagination" value="3" />
-								3
+								<f:param name="nPagination" value="#{explore.nPagination+1}" />
+								<h:outputLabel value="#{explore.nPagination+1}" />
 							</h:outputLink>  
 						</li>
 						<li class="page-item">
@@ -146,9 +119,10 @@
 			                	<f:param name="theme" value="#{explore.theme}" />
 			                	<f:param name="date" value="#{explore.date}" />
 								<f:param name="nPagination" value="#{explore.nPagination+1}" />
-								Next
+								<h:outputLabel value="Next" />
 							</h:outputLink>  
 						</li>
+						</ui:fragment>
 					</ul>
 					</nav>
 				</div>
